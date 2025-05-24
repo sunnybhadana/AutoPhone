@@ -1,23 +1,23 @@
-package com.goodwy.autophone.fragments
+package com.revaltronics.autophone.fragments
 
 import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
-import com.goodwy.commons.adapters.MyRecyclerViewAdapter
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.MainActivity
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.ContactsAdapter
-import com.goodwy.autophone.databinding.FragmentContactsBinding
-import com.goodwy.autophone.databinding.FragmentLettersLayoutBinding
-import com.goodwy.autophone.extensions.launchCreateNewContactIntent
-import com.goodwy.autophone.extensions.setupWithContacts
-import com.goodwy.autophone.extensions.startContactDetailsIntentRecommendation
-import com.goodwy.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.commons.adapters.MyRecyclerViewAdapter
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.MainActivity
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.ContactsAdapter
+import com.revaltronics.autophone.databinding.FragmentContactsBinding
+import com.revaltronics.autophone.databinding.FragmentLettersLayoutBinding
+import com.revaltronics.autophone.extensions.launchCreateNewContactIntent
+import com.revaltronics.autophone.extensions.setupWithContacts
+import com.revaltronics.autophone.extensions.startContactDetailsIntentRecommendation
+import com.revaltronics.autophone.interfaces.RefreshItemsListener
 
 class ContactsFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment<MyViewPagerFragment.LettersInnerBinding>(context, attributeSet),
     RefreshItemsListener {

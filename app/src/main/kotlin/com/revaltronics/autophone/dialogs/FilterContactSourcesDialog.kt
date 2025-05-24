@@ -1,17 +1,17 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.ContactsHelper
-import com.goodwy.commons.helpers.MyContactsContentProvider
-import com.goodwy.commons.helpers.SMT_PRIVATE
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.models.contacts.ContactSource
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.FilterContactSourcesAdapter
-import com.goodwy.autophone.databinding.DialogFilterContactSourcesBinding
-import com.goodwy.autophone.extensions.config
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.ContactsHelper
+import com.revaltronics.commons.helpers.MyContactsContentProvider
+import com.revaltronics.commons.helpers.SMT_PRIVATE
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.models.contacts.ContactSource
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.FilterContactSourcesAdapter
+import com.revaltronics.autophone.databinding.DialogFilterContactSourcesBinding
+import com.revaltronics.autophone.extensions.config
 
 class FilterContactSourcesDialog(val activity: SimpleActivity, private val callback: () -> Unit) {
     private val binding by activity.viewBinding(DialogFilterContactSourcesBinding::inflate)

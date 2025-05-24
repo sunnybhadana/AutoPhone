@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -32,27 +32,27 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.behaviorule.arturdumchev.library.pixels
 import com.google.android.material.snackbar.Snackbar
-import com.goodwy.commons.dialogs.ConfirmationDialog
-import com.goodwy.commons.dialogs.PermissionRequiredDialog
-import com.goodwy.commons.dialogs.RadioGroupDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.RadioItem
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.views.MySearchMenu
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.adapters.ViewPagerAdapter
-import com.goodwy.autophone.databinding.ActivityMainBinding
-import com.goodwy.autophone.dialogs.ChangeSortingDialog
-import com.goodwy.autophone.dialogs.FilterContactSourcesDialog
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.fragments.ContactsFragment
-import com.goodwy.autophone.fragments.FavoritesFragment
-import com.goodwy.autophone.fragments.MyViewPagerFragment
-import com.goodwy.autophone.fragments.RecentsFragment
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.models.Events
+import com.revaltronics.commons.dialogs.ConfirmationDialog
+import com.revaltronics.commons.dialogs.PermissionRequiredDialog
+import com.revaltronics.commons.dialogs.RadioGroupDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.RadioItem
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.views.MySearchMenu
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.adapters.ViewPagerAdapter
+import com.revaltronics.autophone.databinding.ActivityMainBinding
+import com.revaltronics.autophone.dialogs.ChangeSortingDialog
+import com.revaltronics.autophone.dialogs.FilterContactSourcesDialog
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.fragments.ContactsFragment
+import com.revaltronics.autophone.fragments.FavoritesFragment
+import com.revaltronics.autophone.fragments.MyViewPagerFragment
+import com.revaltronics.autophone.fragments.RecentsFragment
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.models.Events
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -82,7 +82,7 @@ class MainActivity : SimpleActivity() {
         updateNavigationBarColor = false
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appLaunched(BuildConfig.APPLICATION_ID)
+        appLaunched(com.revaltronics.autophone.BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
         refreshMenuItems()
         storeStateVariables()
@@ -394,7 +394,7 @@ class MainActivity : SimpleActivity() {
                 setHintTextColor(textColor)
             }
             findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn).apply {
-                setImageResource(com.goodwy.commons.R.drawable.ic_clear_round)
+                setImageResource(com.revaltronics.commons.R.drawable.ic_clear_round)
                 setColorFilter(textColor)
             }
             findViewById<View>(androidx.appcompat.R.id.search_plate)?.apply { // search underline
@@ -517,7 +517,7 @@ class MainActivity : SimpleActivity() {
                                         val action = if (hasPermission) Intent.ACTION_CALL else Intent.ACTION_DIAL
                                         val intent = Intent(action).apply {
                                             data = Uri.fromParts("tel", number, null)
-                                            putExtra(IS_RIGHT_APP, BuildConfig.RIGHT_APP_KEY)
+                                            putExtra(IS_RIGHT_APP, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
                                         }
 
                                         val shortcut = ShortcutInfo.Builder(this, "contact_${contact.id}")

@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,24 +12,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.behaviorule.arturdumchev.library.pixels
-import com.goodwy.commons.activities.ManageBlockedNumbersActivity
-import com.goodwy.commons.dialogs.*
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.helpers.rustore.RuStoreHelper
-import com.goodwy.commons.helpers.rustore.model.StartPurchasesEvent
-import com.goodwy.commons.models.RadioItem
-import com.goodwy.commons.models.Release
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.databinding.ActivitySettingsBinding
-import com.goodwy.autophone.dialogs.ChangeTextDialog
-import com.goodwy.autophone.dialogs.ExportCallHistoryDialog
-import com.goodwy.autophone.dialogs.ManageVisibleTabsDialog
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.RecentsHelper
-import com.goodwy.autophone.models.RecentCall
-import com.goodwy.autophone.helpers.*
+import com.revaltronics.commons.activities.ManageBlockedNumbersActivity
+import com.revaltronics.commons.dialogs.*
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.helpers.rustore.RuStoreHelper
+import com.revaltronics.commons.helpers.rustore.model.StartPurchasesEvent
+import com.revaltronics.commons.models.RadioItem
+import com.revaltronics.commons.models.Release
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.ActivitySettingsBinding
+import com.revaltronics.autophone.dialogs.ChangeTextDialog
+import com.revaltronics.autophone.dialogs.ExportCallHistoryDialog
+import com.revaltronics.autophone.dialogs.ManageVisibleTabsDialog
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.RecentsHelper
+import com.revaltronics.autophone.models.RecentCall
+import com.revaltronics.autophone.helpers.*
 import com.mikhaellopez.rxanimation.RxAnimation
 import com.mikhaellopez.rxanimation.shake
 import kotlinx.coroutines.launch
@@ -55,15 +55,15 @@ class SettingsActivity : SimpleActivity() {
 
     private val purchaseHelper = PurchaseHelper(this)
     private var ruStoreHelper: RuStoreHelper? = null
-    private val productIdX1 = BuildConfig.PRODUCT_ID_X1
-    private val productIdX2 = BuildConfig.PRODUCT_ID_X2
-    private val productIdX3 = BuildConfig.PRODUCT_ID_X3
-    private val subscriptionIdX1 = BuildConfig.SUBSCRIPTION_ID_X1
-    private val subscriptionIdX2 = BuildConfig.SUBSCRIPTION_ID_X2
-    private val subscriptionIdX3 = BuildConfig.SUBSCRIPTION_ID_X3
-    private val subscriptionYearIdX1 = BuildConfig.SUBSCRIPTION_YEAR_ID_X1
-    private val subscriptionYearIdX2 = BuildConfig.SUBSCRIPTION_YEAR_ID_X2
-    private val subscriptionYearIdX3 = BuildConfig.SUBSCRIPTION_YEAR_ID_X3
+    private val productIdX1 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X1
+    private val productIdX2 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X2
+    private val productIdX3 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X3
+    private val subscriptionIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X1
+    private val subscriptionIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X2
+    private val subscriptionIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X3
+    private val subscriptionYearIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X1
+    private val subscriptionYearIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X2
+    private val subscriptionYearIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X3
     private var ruStoreIsConnected = false
 
     private val binding by viewBinding(ActivitySettingsBinding::inflate)
@@ -302,8 +302,8 @@ class SettingsActivity : SimpleActivity() {
             settingsTipJarHolder.beVisibleIf(isPro)
 
             val stringId =
-                if (isRTLLayout) com.goodwy.strings.R.string.swipe_right_action
-                else com.goodwy.strings.R.string.swipe_left_action
+                if (isRTLLayout) com.revaltronics.strings.R.string.swipe_right_action
+                else com.revaltronics.strings.R.string.swipe_left_action
             settingsSwipeLeftActionLabel.text = addLockedLabelIfNeeded(stringId, isPro)
 
             arrayOf(
@@ -517,7 +517,7 @@ class SettingsActivity : SimpleActivity() {
         binding.settingsScreenSlideAnimation.text = getScreenSlideAnimationText()
         binding.settingsScreenSlideAnimationHolder.setOnClickListener {
             val items = arrayListOf(
-                RadioItem(0, getString(R.string.no), icon = com.goodwy.commons.R.drawable.ic_view_array),
+                RadioItem(0, getString(R.string.no), icon = com.revaltronics.commons.R.drawable.ic_view_array),
                 RadioItem(1, getString(R.string.screen_slide_animation_zoomout), icon = R.drawable.ic_view_carousel),
                 RadioItem(2, getString(R.string.screen_slide_animation_depth), icon = R.drawable.ic_playing_cards),
             )
@@ -592,10 +592,10 @@ class SettingsActivity : SimpleActivity() {
 
     private fun getContactThumbnailsSizeText() = getString(
         when (baseConfig.contactThumbnailsSize) {
-            CONTACT_THUMBNAILS_SIZE_SMALL -> com.goodwy.commons.R.string.small
-            CONTACT_THUMBNAILS_SIZE_MEDIUM -> com.goodwy.commons.R.string.medium
-            CONTACT_THUMBNAILS_SIZE_LARGE -> com.goodwy.commons.R.string.large
-            else -> com.goodwy.commons.R.string.extra_large
+            CONTACT_THUMBNAILS_SIZE_SMALL -> com.revaltronics.commons.R.string.small
+            CONTACT_THUMBNAILS_SIZE_MEDIUM -> com.revaltronics.commons.R.string.medium
+            CONTACT_THUMBNAILS_SIZE_LARGE -> com.revaltronics.commons.R.string.large
+            else -> com.revaltronics.commons.R.string.extra_large
         }
     )
 
@@ -624,10 +624,10 @@ class SettingsActivity : SimpleActivity() {
         settingsContactColorListIcon.setImageResource(getContactsColorListIcon(config.contactColorList))
         settingsContactColorListHolder.setOnClickListener {
             val items = arrayListOf(
-                com.goodwy.commons.R.drawable.ic_color_list,
-                com.goodwy.commons.R.drawable.ic_color_list_android,
-                com.goodwy.commons.R.drawable.ic_color_list_ios,
-                com.goodwy.commons.R.drawable.ic_color_list_arc
+                com.revaltronics.commons.R.drawable.ic_color_list,
+                com.revaltronics.commons.R.drawable.ic_color_list_android,
+                com.revaltronics.commons.R.drawable.ic_color_list_ios,
+                com.revaltronics.commons.R.drawable.ic_color_list_arc
             )
 
             IconListDialog(
@@ -635,7 +635,7 @@ class SettingsActivity : SimpleActivity() {
                 items = items,
                 checkedItemId = config.contactColorList,
                 defaultItemId = LBC_ANDROID,
-                titleId = com.goodwy.strings.R.string.overflow_icon
+                titleId = com.revaltronics.strings.R.string.overflow_icon
             ) { wasPositivePressed, newValue ->
                 if (wasPositivePressed) {
                     if (config.contactColorList != newValue) {
@@ -1060,7 +1060,7 @@ class SettingsActivity : SimpleActivity() {
         when {
             config.groupSubsequentCalls -> R.string.group_subsequent_calls
             config.groupAllCalls -> R.string.group_all_calls
-            else -> com.goodwy.commons.R.string.no
+            else -> com.revaltronics.commons.R.string.no
         }
     )
 
@@ -1203,9 +1203,9 @@ class SettingsActivity : SimpleActivity() {
             settingsOverflowIcon.setImageResource(getOverflowIcon(baseConfig.overflowIcon))
             settingsOverflowIconHolder.setOnClickListener {
                 val items = arrayListOf(
-                    com.goodwy.commons.R.drawable.ic_more_horiz,
-                    com.goodwy.commons.R.drawable.ic_three_dots_vector,
-                    com.goodwy.commons.R.drawable.ic_more_horiz_round
+                    com.revaltronics.commons.R.drawable.ic_more_horiz,
+                    com.revaltronics.commons.R.drawable.ic_three_dots_vector,
+                    com.revaltronics.commons.R.drawable.ic_more_horiz_round
                 )
 
                 IconListDialog(
@@ -1213,8 +1213,8 @@ class SettingsActivity : SimpleActivity() {
                     items = items,
                     checkedItemId = baseConfig.overflowIcon + 1,
                     defaultItemId = OVERFLOW_ICON_HORIZONTAL + 1,
-                    titleId = com.goodwy.strings.R.string.overflow_icon,
-                    size = pixels(com.goodwy.commons.R.dimen.normal_icon_size).toInt(),
+                    titleId = com.revaltronics.strings.R.string.overflow_icon,
+                    size = pixels(com.revaltronics.commons.R.dimen.normal_icon_size).toInt(),
                     color = getProperTextColor()
                 ) { wasPositivePressed, newValue ->
                     if (wasPositivePressed) {
@@ -1427,12 +1427,12 @@ class SettingsActivity : SimpleActivity() {
         settingsSwipeRightAction.text = getSwipeActionText(false)
         settingsSwipeRightActionHolder.setOnClickListener {
             val items = if (isNougatPlus()) arrayListOf(
-                RadioItem(SWIPE_ACTION_DELETE, getString(com.goodwy.commons.R.string.delete), icon = com.goodwy.commons.R.drawable.ic_delete_outline),
+                RadioItem(SWIPE_ACTION_DELETE, getString(com.revaltronics.commons.R.string.delete), icon = com.revaltronics.commons.R.drawable.ic_delete_outline),
                 RadioItem(SWIPE_ACTION_BLOCK, getString(R.string.block_number), icon = R.drawable.ic_block_vector),
                 RadioItem(SWIPE_ACTION_CALL, getString(R.string.call), icon = R.drawable.ic_phone_vector),
                 RadioItem(SWIPE_ACTION_MESSAGE, getString(R.string.send_sms), icon = R.drawable.ic_messages),
             ) else arrayListOf(
-                RadioItem(SWIPE_ACTION_DELETE, getString(com.goodwy.commons.R.string.delete), icon = com.goodwy.commons.R.drawable.ic_delete_outline),
+                RadioItem(SWIPE_ACTION_DELETE, getString(com.revaltronics.commons.R.string.delete), icon = com.revaltronics.commons.R.drawable.ic_delete_outline),
                 RadioItem(SWIPE_ACTION_CALL, getString(R.string.call), icon = R.drawable.ic_phone_vector),
                 RadioItem(SWIPE_ACTION_MESSAGE, getString(R.string.send_sms), icon = R.drawable.ic_messages),
             )
@@ -1457,12 +1457,12 @@ class SettingsActivity : SimpleActivity() {
         settingsSwipeLeftActionHolder.setOnClickListener {
             if (pro) {
                 val items = if (isNougatPlus()) arrayListOf(
-                    RadioItem(SWIPE_ACTION_DELETE, getString(com.goodwy.commons.R.string.delete), icon = com.goodwy.commons.R.drawable.ic_delete_outline),
+                    RadioItem(SWIPE_ACTION_DELETE, getString(com.revaltronics.commons.R.string.delete), icon = com.revaltronics.commons.R.drawable.ic_delete_outline),
                     RadioItem(SWIPE_ACTION_BLOCK, getString(R.string.block_number), icon = R.drawable.ic_block_vector),
                     RadioItem(SWIPE_ACTION_CALL, getString(R.string.call), icon = R.drawable.ic_phone_vector),
                     RadioItem(SWIPE_ACTION_MESSAGE, getString(R.string.send_sms), icon = R.drawable.ic_messages),
                 ) else arrayListOf(
-                    RadioItem(SWIPE_ACTION_DELETE, getString(com.goodwy.commons.R.string.delete), icon = com.goodwy.commons.R.drawable.ic_delete_outline),
+                    RadioItem(SWIPE_ACTION_DELETE, getString(com.revaltronics.commons.R.string.delete), icon = com.revaltronics.commons.R.drawable.ic_delete_outline),
                     RadioItem(SWIPE_ACTION_CALL, getString(R.string.call), icon = R.drawable.ic_phone_vector),
                     RadioItem(SWIPE_ACTION_MESSAGE, getString(R.string.send_sms), icon = R.drawable.ic_messages),
                 )
@@ -1489,7 +1489,7 @@ class SettingsActivity : SimpleActivity() {
 
     private fun getSwipeActionText(left: Boolean) = getString(
         when (if (left) config.swipeLeftAction else config.swipeRightAction) {
-            SWIPE_ACTION_DELETE -> com.goodwy.commons.R.string.delete
+            SWIPE_ACTION_DELETE -> com.revaltronics.commons.R.string.delete
             SWIPE_ACTION_BLOCK -> R.string.block_number
             SWIPE_ACTION_CALL -> R.string.call
             else -> R.string.send_sms
@@ -1519,7 +1519,7 @@ class SettingsActivity : SimpleActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setupAbout() = binding.apply {
-        settingsAboutVersion.text = "Version: " + BuildConfig.VERSION_NAME
+        settingsAboutVersion.text = "Version: " + com.revaltronics.autophone.BuildConfig.VERSION_NAME
         settingsAboutHolder.setOnClickListener {
             launchAbout()
         }
@@ -1574,7 +1574,7 @@ class SettingsActivity : SimpleActivity() {
             }
             settingsBlockCallFromAnotherAppFaq.imageTintList = ColorStateList.valueOf(getProperTextColor())
             settingsBlockCallFromAnotherAppFaq.setOnClickListener {
-                ConfirmationDialog(this@SettingsActivity, messageId = R.string.open_dialpad_when_call_from_another_app_summary, positive = com.goodwy.commons.R.string.ok, negative = 0) {}
+                ConfirmationDialog(this@SettingsActivity, messageId = R.string.open_dialpad_when_call_from_another_app_summary, positive = com.revaltronics.commons.R.string.ok, negative = 0) {}
             }
         }
     }
@@ -1603,7 +1603,7 @@ class SettingsActivity : SimpleActivity() {
     private fun setupOptionsMenu() {
         val id = 620 //TODO changelog
         binding.settingsToolbar.menu.apply {
-            findItem(R.id.whats_new).isVisible = BuildConfig.VERSION_CODE == id
+            findItem(R.id.whats_new).isVisible = com.revaltronics.autophone.BuildConfig.VERSION_CODE == id
         }
         binding.settingsToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {

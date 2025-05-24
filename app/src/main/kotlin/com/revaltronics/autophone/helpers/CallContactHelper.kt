@@ -1,18 +1,18 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.telecom.Call
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.ContactsHelper
-import com.goodwy.commons.helpers.MyContactsContentProvider
-import com.goodwy.commons.helpers.PERMISSION_READ_PHONE_STATE
-import com.goodwy.commons.helpers.ensureBackgroundThread
-import com.goodwy.autophone.R
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.isConference
-import com.goodwy.autophone.models.CallContact
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.ContactsHelper
+import com.revaltronics.commons.helpers.MyContactsContentProvider
+import com.revaltronics.commons.helpers.PERMISSION_READ_PHONE_STATE
+import com.revaltronics.commons.helpers.ensureBackgroundThread
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.isConference
+import com.revaltronics.autophone.models.CallContact
 
 fun getCallContact(context: Context, call: Call?, callback: (CallContact) -> Unit) {
     if (call.isConference()) {

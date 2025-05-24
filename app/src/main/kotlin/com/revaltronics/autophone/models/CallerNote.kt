@@ -1,4 +1,4 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 data class CallerNote(
     var id: String,

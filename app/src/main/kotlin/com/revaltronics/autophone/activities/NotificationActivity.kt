@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.app.NotificationManager
@@ -6,14 +6,14 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import com.goodwy.commons.extensions.launchActivityIntent
-import com.goodwy.commons.extensions.telecomManager
-import com.goodwy.commons.helpers.CURRENT_PHONE_NUMBER
-import com.goodwy.commons.helpers.IS_RIGHT_APP
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.helpers.MISSED_CALL_BACK
-import com.goodwy.autophone.helpers.MISSED_CALL_MESSAGE
-import com.goodwy.autophone.helpers.MISSED_CALL_NOTIFICATION_ID
+import com.revaltronics.commons.extensions.launchActivityIntent
+import com.revaltronics.commons.extensions.telecomManager
+import com.revaltronics.commons.helpers.CURRENT_PHONE_NUMBER
+import com.revaltronics.commons.helpers.IS_RIGHT_APP
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.helpers.MISSED_CALL_BACK
+import com.revaltronics.autophone.helpers.MISSED_CALL_MESSAGE
+import com.revaltronics.autophone.helpers.MISSED_CALL_NOTIFICATION_ID
 
 //Empty activation to remove missed call notifications when you press to call or send a message
 //https://stackoverflow.com/questions/18261969/clicking-android-notification-actions-does-not-close-notification-drawer?noredirect=1&lq=1
@@ -35,7 +35,7 @@ class NotificationActivity : SimpleActivity() {
             MISSED_CALL_BACK -> phoneNumber.let {
                 Intent(Intent.ACTION_CALL).apply {
                     data = Uri.fromParts("tel", it, null)
-                    putExtra(IS_RIGHT_APP, BuildConfig.RIGHT_APP_KEY)
+                    putExtra(IS_RIGHT_APP, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     launchActivityIntent(this)
                 }

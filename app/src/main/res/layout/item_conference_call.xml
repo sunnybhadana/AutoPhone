@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/placeholder_contact" />
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/itemConferenceCallName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

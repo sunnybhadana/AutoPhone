@@ -1,12 +1,12 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.os.Handler
-import com.goodwy.commons.extensions.showErrorToast
-import com.goodwy.commons.helpers.isTiramisuPlus
-import com.goodwy.autophone.models.Events
+import com.revaltronics.commons.extensions.showErrorToast
+import com.revaltronics.commons.helpers.isTiramisuPlus
+import com.revaltronics.autophone.models.Events
 import org.greenrobot.eventbus.EventBus
 
 internal class CameraFlash(

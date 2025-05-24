@@ -1,4 +1,4 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 sealed class Events {
     data object RefreshCallLog : Events()

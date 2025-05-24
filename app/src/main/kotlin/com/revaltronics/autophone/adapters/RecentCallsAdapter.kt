@@ -1,4 +1,4 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -18,27 +18,27 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DiffUtil
 import com.behaviorule.arturdumchev.library.pixels
 import com.bumptech.glide.Glide
-import com.goodwy.commons.adapters.MyRecyclerViewListAdapter
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.dialogs.ConfirmationAdvancedDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.CallHistoryActivity
-import com.goodwy.autophone.activities.DialpadActivity
-import com.goodwy.autophone.activities.MainActivity
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.ItemRecentCallBinding
-import com.goodwy.autophone.databinding.ItemRecentCallSwipeBinding
-import com.goodwy.autophone.databinding.ItemRecentsDateBinding
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.interfaces.RefreshItemsListener
-import com.goodwy.autophone.models.CallLogItem
-import com.goodwy.autophone.models.RecentCall
+import com.revaltronics.commons.adapters.MyRecyclerViewListAdapter
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.dialogs.ConfirmationAdvancedDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.CallHistoryActivity
+import com.revaltronics.autophone.activities.DialpadActivity
+import com.revaltronics.autophone.activities.MainActivity
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.ItemRecentCallBinding
+import com.revaltronics.autophone.databinding.ItemRecentCallSwipeBinding
+import com.revaltronics.autophone.databinding.ItemRecentsDateBinding
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.autophone.models.CallLogItem
+import com.revaltronics.autophone.models.RecentCall
 import me.thanel.swipeactionview.SwipeActionView
 import me.thanel.swipeactionview.SwipeDirection
 import me.thanel.swipeactionview.SwipeGestureListener
@@ -473,8 +473,8 @@ class RecentCallsAdapter(
                                 activity,
                                 text,
                                 R.string.call_anonymously_warning,
-                                com.goodwy.commons.R.string.ok,
-                                com.goodwy.commons.R.string.do_not_show_again,
+                                com.revaltronics.commons.R.string.ok,
+                                com.revaltronics.commons.R.string.do_not_show_again,
                                 fromHtml = true
                             ) {
                                 if (it) {
@@ -597,7 +597,7 @@ class RecentCallsAdapter(
                 var nameToShow = if (name == call.phoneNumber && formatPhoneNumbers) {
                     SpannableString(name.formatPhoneNumber())
                 } else {
-                    SpannableString(formatterUnicodeWrap(name))
+                    SpannableString(com.revaltronics.commons.extensions.formatterUnicodeWrap(name))
                 }
 
                 if (call.groupedCalls != null) {
@@ -631,7 +631,7 @@ class RecentCallsAdapter(
                             if (formatPhoneNumbers) call.phoneNumber.formatPhoneNumber() else call.phoneNumber
                         }
                     }
-                    text = if (name != call.phoneNumber && textToHighlight.isNotEmpty()) numberToShow else formatterUnicodeWrap(recentsNumber)
+                    text = if (name != call.phoneNumber && textToHighlight.isNotEmpty()) numberToShow else com.revaltronics.commons.extensions.formatterUnicodeWrap(recentsNumber)
                 }
 
                 itemRecentsDateTime.apply {
@@ -781,7 +781,7 @@ class RecentCallsAdapter(
                 var nameToShow = if (name == call.phoneNumber && formatPhoneNumbers) {
                     SpannableString(name.formatPhoneNumber())
                 } else {
-                    SpannableString(formatterUnicodeWrap(name))
+                    SpannableString(com.revaltronics.commons.extensions.formatterUnicodeWrap(name))
                 }
 
                 if (call.groupedCalls != null) {
@@ -815,7 +815,7 @@ class RecentCallsAdapter(
                             if (formatPhoneNumbers) call.phoneNumber.formatPhoneNumber() else call.phoneNumber
                         }
                     }
-                    text = if (name != call.phoneNumber && textToHighlight.isNotEmpty()) numberToShow else formatterUnicodeWrap(recentsNumber)
+                    text = if (name != call.phoneNumber && textToHighlight.isNotEmpty()) numberToShow else com.revaltronics.commons.extensions.formatterUnicodeWrap(recentsNumber)
                 }
 
                 itemRecentsDateTime.apply {
@@ -952,7 +952,7 @@ class RecentCallsAdapter(
                 swipeRightIconHolder.setBackgroundColor(swipeActionColor(call, swipeRightAction))
 
                 val halfScreenWidth = activity.resources.displayMetrics.widthPixels / 2
-                val swipeWidth = activity.resources.getDimension(com.goodwy.commons.R.dimen.swipe_width)
+                val swipeWidth = activity.resources.getDimension(com.revaltronics.commons.R.dimen.swipe_width)
                 if (swipeWidth > halfScreenWidth) {
                     swipeRightIconHolder.setWidth(halfScreenWidth)
                     swipeLeftIconHolder.setWidth(halfScreenWidth)
@@ -999,22 +999,22 @@ class RecentCallsAdapter(
 
     private fun slideRight(view: View, parent: View) {
         view.animate()
-            .x(parent.right - activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin) - view.width)
+            .x(parent.right - activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin) - view.width)
     }
 
     private fun slideLeft(view: View) {
         view.animate()
-            .x(activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin))
+            .x(activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin))
     }
 
     private fun slideRightReturn(view: View, parent: View) {
         view.animate()
-            .x(parent.left + activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin))
+            .x(parent.left + activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin))
     }
 
     private fun slideLeftReturn(view: View, parent: View) {
         view.animate()
-            .x(parent.width - activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin) - view.width)
+            .x(parent.width - activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin) - view.width)
     }
 
     private inner class RecentCallDateViewHolder(val binding: ItemRecentsDateBinding) : ViewHolder(binding.root) {
@@ -1058,7 +1058,7 @@ class RecentCallsAdapter(
 
     private fun swipeActionImageResource(swipeAction: Int): Int {
         return when (swipeAction) {
-            SWIPE_ACTION_DELETE -> com.goodwy.commons.R.drawable.ic_delete_outline
+            SWIPE_ACTION_DELETE -> com.revaltronics.commons.R.drawable.ic_delete_outline
             SWIPE_ACTION_MESSAGE -> R.drawable.ic_messages
             SWIPE_ACTION_BLOCK -> R.drawable.ic_block_vector
             else -> R.drawable.ic_phone_vector
@@ -1123,7 +1123,7 @@ class RecentCallsAdapter(
             activity.callContactWithSim(recentCall.phoneNumber, sim);
         }
         else {
-            activity.launchCallIntent(recentCall.phoneNumber, key = BuildConfig.RIGHT_APP_KEY)
+            activity.launchCallIntent(recentCall.phoneNumber, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
         }
     }
 }

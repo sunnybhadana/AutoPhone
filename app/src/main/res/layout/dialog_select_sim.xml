@@ -8,7 +8,7 @@
     android:paddingStart="@dimen/activity_margin"
     android:paddingEnd="@dimen/activity_margin">
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/selectSimLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_marginTop="@dimen/small_margin"
         android:background="?attr/selectableItemBackground">
 
-        <com.goodwy.commons.views.MyAppCompatCheckbox
+        <com.revaltronics.commons.views.MyAppCompatCheckbox
             android:id="@+id/select_sim_remember"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

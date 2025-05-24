@@ -1,8 +1,8 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
-import com.goodwy.commons.helpers.TAB_CALL_HISTORY
-import com.goodwy.commons.helpers.TAB_CONTACTS
-import com.goodwy.commons.helpers.TAB_FAVORITES
+import com.revaltronics.commons.helpers.TAB_CALL_HISTORY
+import com.revaltronics.commons.helpers.TAB_CONTACTS
+import com.revaltronics.commons.helpers.TAB_FAVORITES
 
 // shared prefs
 const val SPEED_DIAL = "speed_dial"
@@ -63,7 +63,7 @@ const val ALL_TABS_MASK = TAB_CONTACTS or TAB_FAVORITES or TAB_CALL_HISTORY
 
 val tabsList = arrayListOf(TAB_FAVORITES, TAB_CALL_HISTORY, TAB_CONTACTS)
 
-private const val PATH = "com.goodwy.autophone.action."
+private const val PATH = "com.revaltronics.autophone.action."
 const val ACCEPT_CALL = PATH + "accept_call"
 const val DECLINE_CALL = PATH + "decline_call"
 const val MICROPHONE_CALL = PATH + "microphone_call"

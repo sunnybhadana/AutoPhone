@@ -1,11 +1,11 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Handler
-import com.goodwy.commons.extensions.showErrorToast
-import com.goodwy.commons.extensions.toast
-import com.goodwy.autophone.R
+import com.revaltronics.commons.extensions.showErrorToast
+import com.revaltronics.commons.extensions.toast
+import com.revaltronics.autophone.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

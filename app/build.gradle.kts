@@ -107,7 +107,7 @@ android {
         kotlinOptions.jvmTarget = project.libs.versions.app.build.kotlinJVMTarget.get()
     }
 
-    namespace = libs.versions.app.version.appId.get()
+    namespace = "com.revaltronics.autophone"
 
     lint {
         checkReleaseBuilds = false
@@ -137,7 +137,7 @@ dependencies {
     implementation(libs.geocoder)
 
     //Goodwy
-    implementation(libs.goodwy.commons)
+    implementation("com.github.sunnybhadana:autophone-commons:v1.0.0")
     implementation(libs.shortcut.badger)
     implementation(libs.behavio.rule)
     implementation(libs.rx.animation)

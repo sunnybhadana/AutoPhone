@@ -1,9 +1,9 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.Context
-import com.goodwy.autophone.extensions.timerDb
-import com.goodwy.autophone.models.Timer
-import com.goodwy.commons.helpers.ensureBackgroundThread
+import com.revaltronics.autophone.extensions.timerDb
+import com.revaltronics.autophone.models.Timer
+import com.revaltronics.commons.helpers.ensureBackgroundThread
 
 class TimerHelper(val context: Context) {
     private val timerDao = context.timerDb

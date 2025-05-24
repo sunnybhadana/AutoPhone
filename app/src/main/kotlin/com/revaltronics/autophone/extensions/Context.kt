@@ -1,4 +1,4 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -17,19 +17,19 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.autophone.R
-import com.goodwy.autophone.models.SIMAccount
-import com.goodwy.commons.helpers.isOreoPlus
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.activities.SplashActivity
-import com.goodwy.autophone.databases.AppDatabase
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.interfaces.TimerDao
-import com.goodwy.autophone.models.Timer
-import com.goodwy.autophone.models.TimerState
-import com.goodwy.autophone.receivers.TimerReceiver
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.models.SIMAccount
+import com.revaltronics.commons.helpers.isOreoPlus
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.activities.SplashActivity
+import com.revaltronics.autophone.databases.AppDatabase
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.interfaces.TimerDao
+import com.revaltronics.autophone.models.Timer
+import com.revaltronics.autophone.models.TimerState
+import com.revaltronics.autophone.receivers.TimerReceiver
 import me.leolin.shortcutbadger.ShortcutBadger
 import androidx.core.net.toUri
 import androidx.core.graphics.drawable.toDrawable
@@ -109,7 +109,10 @@ fun Context.getPackageDrawable(packageName: String): Drawable {
 //Timer
 val Context.timerDb: TimerDao get() = AppDatabase.getInstance(applicationContext).TimerDao()
 val Context.timerHelper: TimerHelper get() = TimerHelper(this)
-val Context.callerNotesHelper: CallerNotesHelper get() = CallerNotesHelper(this)
+val Context.callerNotesHelper: com.revaltronics.autophone.helpers.CallerNotesHelper
+    get() = com.revaltronics.autophone.helpers.CallerNotesHelper(
+        this
+    )
 
 fun Context.getOpenTimerTabIntent(timerId: Int): PendingIntent {
     val intent = getLaunchIntent() ?: Intent(this, SplashActivity::class.java)
@@ -190,8 +193,8 @@ fun Context.getTimerNotification(timer: Timer, pendingIntent: PendingIntent, add
         .setChannelId(channelId)
         .setStyle(NotificationCompat.DecoratedCustomViewStyle())
         .addAction(
-            com.goodwy.commons.R.drawable.ic_cross_vector,
-            getString(com.goodwy.commons.R.string.dismiss),
+            com.revaltronics.commons.R.drawable.ic_cross_vector,
+            getString(com.revaltronics.commons.R.string.dismiss),
             if (addDeleteIntent) {
                 reminderActivityIntent
             } else {
@@ -206,7 +209,7 @@ fun Context.getTimerNotification(timer: Timer, pendingIntent: PendingIntent, add
         .addAction(
             R.drawable.ic_phone_vector,
             getString(R.string.call_back_g),
-            startCallPendingIntent(timer.label, BuildConfig.RIGHT_APP_KEY)
+            startCallPendingIntent(timer.label, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
         )
 
     if (addDeleteIntent) {
@@ -237,7 +240,7 @@ fun Context.startCallPendingIntentUpdateCurrent(recipient: String): PendingInten
         this,
         0,
         Intent(Intent.ACTION_CALL, Uri.fromParts("tel", recipient, null))
-            .putExtra(IS_RIGHT_APP, BuildConfig.RIGHT_APP_KEY),
+            .putExtra(IS_RIGHT_APP, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY),
         PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 }
 

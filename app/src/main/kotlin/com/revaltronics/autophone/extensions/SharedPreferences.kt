@@ -1,10 +1,10 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 import android.content.SharedPreferences
 import android.telecom.PhoneAccountHandle
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
-import com.goodwy.autophone.models.PhoneAccountHandleModel
+import com.revaltronics.autophone.models.PhoneAccountHandleModel
 
 fun SharedPreferences.Editor.putPhoneAccountHandle(
     key: String,

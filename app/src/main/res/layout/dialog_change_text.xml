@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:padding="@dimen/activity_margin">
 
-    <com.goodwy.commons.views.MyTextInputLayout
+    <com.revaltronics.commons.views.MyTextInputLayout
         android:id="@+id/title_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,9 +22,9 @@
             android:textCursorDrawable="@null"
             android:textSize="@dimen/bigger_text_size" />
 
-    </com.goodwy.commons.views.MyTextInputLayout>
+    </com.revaltronics.commons.views.MyTextInputLayout>
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

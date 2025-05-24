@@ -1,14 +1,14 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.activities.BaseSimpleActivity
-import com.goodwy.commons.extensions.getAlertDialogBuilder
-import com.goodwy.commons.extensions.setupDialogStuff
-import com.goodwy.commons.extensions.viewBinding
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.RecentCallsAdapter
-import com.goodwy.autophone.databinding.DialogShowGroupedCallsBinding
-import com.goodwy.autophone.models.RecentCall
+import com.revaltronics.commons.activities.BaseSimpleActivity
+import com.revaltronics.commons.extensions.getAlertDialogBuilder
+import com.revaltronics.commons.extensions.setupDialogStuff
+import com.revaltronics.commons.extensions.viewBinding
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.RecentCallsAdapter
+import com.revaltronics.autophone.databinding.DialogShowGroupedCallsBinding
+import com.revaltronics.autophone.models.RecentCall
 
 class ShowGroupedCallsDialog(val activity: BaseSimpleActivity, recentCalls: List<RecentCall>) {
     private var dialog: AlertDialog? = null

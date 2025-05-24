@@ -1,14 +1,14 @@
-package com.goodwy.autophone.services
+package com.revaltronics.autophone.services
 
 import android.os.Build
 import android.telecom.Call
 import android.telecom.CallScreeningService
 import androidx.annotation.RequiresApi
-import com.goodwy.commons.extensions.baseConfig
-import com.goodwy.commons.extensions.getMyContactsCursor
-import com.goodwy.commons.extensions.isNumberBlocked
-import com.goodwy.commons.extensions.normalizePhoneNumber
-import com.goodwy.commons.helpers.SimpleContactsHelper
+import com.revaltronics.commons.extensions.baseConfig
+import com.revaltronics.commons.extensions.getMyContactsCursor
+import com.revaltronics.commons.extensions.isNumberBlocked
+import com.revaltronics.commons.extensions.normalizePhoneNumber
+import com.revaltronics.commons.helpers.SimpleContactsHelper
 
 @RequiresApi(Build.VERSION_CODES.N)
 class SimpleCallScreeningService : CallScreeningService() {

@@ -1,4 +1,4 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 import androidx.annotation.Keep
 

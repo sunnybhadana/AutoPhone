@@ -1,7 +1,7 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
-import com.goodwy.commons.activities.BaseSimpleActivity
-import com.goodwy.autophone.R
+import com.revaltronics.commons.activities.BaseSimpleActivity
+import com.revaltronics.autophone.R
 
 open class SimpleActivity : BaseSimpleActivity() {
     override fun getAppIconIDs() = arrayListOf(

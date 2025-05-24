@@ -1,14 +1,14 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.view.Menu
 import android.view.ViewGroup
-import com.goodwy.commons.adapters.MyRecyclerViewAdapter
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.ItemSpeedDialBinding
-import com.goodwy.autophone.interfaces.RemoveSpeedDialListener
-import com.goodwy.autophone.models.SpeedDial
+import com.revaltronics.commons.adapters.MyRecyclerViewAdapter
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.ItemSpeedDialBinding
+import com.revaltronics.autophone.interfaces.RemoveSpeedDialListener
+import com.revaltronics.autophone.models.SpeedDial
 
 class SpeedDialAdapter(
     activity: SimpleActivity, var speedDialValues: List<SpeedDial>, private val removeListener: RemoveSpeedDialListener,

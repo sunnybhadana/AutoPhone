@@ -1,16 +1,16 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
-import com.goodwy.commons.helpers.TAB_CALL_HISTORY
-import com.goodwy.commons.helpers.TAB_CONTACTS
-import com.goodwy.commons.helpers.TAB_FAVORITES
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.fragments.MyViewPagerFragment
-import com.goodwy.autophone.helpers.tabsList
+import com.revaltronics.commons.helpers.TAB_CALL_HISTORY
+import com.revaltronics.commons.helpers.TAB_CONTACTS
+import com.revaltronics.commons.helpers.TAB_FAVORITES
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.fragments.MyViewPagerFragment
+import com.revaltronics.autophone.helpers.tabsList
 
 class ViewPagerAdapter(val activity: SimpleActivity) : PagerAdapter() {
 

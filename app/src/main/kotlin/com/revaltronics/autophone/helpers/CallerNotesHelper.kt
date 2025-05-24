@@ -1,9 +1,9 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.Context
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.numberForNotes
-import com.goodwy.autophone.models.CallerNote
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.numberForNotes
+import com.revaltronics.autophone.models.CallerNote
 import com.google.gson.Gson
 import java.util.Calendar
 import java.util.Locale

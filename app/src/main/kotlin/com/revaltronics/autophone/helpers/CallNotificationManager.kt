@@ -1,4 +1,4 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -9,15 +9,15 @@ import android.telecom.Call
 import android.view.View.VISIBLE
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.isOreoPlus
-import com.goodwy.commons.helpers.isSPlus
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.CallActivity
-import com.goodwy.autophone.extensions.audioManager
-import com.goodwy.autophone.extensions.getCountryByNumber
-import com.goodwy.autophone.extensions.powerManager
-import com.goodwy.autophone.receivers.CallActionReceiver
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.isOreoPlus
+import com.revaltronics.commons.helpers.isSPlus
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.CallActivity
+import com.revaltronics.autophone.extensions.audioManager
+import com.revaltronics.autophone.extensions.getCountryByNumber
+import com.revaltronics.autophone.extensions.powerManager
+import com.revaltronics.autophone.receivers.CallActionReceiver
 
 class CallNotificationManager(private val context: Context) {
     private val CALL_NOTIFICATION_ID = 42

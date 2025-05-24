@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -23,21 +23,21 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.behaviorule.arturdumchev.library.pixels
 import com.behaviorule.arturdumchev.library.setHeight
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.dialogs.ConfirmationAdvancedDialog
-import com.goodwy.commons.dialogs.ConfirmationDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.adapters.ContactsAdapter
-import com.goodwy.autophone.adapters.RecentCallsAdapter
-import com.goodwy.autophone.databinding.ActivityDialpadBinding
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.models.RecentCall
-import com.goodwy.autophone.models.SpeedDial
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.dialogs.ConfirmationAdvancedDialog
+import com.revaltronics.commons.dialogs.ConfirmationDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.adapters.ContactsAdapter
+import com.revaltronics.autophone.adapters.RecentCallsAdapter
+import com.revaltronics.autophone.databinding.ActivityDialpadBinding
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.models.RecentCall
+import com.revaltronics.autophone.models.SpeedDial
 import com.google.gson.Gson
 import com.mikhaellopez.rxanimation.RxAnimation
 import com.mikhaellopez.rxanimation.shake
@@ -1423,10 +1423,10 @@ class DialpadActivity : SimpleActivity() {
                     val recentCall = it as RecentCall
                     if (config.showCallConfirmation) {
                         CallConfirmationDialog(this, recentCall.name) {
-                            launchCallIntent(recentCall.phoneNumber, key = BuildConfig.RIGHT_APP_KEY)
+                            launchCallIntent(recentCall.phoneNumber, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
                         }
                     } else {
-                        launchCallIntent(recentCall.phoneNumber, key = BuildConfig.RIGHT_APP_KEY)
+                        launchCallIntent(recentCall.phoneNumber, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
                     }
                 },
                 profileInfoClick = { recentCall ->

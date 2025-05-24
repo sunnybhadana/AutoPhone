@@ -1,4 +1,4 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 // a simpler Contact model containing just info needed at the call screen
 data class CallContact(

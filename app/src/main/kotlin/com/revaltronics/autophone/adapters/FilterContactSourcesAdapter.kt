@@ -1,15 +1,15 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.goodwy.commons.extensions.getProperBackgroundColor
-import com.goodwy.commons.extensions.getProperPrimaryColor
-import com.goodwy.commons.extensions.getProperTextColor
-import com.goodwy.commons.helpers.SMT_PRIVATE
-import com.goodwy.commons.models.contacts.ContactSource
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.ItemFilterContactSourceBinding
+import com.revaltronics.commons.extensions.getProperBackgroundColor
+import com.revaltronics.commons.extensions.getProperPrimaryColor
+import com.revaltronics.commons.extensions.getProperTextColor
+import com.revaltronics.commons.helpers.SMT_PRIVATE
+import com.revaltronics.commons.models.contacts.ContactSource
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.ItemFilterContactSourceBinding
 
 class FilterContactSourcesAdapter(
     val activity: SimpleActivity,

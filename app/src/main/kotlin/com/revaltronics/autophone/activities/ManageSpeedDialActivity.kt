@@ -1,31 +1,31 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import com.goodwy.commons.dialogs.ConfirmationAdvancedDialog
+import com.revaltronics.commons.dialogs.ConfirmationAdvancedDialog
 import com.google.gson.Gson
-import com.goodwy.commons.dialogs.RadioGroupDialog
-import com.goodwy.commons.dialogs.RadioGroupIconDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.ContactsHelper
-import com.goodwy.commons.helpers.MyContactsContentProvider
-import com.goodwy.commons.helpers.NavigationIcon
-import com.goodwy.commons.helpers.PERMISSION_READ_PHONE_STATE
-import com.goodwy.commons.models.PhoneNumber
-import com.goodwy.commons.models.RadioItem
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.autophone.R
-import com.goodwy.autophone.adapters.SpeedDialAdapter
-import com.goodwy.autophone.databinding.ActivityManageSpeedDialBinding
-import com.goodwy.autophone.dialogs.AddSpeedDialDialog
-import com.goodwy.autophone.dialogs.SelectContactDialog
-import com.goodwy.autophone.dialogs.SelectSIMDialog
-import com.goodwy.autophone.extensions.areMultipleSIMsAvailable
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.getAvailableSIMCardLabels
-import com.goodwy.autophone.extensions.getHandleToUse
-import com.goodwy.autophone.interfaces.RemoveSpeedDialListener
-import com.goodwy.autophone.models.SpeedDial
+import com.revaltronics.commons.dialogs.RadioGroupDialog
+import com.revaltronics.commons.dialogs.RadioGroupIconDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.ContactsHelper
+import com.revaltronics.commons.helpers.MyContactsContentProvider
+import com.revaltronics.commons.helpers.NavigationIcon
+import com.revaltronics.commons.helpers.PERMISSION_READ_PHONE_STATE
+import com.revaltronics.commons.models.PhoneNumber
+import com.revaltronics.commons.models.RadioItem
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.adapters.SpeedDialAdapter
+import com.revaltronics.autophone.databinding.ActivityManageSpeedDialBinding
+import com.revaltronics.autophone.dialogs.AddSpeedDialDialog
+import com.revaltronics.autophone.dialogs.SelectContactDialog
+import com.revaltronics.autophone.dialogs.SelectSIMDialog
+import com.revaltronics.autophone.extensions.areMultipleSIMsAvailable
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.getAvailableSIMCardLabels
+import com.revaltronics.autophone.extensions.getHandleToUse
+import com.revaltronics.autophone.interfaces.RemoveSpeedDialListener
+import com.revaltronics.autophone.models.SpeedDial
 
 class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
     private val binding by viewBinding(ActivityManageSpeedDialBinding::inflate)
@@ -200,8 +200,8 @@ class ManageSpeedDialActivity : SimpleActivity(), RemoveSpeedDialListener {
         ConfirmationAdvancedDialog(
             this,
             messageId = R.string.show_voicemail_icon,
-            positive = com.goodwy.commons.R.string.yes,
-            negative = com.goodwy.commons.R.string.no
+            positive = com.revaltronics.commons.R.string.yes,
+            negative = com.revaltronics.commons.R.string.no
         ) {
             if (it) {
                 config.showVoicemailIcon = true

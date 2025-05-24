@@ -1,16 +1,16 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import android.app.Activity
 import android.view.ViewGroup
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.extensions.beGone
-import com.goodwy.commons.extensions.getAlertDialogBuilder
-import com.goodwy.commons.extensions.setupDialogStuff
-import com.goodwy.autophone.extensions.getPackageDrawable
-import com.goodwy.autophone.databinding.DialogChooseSocialBinding
-import com.goodwy.autophone.databinding.ItemChooseSocialBinding
-import com.goodwy.commons.models.contacts.SocialAction
+import com.revaltronics.commons.extensions.beGone
+import com.revaltronics.commons.extensions.getAlertDialogBuilder
+import com.revaltronics.commons.extensions.setupDialogStuff
+import com.revaltronics.autophone.extensions.getPackageDrawable
+import com.revaltronics.autophone.databinding.DialogChooseSocialBinding
+import com.revaltronics.autophone.databinding.ItemChooseSocialBinding
+import com.revaltronics.commons.models.contacts.SocialAction
 
 class ChooseSocialDialog(val activity: Activity, actions: ArrayList<SocialAction>, val callback: (action: SocialAction) -> Unit) {
     private lateinit var dialog: AlertDialog

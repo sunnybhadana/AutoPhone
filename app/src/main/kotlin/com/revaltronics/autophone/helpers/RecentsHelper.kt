@@ -1,4 +1,4 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
@@ -8,14 +8,14 @@ import android.os.Build
 import android.provider.CallLog.Calls
 import android.telephony.PhoneNumberUtils
 import android.text.TextUtils
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.getAvailableSIMCardLabels
-import com.goodwy.autophone.models.RecentCall
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.getAvailableSIMCardLabels
+import com.revaltronics.autophone.models.RecentCall
 import java.util.Locale
 
 class RecentsHelper(private val context: Context) {

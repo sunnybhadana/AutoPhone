@@ -1,11 +1,11 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 import android.telecom.Call
 import android.telecom.Call.STATE_CONNECTING
 import android.telecom.Call.STATE_DIALING
 import android.telecom.Call.STATE_SELECT_PHONE_ACCOUNT
-import com.goodwy.commons.helpers.isQPlus
-import com.goodwy.commons.helpers.isSPlus
+import com.revaltronics.commons.helpers.isQPlus
+import com.revaltronics.commons.helpers.isSPlus
 
 private val OUTGOING_CALL_STATES = arrayOf(STATE_CONNECTING, STATE_DIALING, STATE_SELECT_PHONE_ACCOUNT)
 

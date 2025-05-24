@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,14 +9,14 @@ import android.os.Bundle
 import android.provider.Settings
 import android.telecom.TelecomManager
 import android.widget.Toast
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.IS_RIGHT_APP
-import com.goodwy.commons.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.getHandleToUse
-import com.goodwy.autophone.helpers.SHOW_RECENT_CALLS_ON_DIALPAD
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.IS_RIGHT_APP
+import com.revaltronics.commons.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.getHandleToUse
+import com.revaltronics.autophone.helpers.SHOW_RECENT_CALLS_ON_DIALPAD
 import androidx.core.net.toUri
 
 class DialerActivity : SimpleActivity() {
@@ -38,7 +38,7 @@ class DialerActivity : SimpleActivity() {
                 launchSetDefaultDialerIntent()
             } else {
                 val key = intent.getStringExtra(IS_RIGHT_APP) ?: ""
-                if (config.blockCallFromAnotherApp && key != BuildConfig.RIGHT_APP_KEY) {
+                if (config.blockCallFromAnotherApp && key != com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) {
                     val number = Uri.decode(intent.dataString).substringAfter("tel:")
                     Intent(Intent.ACTION_DIAL).apply {
                         data = Uri.fromParts("tel", number, null)

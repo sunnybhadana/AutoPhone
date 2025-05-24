@@ -1,28 +1,28 @@
-package com.goodwy.autophone.fragments
+package com.revaltronics.autophone.fragments
 
 import android.content.Context
 import android.content.Intent
 import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.CallHistoryActivity
-import com.goodwy.autophone.activities.MainActivity
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.RecentCallsAdapter
-import com.goodwy.autophone.databinding.FragmentRecentsBinding
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.CURRENT_RECENT_CALL
-import com.goodwy.autophone.helpers.CURRENT_RECENT_CALL_LIST
-import com.goodwy.autophone.helpers.RecentsHelper
-import com.goodwy.autophone.interfaces.RefreshItemsListener
-import com.goodwy.autophone.models.CallLogItem
-import com.goodwy.autophone.models.RecentCall
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.CallHistoryActivity
+import com.revaltronics.autophone.activities.MainActivity
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.RecentCallsAdapter
+import com.revaltronics.autophone.databinding.FragmentRecentsBinding
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.CURRENT_RECENT_CALL
+import com.revaltronics.autophone.helpers.CURRENT_RECENT_CALL_LIST
+import com.revaltronics.autophone.helpers.RecentsHelper
+import com.revaltronics.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.autophone.models.CallLogItem
+import com.revaltronics.autophone.models.RecentCall
 import com.google.gson.Gson
 
 class RecentsFragment(
@@ -234,7 +234,7 @@ class RecentsFragment(
             activity?.callContactWithSim(recentCall.phoneNumber, sim);
         }
         else {
-            activity?.launchCallIntent(recentCall.phoneNumber, key = BuildConfig.RIGHT_APP_KEY)
+            activity?.launchCallIntent(recentCall.phoneNumber, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
         }
     }
 

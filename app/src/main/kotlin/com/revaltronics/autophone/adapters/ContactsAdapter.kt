@@ -1,4 +1,4 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -26,27 +26,27 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.behaviorule.arturdumchev.library.pixels
 import com.bumptech.glide.Glide
-import com.goodwy.commons.adapters.MyRecyclerViewAdapter
-import com.goodwy.commons.databinding.ItemContactWithNumberGridBinding
-import com.goodwy.commons.databinding.ItemContactWithNumberInfoBinding
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.dialogs.ConfirmationAdvancedDialog
-import com.goodwy.commons.dialogs.ConfirmationDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.interfaces.ItemMoveCallback
-import com.goodwy.commons.interfaces.ItemTouchHelperContract
-import com.goodwy.commons.interfaces.StartReorderDragListener
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.ItemContactWithNumberGridSwipeBinding
-import com.goodwy.autophone.databinding.ItemContactWithNumberInfoSwipeBinding
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.commons.adapters.MyRecyclerViewAdapter
+import com.revaltronics.commons.databinding.ItemContactWithNumberGridBinding
+import com.revaltronics.commons.databinding.ItemContactWithNumberInfoBinding
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.dialogs.ConfirmationAdvancedDialog
+import com.revaltronics.commons.dialogs.ConfirmationDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.interfaces.ItemMoveCallback
+import com.revaltronics.commons.interfaces.ItemTouchHelperContract
+import com.revaltronics.commons.interfaces.StartReorderDragListener
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.ItemContactWithNumberGridSwipeBinding
+import com.revaltronics.autophone.databinding.ItemContactWithNumberInfoSwipeBinding
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.interfaces.RefreshItemsListener
 import me.thanel.swipeactionview.SwipeActionView
 import me.thanel.swipeactionview.SwipeDirection
 import me.thanel.swipeactionview.SwipeGestureListener
@@ -259,12 +259,12 @@ class ContactsAdapter(
         if (activity.config.showCallConfirmation) {
             CallConfirmationDialog(activity as SimpleActivity, contact.getNameToDisplay()) {
                 activity.apply {
-                    initiateCall(contact) { launchCallIntent(it, key = BuildConfig.RIGHT_APP_KEY) }
+                    initiateCall(contact) { launchCallIntent(it, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) }
                 }
             }
         } else {
             activity.apply {
-                initiateCall(contact) { launchCallIntent(it, key = BuildConfig.RIGHT_APP_KEY) }
+                initiateCall(contact) { launchCallIntent(it, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) }
             }
         }
     }
@@ -368,7 +368,7 @@ class ContactsAdapter(
                         val action = if (hasPermission) Intent.ACTION_CALL else Intent.ACTION_DIAL
                         val intent = Intent(action).apply {
                             data = Uri.fromParts("tel", getSelectedPhoneNumber(), null)
-                            putExtra(IS_RIGHT_APP, BuildConfig.RIGHT_APP_KEY)
+                            putExtra(IS_RIGHT_APP, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
                         }
 
                         val shortcut = ShortcutInfo.Builder(activity, contact.hashCode().toString())
@@ -567,7 +567,7 @@ class ContactsAdapter(
                     swipeRightIconHolder!!.setWidth(width)
                 } else {
                     val halfScreenWidth = activity.resources.displayMetrics.widthPixels / 2
-                    val swipeWidth = activity.resources.getDimension(com.goodwy.commons.R.dimen.swipe_width)
+                    val swipeWidth = activity.resources.getDimension(com.revaltronics.commons.R.dimen.swipe_width)
                     if (swipeWidth > halfScreenWidth) {
                         swipeRightIconHolder!!.setWidth(halfScreenWidth)
                         swipeLeftIconHolder!!.setWidth(halfScreenWidth)
@@ -614,22 +614,22 @@ class ContactsAdapter(
 
     private fun slideRight(view: View, parent: View) {
         view.animate()
-            .x(parent.right - activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin) - view.width)
+            .x(parent.right - activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin) - view.width)
     }
 
     private fun slideLeft(view: View) {
         view.animate()
-            .x(activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin))
+            .x(activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin))
     }
 
     private fun slideRightReturn(view: View, parent: View) {
         view.animate()
-            .x(parent.left + activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin))
+            .x(parent.left + activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin))
     }
 
     private fun slideLeftReturn(view: View, parent: View) {
         view.animate()
-            .x(parent.width - activity.resources.getDimension(com.goodwy.commons.R.dimen.big_margin) - view.width)
+            .x(parent.width - activity.resources.getDimension(com.revaltronics.commons.R.dimen.big_margin) - view.width)
     }
 
     override fun onRowMoved(fromPosition: Int, toPosition: Int) {
@@ -829,7 +829,7 @@ class ContactsAdapter(
 
     private fun swipeActionImageResource(swipeAction: Int): Int {
         return when (swipeAction) {
-            SWIPE_ACTION_DELETE -> com.goodwy.commons.R.drawable.ic_delete_outline
+            SWIPE_ACTION_DELETE -> com.revaltronics.commons.R.drawable.ic_delete_outline
             SWIPE_ACTION_MESSAGE -> R.drawable.ic_messages
             SWIPE_ACTION_BLOCK -> R.drawable.ic_block_vector
             else -> R.drawable.ic_phone_vector
@@ -880,12 +880,12 @@ class ContactsAdapter(
         if (activity.config.showCallConfirmation) {
             CallConfirmationDialog(activity as SimpleActivity, contact.getNameToDisplay()) {
                 activity.apply {
-                    initiateCall(contact) { launchCallIntent(it, key = BuildConfig.RIGHT_APP_KEY) }
+                    initiateCall(contact) { launchCallIntent(it, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) }
                 }
             }
         } else {
             activity.apply {
-                initiateCall(contact) { launchCallIntent(it, key = BuildConfig.RIGHT_APP_KEY) }
+                initiateCall(contact) { launchCallIntent(it, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) }
             }
         }
     }

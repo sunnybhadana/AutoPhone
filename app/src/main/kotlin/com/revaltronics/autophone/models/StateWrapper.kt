@@ -1,3 +1,3 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 data class StateWrapper(val state: TimerState)

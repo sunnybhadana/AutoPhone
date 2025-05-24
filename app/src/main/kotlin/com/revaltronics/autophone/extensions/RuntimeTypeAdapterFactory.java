@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.goodwy.autophone.extensions;
+package com.revaltronics.autophone.extensions;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

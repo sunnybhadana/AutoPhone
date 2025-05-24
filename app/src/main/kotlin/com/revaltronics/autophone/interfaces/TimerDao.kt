@@ -1,7 +1,7 @@
-package com.goodwy.autophone.interfaces
+package com.revaltronics.autophone.interfaces
 
 import androidx.room.*
-import com.goodwy.autophone.models.Timer
+import com.revaltronics.autophone.models.Timer
 
 @Dao
 interface TimerDao {

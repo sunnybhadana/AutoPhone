@@ -1,9 +1,9 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 import android.telecom.CallAudioState
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import com.goodwy.autophone.R
+import com.revaltronics.autophone.R
 
 enum class AudioRoute(val route: Int, @StringRes val stringRes: Int, @DrawableRes val iconRes: Int) {
     SPEAKER(CallAudioState.ROUTE_SPEAKER, R.string.audio_route_speaker, R.drawable.ic_volume_up_vector), //Speaker

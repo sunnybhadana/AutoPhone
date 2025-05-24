@@ -1,14 +1,14 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import android.app.Activity
 import android.content.DialogInterface.BUTTON_POSITIVE
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.extensions.getAlertDialogBuilder
-import com.goodwy.commons.extensions.setupDialogStuff
-import com.goodwy.commons.extensions.showKeyboard
-import com.goodwy.autophone.R
-import com.goodwy.autophone.databinding.DialogAddSpeedDialBinding
-import com.goodwy.autophone.models.SpeedDial
+import com.revaltronics.commons.extensions.getAlertDialogBuilder
+import com.revaltronics.commons.extensions.setupDialogStuff
+import com.revaltronics.commons.extensions.showKeyboard
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.DialogAddSpeedDialBinding
+import com.revaltronics.autophone.models.SpeedDial
 
 class AddSpeedDialDialog(
     private val activity: Activity,
@@ -26,8 +26,8 @@ class AddSpeedDialDialog(
         }
 
         activity.getAlertDialogBuilder()
-            .setPositiveButton(com.goodwy.commons.R.string.ok, null)
-            .setNegativeButton(com.goodwy.commons.R.string.cancel, null)
+            .setPositiveButton(com.revaltronics.commons.R.string.ok, null)
+            .setNegativeButton(com.revaltronics.commons.R.string.cancel, null)
             .apply {
                 activity.setupDialogStuff(binding.root, this, R.string.speed_dial) { alertDialog ->
                     dialog = alertDialog

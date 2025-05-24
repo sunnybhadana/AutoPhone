@@ -1,9 +1,9 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import androidx.room.TypeConverter
-import com.goodwy.autophone.extensions.RuntimeTypeAdapterFactory
-import com.goodwy.autophone.models.StateWrapper
-import com.goodwy.autophone.models.TimerState
+import com.revaltronics.autophone.extensions.RuntimeTypeAdapterFactory
+import com.revaltronics.autophone.models.StateWrapper
+import com.revaltronics.autophone.models.TimerState
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.TypeAdapterFactory
@@ -24,7 +24,7 @@ class Converters {
         .registerSubtype(TimerState.Paused::class.java)
         .registerSubtype(TimerState.Finished::class.java)
 
-    inline fun <reified T : Any> valueOf(): RuntimeTypeAdapterFactory<T> = RuntimeTypeAdapterFactory.of(T::class.java)
+    inline fun <reified T : Any> valueOf(): com.revaltronics.autophone.extensions.RuntimeTypeAdapterFactory<T> = com.revaltronics.autophone.extensions.RuntimeTypeAdapterFactory.of(T::class.java)
 
     fun GsonBuilder.registerTypes(vararg types: TypeAdapterFactory) = apply {
         types.forEach { registerTypeAdapterFactory(it) }

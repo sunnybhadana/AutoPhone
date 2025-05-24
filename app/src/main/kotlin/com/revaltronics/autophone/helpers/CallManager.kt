@@ -1,4 +1,4 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.annotation.SuppressLint
 import android.os.Handler
@@ -6,10 +6,10 @@ import android.telecom.Call
 import android.telecom.CallAudioState
 import android.telecom.InCallService
 import android.telecom.VideoProfile
-import com.goodwy.autophone.extensions.getStateCompat
-import com.goodwy.autophone.extensions.hasCapability
-import com.goodwy.autophone.extensions.isConference
-import com.goodwy.autophone.models.AudioRoute
+import com.revaltronics.autophone.extensions.getStateCompat
+import com.revaltronics.autophone.extensions.hasCapability
+import com.revaltronics.autophone.extensions.isConference
+import com.revaltronics.autophone.models.AudioRoute
 import java.util.concurrent.CopyOnWriteArraySet
 
 // inspired by https://github.com/Chooloo/call_manage

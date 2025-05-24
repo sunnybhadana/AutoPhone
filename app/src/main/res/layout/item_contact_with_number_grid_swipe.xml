@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.goodwy.commons.views.MySquareImageView
+            <com.revaltronics.commons.views.MySquareImageView
                 android:id="@+id/item_contact_image"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_max="@dimen/contact_grid_item_max_size" />
 
-            <com.goodwy.commons.views.MyTextView
+            <com.revaltronics.commons.views.MyTextView
                 android:id="@+id/item_contact_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

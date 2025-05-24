@@ -1,14 +1,14 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
-import com.goodwy.commons.activities.BaseSimpleActivity
-import com.goodwy.commons.extensions.beGoneIf
-import com.goodwy.commons.extensions.getAlertDialogBuilder
-import com.goodwy.commons.extensions.setupDialogStuff
-import com.goodwy.commons.extensions.viewBinding
-import com.goodwy.commons.helpers.*
-import com.goodwy.autophone.R
-import com.goodwy.autophone.databinding.DialogChangeSortingBinding
-import com.goodwy.autophone.extensions.config
+import com.revaltronics.commons.activities.BaseSimpleActivity
+import com.revaltronics.commons.extensions.beGoneIf
+import com.revaltronics.commons.extensions.getAlertDialogBuilder
+import com.revaltronics.commons.extensions.setupDialogStuff
+import com.revaltronics.commons.extensions.viewBinding
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.DialogChangeSortingBinding
+import com.revaltronics.autophone.extensions.config
 
 class ChangeSortingDialog(val activity: BaseSimpleActivity, private val showCustomSorting: Boolean = false, private val callback: () -> Unit) {
     private val binding by activity.viewBinding(DialogChangeSortingBinding::inflate)

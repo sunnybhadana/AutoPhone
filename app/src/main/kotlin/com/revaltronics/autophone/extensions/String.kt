@@ -1,4 +1,4 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 import android.text.BidiFormatter
 import com.google.i18n.phonenumbers.NumberParseException

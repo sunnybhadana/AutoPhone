@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
@@ -21,18 +21,20 @@ import android.widget.LinearLayout
 import android.widget.PopupMenu
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.children
 import androidx.core.view.isVisible
-import com.goodwy.commons.dialogs.ConfirmationAdvancedDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.SimpleListItem
-import com.goodwy.autophone.databinding.ActivityCallBinding
-import com.goodwy.autophone.dialogs.ChangeTextDialog
-import com.goodwy.autophone.dialogs.DynamicBottomSheetChooserDialog
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.models.*
+import com.revaltronics.commons.dialogs.ConfirmationAdvancedDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.SimpleListItem
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.ActivityCallBinding
+import com.revaltronics.autophone.dialogs.ChangeTextDialog
+import com.revaltronics.autophone.dialogs.DynamicBottomSheetChooserDialog
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.models.*
 import com.mikhaellopez.rxanimation.*
 import com.mikhaellopez.rxanimation.fadeIn
 import com.mikhaellopez.rxanimation.fadeOut
@@ -107,7 +109,7 @@ class CallActivity : SimpleActivity() {
             if (configBackgroundCallScreen == BLACK_BACKGROUND) {
                 binding.callHolder.setBackgroundColor(Color.BLACK)
             } else {
-                binding.callHolder.setBackgroundColor(resources.getColor(R.color.default_call_background))
+                binding.callHolder.setBackgroundColor(ContextCompat.getColor(this, R.color.default_call_background))
             }
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -962,11 +964,11 @@ class CallActivity : SimpleActivity() {
         binding.apply {
             val (name, _, number, numberLabel, description, isABusinessCall, isVoiceMail) = callContact!!
             callerNameLabel.text =
-                formatterUnicodeWrap(name.ifEmpty { getString(R.string.unknown_caller) })
+                com.revaltronics.commons.extensions.formatterUnicodeWrap(name.ifEmpty { getString(R.string.unknown_caller) })
             if (number.isNotEmpty() && number != name) {
-                val numberText = formatterUnicodeWrap(number)
+                val numberText = com.revaltronics.commons.extensions.formatterUnicodeWrap(number)
                 if (numberLabel.isNotEmpty()) {
-                    val numberLabelText = formatterUnicodeWrap(numberLabel)
+                    val numberLabelText = com.revaltronics.commons.extensions.formatterUnicodeWrap(numberLabel)
                     callerNumber.text = numberLabelText
                     callerNumber.setOnClickListener {
                         if (callerNumber.text == numberLabelText) callerNumber.text = numberText
@@ -978,14 +980,14 @@ class CallActivity : SimpleActivity() {
                 }
 
                 if (description.isNotEmpty() && description != name) {
-                    callerDescription.text = formatterUnicodeWrap(description)
+                    callerDescription.text = com.revaltronics.commons.extensions.formatterUnicodeWrap(description)
                     callerDescription.beVisible()
                 } else callerDescription.beGone()
             } else {
                 callerDescription.beGone()
                 val country = if (number.startsWith("+")) getCountryByNumber(number) else ""
                 if (country != "") {
-                    callerNumber.text = formatterUnicodeWrap(country)//country
+                    callerNumber.text = com.revaltronics.commons.extensions.formatterUnicodeWrap(country)//country
                 } else callerNumber.beGone()
             }
 
@@ -1520,7 +1522,7 @@ class CallActivity : SimpleActivity() {
 
         try {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-            screenOnWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "com.goodwy.autophone:full_wake_lock")
+            screenOnWakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "com.revaltronics.autophone:full_wake_lock")
             screenOnWakeLock!!.acquire(5 * 1000L)
         } catch (_: Exception) {
         }
@@ -1529,7 +1531,7 @@ class CallActivity : SimpleActivity() {
     private fun enableProximitySensor() {
         if (!config.disableProximitySensor && (proximityWakeLock == null || proximityWakeLock?.isHeld == false)) {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-            proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "com.goodwy.autophone:wake_lock")
+            proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "com.revaltronics.autophone:wake_lock")
             proximityWakeLock!!.acquire(60 * MINUTE_SECONDS * 1000L)
         }
     }

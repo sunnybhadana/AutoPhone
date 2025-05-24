@@ -1,10 +1,10 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.DialogExportCallHistoryBinding
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.DialogExportCallHistoryBinding
 
 class ExportCallHistoryDialog(val activity: SimpleActivity, callback: (filename: String) -> Unit) {
 

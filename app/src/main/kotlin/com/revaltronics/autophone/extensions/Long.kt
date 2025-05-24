@@ -1,7 +1,7 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 
-import com.goodwy.commons.extensions.getFormattedDuration
+import com.revaltronics.commons.extensions.getFormattedDuration
 import kotlin.math.roundToInt
 
 fun Long.getFormattedDuration(forceShowHours: Boolean = false): String {

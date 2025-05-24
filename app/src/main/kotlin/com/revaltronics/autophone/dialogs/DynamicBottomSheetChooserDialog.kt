@@ -1,12 +1,12 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
-import com.goodwy.commons.adapters.SimpleListItemAdapter
-import com.goodwy.commons.fragments.BaseBottomSheetDialogFragment
-import com.goodwy.commons.models.SimpleListItem
-import com.goodwy.autophone.databinding.LayoutSimpleRecyclerViewBinding
+import com.revaltronics.commons.adapters.SimpleListItemAdapter
+import com.revaltronics.commons.fragments.BaseBottomSheetDialogFragment
+import com.revaltronics.commons.models.SimpleListItem
+import com.revaltronics.autophone.databinding.LayoutSimpleRecyclerViewBinding
 
 // same as BottomSheetChooserDialog but with dynamic updates
 class DynamicBottomSheetChooserDialog : BaseBottomSheetDialogFragment() {

@@ -1,4 +1,4 @@
-package com.goodwy.autophone.services
+package com.revaltronics.autophone.services
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -10,14 +10,14 @@ import android.os.Looper
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.goodwy.commons.extensions.*
-import com.goodwy.autophone.R
-import com.goodwy.autophone.models.TimerEvent
-import com.goodwy.autophone.models.TimerState
-import com.goodwy.commons.helpers.isOreoPlus
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.receivers.TimerReceiver
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.models.TimerEvent
+import com.revaltronics.autophone.models.TimerState
+import com.revaltronics.commons.helpers.isOreoPlus
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.receivers.TimerReceiver
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

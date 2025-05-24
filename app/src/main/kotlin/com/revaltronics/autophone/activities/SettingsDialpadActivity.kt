@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.database.Cursor
@@ -22,19 +22,19 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.behaviorule.arturdumchev.library.pixels
 import com.behaviorule.arturdumchev.library.setHeight
-import com.goodwy.commons.dialogs.ColorPickerDialog
-import com.goodwy.commons.dialogs.RadioGroupDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.helpers.rustore.RuStoreHelper
-import com.goodwy.commons.helpers.rustore.model.StartPurchasesEvent
-import com.goodwy.commons.models.RadioItem
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.databinding.ActivitySettingsDialpadBinding
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.models.SpeedDial
+import com.revaltronics.commons.dialogs.ColorPickerDialog
+import com.revaltronics.commons.dialogs.RadioGroupDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.helpers.rustore.RuStoreHelper
+import com.revaltronics.commons.helpers.rustore.model.StartPurchasesEvent
+import com.revaltronics.commons.models.RadioItem
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.ActivitySettingsDialpadBinding
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.models.SpeedDial
 import com.mikhaellopez.rxanimation.RxAnimation
 import com.mikhaellopez.rxanimation.shake
 import kotlinx.coroutines.launch
@@ -48,15 +48,15 @@ class SettingsDialpadActivity : SimpleActivity() {
     private val binding by viewBinding(ActivitySettingsDialpadBinding::inflate)
     private val purchaseHelper = PurchaseHelper(this)
     private var ruStoreHelper: RuStoreHelper? = null
-    private val productIdX1 = BuildConfig.PRODUCT_ID_X1
-    private val productIdX2 = BuildConfig.PRODUCT_ID_X2
-    private val productIdX3 = BuildConfig.PRODUCT_ID_X3
-    private val subscriptionIdX1 = BuildConfig.SUBSCRIPTION_ID_X1
-    private val subscriptionIdX2 = BuildConfig.SUBSCRIPTION_ID_X2
-    private val subscriptionIdX3 = BuildConfig.SUBSCRIPTION_ID_X3
-    private val subscriptionYearIdX1 = BuildConfig.SUBSCRIPTION_YEAR_ID_X1
-    private val subscriptionYearIdX2 = BuildConfig.SUBSCRIPTION_YEAR_ID_X2
-    private val subscriptionYearIdX3 = BuildConfig.SUBSCRIPTION_YEAR_ID_X3
+    private val productIdX1 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X1
+    private val productIdX2 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X2
+    private val productIdX3 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X3
+    private val subscriptionIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X1
+    private val subscriptionIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X2
+    private val subscriptionIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X3
+    private val subscriptionYearIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X1
+    private val subscriptionYearIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X2
+    private val subscriptionYearIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X3
     private var ruStoreIsConnected = false
 
     private var speedDialValues = ArrayList<SpeedDial>()

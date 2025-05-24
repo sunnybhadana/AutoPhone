@@ -49,21 +49,21 @@
         android:required="false" />
 
     <queries>
-        <package android:name="com.goodwy.dialer.debug" />
-        <package android:name="com.goodwy.dialer" />
-        <package android:name="com.goodwy.contacts.debug" />
-        <package android:name="com.goodwy.contacts" />
-        <package android:name="com.goodwy.smsmessenger.debug" />
-        <package android:name="com.goodwy.smsmessenger" />
-        <package android:name="com.goodwy.voicerecorder.debug" />
-        <package android:name="com.goodwy.voicerecorder" />
-        <package android:name="com.goodwy.gallery.debug" />
-        <package android:name="com.goodwy.gallery" />
-        <package android:name="com.goodwy.filemanager.debug" />
-        <package android:name="com.goodwy.filemanager" />
-        <package android:name="com.goodwy.audiobooklite" />
-        <package android:name="com.goodwy.keyboard" />
-        <package android:name="com.goodwy.calendar" />
+        <package android:name="com.revaltronics.autophone.debug" />
+        <package android:name="com.revaltronics.autophone" />
+        <package android:name="com.revaltronics.contacts.debug" />
+        <package android:name="com.revaltronics.contacts" />
+        <package android:name="com.revaltronics.smsmessenger.debug" />
+        <package android:name="com.revaltronics.smsmessenger" />
+        <package android:name="com.revaltronics.voicerecorder.debug" />
+        <package android:name="com.revaltronics.voicerecorder" />
+        <package android:name="com.revaltronics.gallery.debug" />
+        <package android:name="com.revaltronics.gallery" />
+        <package android:name="com.revaltronics.filemanager.debug" />
+        <package android:name="com.revaltronics.filemanager" />
+        <package android:name="com.revaltronics.audiobooklite" />
+        <package android:name="com.revaltronics.keyboard" />
+        <package android:name="com.revaltronics.calendar" />
 
         <!-- Required for loading contact accounts -->
         <intent>
@@ -107,13 +107,13 @@
             android:exported="false"
             android:label="">
             <intent-filter>
-                <action android:name="com.goodwy.commons.action.MISSED_CALL_BACK" />
-                <action android:name="com.goodwy.commons.action.MISSED_CALL_MESSAGE" />
+                <action android:name="com.revaltronics.commons.action.MISSED_CALL_BACK" />
+                <action android:name="com.revaltronics.commons.action.MISSED_CALL_MESSAGE" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name="com.goodwy.commons.activities.PurchaseActivity"
+            android:name="com.revaltronics.commons.activities.PurchaseActivity"
             android:configChanges="orientation|uiMode"
             android:exported="false"
             android:label=""
@@ -121,7 +121,7 @@
             android:parentActivityName=".activities.MainActivity" />
 
         <activity
-            android:name="com.goodwy.commons.activities.AboutActivity"
+            android:name="com.revaltronics.commons.activities.AboutActivity"
             android:configChanges="orientation|uiMode"
             android:exported="false"
             android:label="@string/about"
@@ -129,14 +129,14 @@
             android:parentActivityName=".activities.MainActivity" />
 
         <activity
-            android:name="com.goodwy.commons.activities.CustomizationActivity"
+            android:name="com.revaltronics.commons.activities.CustomizationActivity"
             android:configChanges="orientation|uiMode"
             android:exported="false"
             android:label="@string/customize_colors"
             android:parentActivityName=".activities.SettingsActivity" />
 
         <activity
-            android:name="com.goodwy.commons.activities.ManageBlockedNumbersActivity"
+            android:name="com.revaltronics.commons.activities.ManageBlockedNumbersActivity"
             android:configChanges="orientation|uiMode"
             android:exported="false"
             android:label="@string/blocked_numbers"
@@ -299,8 +299,8 @@
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.goodwy.dialer.action.ACCEPT_CALL" />
-                <action android:name="com.goodwy.dialer.action.DECLINE_CALL" />
+                <action android:name="com.revaltronics.autophone.action.ACCEPT_CALL" />
+                <action android:name="com.revaltronics.autophone.action.DECLINE_CALL" />
             </intent-filter>
         </receiver>
 
@@ -310,7 +310,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.telecom.action.SHOW_MISSED_CALLS_NOTIFICATION" />
-                <action android:name="com.goodwy.phone.action.MISSED_CALL_CANCEL" />
+                <action android:name="com.revaltronics.phone.action.MISSED_CALL_CANCEL" />
             </intent-filter>
         </receiver>
 

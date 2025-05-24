@@ -1,6 +1,6 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
-import com.goodwy.autophone.helpers.INVALID_TIMER_ID
+import com.revaltronics.autophone.helpers.INVALID_TIMER_ID
 
 sealed class TimerEvent(open val timerId: Int) {
     data class Delete(override val timerId: Int) : TimerEvent(timerId)

@@ -1,4 +1,4 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.Context
 import android.media.AudioManager
@@ -6,7 +6,7 @@ import android.media.AudioManager.STREAM_DTMF
 import android.media.ToneGenerator
 import android.os.Handler
 import android.os.Looper
-import com.goodwy.autophone.extensions.config
+import com.revaltronics.autophone.extensions.config
 
 class ToneGeneratorHelper(context: Context, private val minToneLengthMs: Long) {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager

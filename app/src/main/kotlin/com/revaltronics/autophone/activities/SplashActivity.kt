@@ -1,7 +1,7 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.content.Intent
-import com.goodwy.commons.activities.BaseSplashActivity
+import com.revaltronics.commons.activities.BaseSplashActivity
 
 class SplashActivity : BaseSplashActivity() {
     override fun initActivity() {

@@ -1,8 +1,8 @@
-package com.goodwy.autophone.models
+package com.revaltronics.autophone.models
 
 import android.telephony.PhoneNumberUtils
-import com.goodwy.commons.extensions.normalizePhoneNumber
-import com.goodwy.commons.extensions.toDayCode
+import com.revaltronics.commons.extensions.normalizePhoneNumber
+import com.revaltronics.commons.extensions.toDayCode
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 

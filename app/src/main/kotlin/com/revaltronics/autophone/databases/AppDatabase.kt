@@ -1,4 +1,4 @@
-package com.goodwy.autophone.databases
+package com.revaltronics.autophone.databases
 
 import android.content.Context
 import androidx.room.Database
@@ -7,11 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.helpers.Converters
-import com.goodwy.autophone.interfaces.TimerDao
-import com.goodwy.autophone.models.Timer
-import com.goodwy.autophone.models.TimerState
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.helpers.Converters
+import com.revaltronics.autophone.interfaces.TimerDao
+import com.revaltronics.autophone.models.Timer
+import com.revaltronics.autophone.models.TimerState
 import java.util.concurrent.Executors
 
 @Database(entities = [Timer::class], version = 2)

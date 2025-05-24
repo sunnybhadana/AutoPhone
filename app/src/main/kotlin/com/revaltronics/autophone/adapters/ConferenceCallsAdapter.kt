@@ -1,4 +1,4 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.graphics.drawable.LayerDrawable
 import android.telecom.Call
@@ -6,16 +6,16 @@ import android.view.Menu
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
-import com.goodwy.commons.adapters.MyRecyclerViewAdapter
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.LOWER_ALPHA
-import com.goodwy.commons.helpers.SimpleContactsHelper
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.ItemConferenceCallBinding
-import com.goodwy.autophone.extensions.hasCapability
-import com.goodwy.autophone.helpers.getCallContact
+import com.revaltronics.commons.adapters.MyRecyclerViewAdapter
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.LOWER_ALPHA
+import com.revaltronics.commons.helpers.SimpleContactsHelper
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.ItemConferenceCallBinding
+import com.revaltronics.autophone.extensions.hasCapability
+import com.revaltronics.autophone.helpers.getCallContact
 import kotlin.math.abs
 
 class ConferenceCallsAdapter(

@@ -21,13 +21,13 @@
         android:paddingHorizontal="@dimen/activity_padding_left_right"
         android:layout_marginTop="?attr/actionBarSize">
 
-        <com.goodwy.commons.views.MyRecyclerView
+        <com.revaltronics.commons.views.MyRecyclerView
             android:id="@+id/conferenceList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:scrollbars="none"
-            app:layoutManager="com.goodwy.commons.views.MyLinearLayoutManager"
+            app:layoutManager="com.revaltronics.commons.views.MyLinearLayoutManager"
             tools:listitem="@layout/item_conference_call" />
 
     </FrameLayout>

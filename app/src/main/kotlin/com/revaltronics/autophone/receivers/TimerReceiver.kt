@@ -1,15 +1,15 @@
-package com.goodwy.autophone.receivers
+package com.revaltronics.autophone.receivers
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.goodwy.autophone.extensions.hideTimerNotification
-import com.goodwy.autophone.extensions.timerHelper
-import com.goodwy.autophone.helpers.INVALID_TIMER_ID
-import com.goodwy.autophone.helpers.TIMER_HIDE
-import com.goodwy.autophone.helpers.TIMER_ID
-import com.goodwy.autophone.helpers.TIMER_RESTART
-import com.goodwy.autophone.models.TimerEvent
+import com.revaltronics.autophone.extensions.hideTimerNotification
+import com.revaltronics.autophone.extensions.timerHelper
+import com.revaltronics.autophone.helpers.INVALID_TIMER_ID
+import com.revaltronics.autophone.helpers.TIMER_HIDE
+import com.revaltronics.autophone.helpers.TIMER_ID
+import com.revaltronics.autophone.helpers.TIMER_RESTART
+import com.revaltronics.autophone.models.TimerEvent
 import org.greenrobot.eventbus.EventBus
 import java.util.concurrent.TimeUnit
 

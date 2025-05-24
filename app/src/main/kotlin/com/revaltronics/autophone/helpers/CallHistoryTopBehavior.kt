@@ -1,11 +1,12 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.behaviorule.arturdumchev.library.*
-import com.goodwy.autophone.databinding.ActivityCallHistoryBinding
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.ActivityCallHistoryBinding
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
@@ -34,7 +35,7 @@ class CallHistoryTopBehavior(
         val screenWidthDp = context.resources.configuration.screenWidthDp * density
         val factor = if (screenWidthDp < 1200) 0.092 else 0.088
         val screenWidth =
-            ((screenWidthDp - context.resources.getDimension(com.goodwy.commons.R.dimen.activity_padding_left_right)).toDouble() * factor).toFloat()
+            ((screenWidthDp - context.resources.getDimension(com.revaltronics.commons.R.dimen.activity_padding_left_right)).toDouble() * factor).toFloat()
 
         return listOf(
             RuledView(

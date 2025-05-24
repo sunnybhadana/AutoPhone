@@ -1,17 +1,17 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
-import com.goodwy.commons.activities.BaseSimpleActivity
-import com.goodwy.commons.extensions.getAlertDialogBuilder
-import com.goodwy.commons.extensions.setupDialogStuff
-import com.goodwy.commons.extensions.viewBinding
-import com.goodwy.commons.helpers.TAB_CALL_HISTORY
-import com.goodwy.commons.helpers.TAB_CONTACTS
-import com.goodwy.commons.helpers.TAB_FAVORITES
-import com.goodwy.commons.views.MyAppCompatCheckbox
-import com.goodwy.autophone.R
-import com.goodwy.autophone.databinding.DialogManageVisibleTabsBinding
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.helpers.ALL_TABS_MASK
+import com.revaltronics.commons.activities.BaseSimpleActivity
+import com.revaltronics.commons.extensions.getAlertDialogBuilder
+import com.revaltronics.commons.extensions.setupDialogStuff
+import com.revaltronics.commons.extensions.viewBinding
+import com.revaltronics.commons.helpers.TAB_CALL_HISTORY
+import com.revaltronics.commons.helpers.TAB_CONTACTS
+import com.revaltronics.commons.helpers.TAB_FAVORITES
+import com.revaltronics.commons.views.MyAppCompatCheckbox
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.DialogManageVisibleTabsBinding
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.helpers.ALL_TABS_MASK
 
 class ManageVisibleTabsDialog(val activity: BaseSimpleActivity) {
     private val binding by activity.viewBinding(DialogManageVisibleTabsBinding::inflate)

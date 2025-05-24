@@ -1,11 +1,11 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.Context
 import android.graphics.*
 import android.provider.MediaStore
 import android.util.Size
-import com.goodwy.commons.helpers.isQPlus
-import com.goodwy.autophone.R
+import com.revaltronics.commons.helpers.isQPlus
+import com.revaltronics.autophone.R
 import androidx.core.net.toUri
 
 class CallContactAvatarHelper(private val context: Context) {

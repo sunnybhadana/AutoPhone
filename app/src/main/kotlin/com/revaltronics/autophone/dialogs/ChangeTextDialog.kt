@@ -1,14 +1,14 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import android.annotation.SuppressLint
 import android.content.DialogInterface.BUTTON_NEUTRAL
 import android.content.DialogInterface.BUTTON_POSITIVE
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
-import com.goodwy.commons.extensions.*
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.DialogChangeTextBinding
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.DialogChangeTextBinding
 
 @SuppressLint("SetTextI18n")
 class ChangeTextDialog(
@@ -17,7 +17,7 @@ class ChangeTextDialog(
     val currentText: String?,
     val maxLength: Int = 0,
     val showNeutralButton: Boolean = false,
-    val neutralTextRes: Int = com.goodwy.commons.R.string.use_default,
+    val neutralTextRes: Int = com.revaltronics.commons.R.string.use_default,
     val callback: (newText: String) -> Unit) {
 
     init {
@@ -40,8 +40,8 @@ class ChangeTextDialog(
         }
 
         activity.getAlertDialogBuilder()
-            .setPositiveButton(com.goodwy.commons.R.string.ok, null)
-            .setNegativeButton(com.goodwy.commons.R.string.cancel, null)
+            .setPositiveButton(com.revaltronics.commons.R.string.ok, null)
+            .setNegativeButton(com.revaltronics.commons.R.string.cancel, null)
             .setNeutralButton(neutralTextRes, null)
             .apply {
                 activity.setupDialogStuff(view, this, titleText = title) { alertDialog ->

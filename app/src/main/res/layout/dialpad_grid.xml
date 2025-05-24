@@ -156,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_1"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -164,7 +164,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="1"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_1_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -205,7 +205,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_2"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -213,7 +213,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="2"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_2_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -243,7 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_3"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -251,7 +251,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="3"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_3_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -281,7 +281,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_4"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -289,7 +289,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="4"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_4_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -320,7 +320,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_5"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -328,7 +328,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="5"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_5_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -358,7 +358,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_6"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -366,7 +366,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="6"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_6_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -396,7 +396,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_7"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -404,7 +404,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="7"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_7_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -435,7 +435,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_8"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -443,7 +443,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="8"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_8_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -473,7 +473,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_9"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -481,7 +481,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="9"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_9_letters"
                     style="@style/DialpadLetterStyle"
                     android:layout_width="wrap_content"
@@ -531,7 +531,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_0"
                     style="@style/DialpadNumberStyle"
                     android:layout_width="wrap_content"
@@ -539,7 +539,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="0"/>
 
-                <com.goodwy.commons.views.MyTextView
+                <com.revaltronics.commons.views.MyTextView
                     android:id="@+id/dialpad_plus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

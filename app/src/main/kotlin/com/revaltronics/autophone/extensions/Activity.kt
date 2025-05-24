@@ -1,4 +1,4 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -12,29 +12,29 @@ import android.telecom.TelecomManager
 import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.res.ResourcesCompat
-import com.goodwy.commons.activities.BaseSimpleActivity
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.dialogs.NewAppDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.FAQItem
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.activities.DialerActivity
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.dialogs.SelectSIMDialog
-import com.goodwy.autophone.dialogs.SelectSimButtonDialog
-import com.goodwy.autophone.helpers.SIM_DIALOG_STYLE_LIST
+import com.revaltronics.commons.activities.BaseSimpleActivity
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.dialogs.NewAppDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.FAQItem
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.activities.DialerActivity
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.dialogs.SelectSIMDialog
+import com.revaltronics.autophone.dialogs.SelectSimButtonDialog
+import com.revaltronics.autophone.helpers.SIM_DIALOG_STYLE_LIST
 import com.google.android.material.snackbar.Snackbar
 
 fun SimpleActivity.startCallIntent(recipient: String) {
     if (isDefaultDialer()) {
         getHandleToUse(null, recipient) { handle ->
-            launchCallIntent(recipient, handle, BuildConfig.RIGHT_APP_KEY)
+            launchCallIntent(recipient, handle, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
         }
     } else {
-        launchCallIntent(recipient, null, BuildConfig.RIGHT_APP_KEY)
+        launchCallIntent(recipient, null, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
     }
 }
 
@@ -60,7 +60,7 @@ fun BaseSimpleActivity.callContactWithSim(recipient: String, useMainSIM: Boolean
     handlePermission(PERMISSION_READ_PHONE_STATE) {
         val wantedSimIndex = if (useMainSIM) 0 else 1
         val handle = getAvailableSIMCardLabels().sortedBy { it.id }.getOrNull(wantedSimIndex)?.handle
-        launchCallIntent(recipient, handle, BuildConfig.RIGHT_APP_KEY)
+        launchCallIntent(recipient, handle, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
     }
 }
 
@@ -75,8 +75,8 @@ fun BaseSimpleActivity.callContactWithSimWithConfirmationCheck(recipient: String
 }
 
 fun Activity.launchSendSMSIntentRecommendation(recipient: String) {
-    val simpleSmsMessenger = "com.goodwy.smsmessenger"
-    val simpleSmsMessengerDebug = "com.goodwy.smsmessenger.debug"
+    val simpleSmsMessenger = "com.revaltronics.smsmessenger"
+    val simpleSmsMessengerDebug = "com.revaltronics.smsmessenger.debug"
     if ((0..config.appRecommendationDialogCount).random() == 2 && (!isPackageInstalled(simpleSmsMessenger) && !isPackageInstalled(simpleSmsMessengerDebug))) {
         NewAppDialog(this, simpleSmsMessenger, getString(R.string.recommendation_dialog_messages_g), getString(R.string.right_sms_messenger),
             AppCompatResources.getDrawable(this, R.drawable.ic_sms_messenger)) {
@@ -88,8 +88,8 @@ fun Activity.launchSendSMSIntentRecommendation(recipient: String) {
 }
 
 fun Activity.startContactDetailsIntentRecommendation(contact: Contact) {
-    val simpleContacts = "com.goodwy.contacts"
-    val simpleContactsDebug = "com.goodwy.contacts.debug"
+    val simpleContacts = "com.revaltronics.contacts"
+    val simpleContactsDebug = "com.revaltronics.contacts.debug"
     if ((0..config.appRecommendationDialogCount).random() == 2 && (!isPackageInstalled(simpleContacts) && !isPackageInstalled(simpleContactsDebug))) {
         NewAppDialog(this, simpleContacts, getString(R.string.recommendation_dialog_contacts_g), getString(R.string.right_contacts),
             AppCompatResources.getDrawable(this, R.drawable.ic_contacts)) {
@@ -102,8 +102,8 @@ fun Activity.startContactDetailsIntentRecommendation(contact: Contact) {
 
 // handle private contacts differently, only Goodwy Contacts can open them
 fun Activity.startContactDetailsIntent(contact: Contact) {
-    val simpleContacts = "com.goodwy.contacts"
-    val simpleContactsDebug = "com.goodwy.contacts.debug"
+    val simpleContacts = "com.revaltronics.contacts"
+    val simpleContactsDebug = "com.revaltronics.contacts.debug"
     if (contact.rawId > 1000000 && contact.contactId > 1000000 && contact.rawId == contact.contactId &&
         (isPackageInstalled(simpleContacts) || isPackageInstalled(simpleContactsDebug))
     ) {
@@ -169,15 +169,15 @@ fun Activity.startContactEdit(contact: Contact) {
 }
 
 fun SimpleActivity.launchPurchase() {
-    val productIdX1 = BuildConfig.PRODUCT_ID_X1
-    val productIdX2 = BuildConfig.PRODUCT_ID_X2
-    val productIdX3 = BuildConfig.PRODUCT_ID_X3
-    val subscriptionIdX1 = BuildConfig.SUBSCRIPTION_ID_X1
-    val subscriptionIdX2 = BuildConfig.SUBSCRIPTION_ID_X2
-    val subscriptionIdX3 = BuildConfig.SUBSCRIPTION_ID_X3
-    val subscriptionYearIdX1 = BuildConfig.SUBSCRIPTION_YEAR_ID_X1
-    val subscriptionYearIdX2 = BuildConfig.SUBSCRIPTION_YEAR_ID_X2
-    val subscriptionYearIdX3 = BuildConfig.SUBSCRIPTION_YEAR_ID_X3
+    val productIdX1 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X1
+    val productIdX2 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X2
+    val productIdX3 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X3
+    val subscriptionIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X1
+    val subscriptionIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X2
+    val subscriptionIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X3
+    val subscriptionYearIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X1
+    val subscriptionYearIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X2
+    val subscriptionYearIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X3
 
     startPurchaseActivity(
         R.string.app_name_g,
@@ -207,20 +207,20 @@ fun SimpleActivity.launchAbout() {
         FAQItem(R.string.faq_9_title_commons, R.string.faq_9_text_commons)
     )
 
-    val productIdX1 = BuildConfig.PRODUCT_ID_X1
-    val productIdX2 = BuildConfig.PRODUCT_ID_X2
-    val productIdX3 = BuildConfig.PRODUCT_ID_X3
-    val subscriptionIdX1 = BuildConfig.SUBSCRIPTION_ID_X1
-    val subscriptionIdX2 = BuildConfig.SUBSCRIPTION_ID_X2
-    val subscriptionIdX3 = BuildConfig.SUBSCRIPTION_ID_X3
-    val subscriptionYearIdX1 = BuildConfig.SUBSCRIPTION_YEAR_ID_X1
-    val subscriptionYearIdX2 = BuildConfig.SUBSCRIPTION_YEAR_ID_X2
-    val subscriptionYearIdX3 = BuildConfig.SUBSCRIPTION_YEAR_ID_X3
+    val productIdX1 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X1
+    val productIdX2 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X2
+    val productIdX3 = com.revaltronics.autophone.BuildConfig.PRODUCT_ID_X3
+    val subscriptionIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X1
+    val subscriptionIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X2
+    val subscriptionIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_ID_X3
+    val subscriptionYearIdX1 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X1
+    val subscriptionYearIdX2 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X2
+    val subscriptionYearIdX3 = com.revaltronics.autophone.BuildConfig.SUBSCRIPTION_YEAR_ID_X3
 
     startAboutActivity(
         appNameId = R.string.app_name_g,
         licenseMask = licenses,
-        versionName = BuildConfig.VERSION_NAME,
+        versionName = com.revaltronics.autophone.BuildConfig.VERSION_NAME,
         faqItems = faqItems,
         showFAQBeforeMail = true,
         productIdList = arrayListOf(productIdX1, productIdX2, productIdX3),

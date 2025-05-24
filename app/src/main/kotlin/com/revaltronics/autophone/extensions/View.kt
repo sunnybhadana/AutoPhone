@@ -1,4 +1,4 @@
-package com.goodwy.autophone.extensions
+package com.revaltronics.autophone.extensions
 
 import android.graphics.Rect
 import android.view.View

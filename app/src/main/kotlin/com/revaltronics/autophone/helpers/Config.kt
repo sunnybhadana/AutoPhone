@@ -1,4 +1,4 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 import android.content.ComponentName
 import android.content.Context
@@ -6,16 +6,16 @@ import android.graphics.Typeface
 import android.media.RingtoneManager
 import android.telecom.PhoneAccountHandle
 import androidx.core.content.ContextCompat
-import com.goodwy.commons.extensions.getDefaultAlarmSound
-import com.goodwy.commons.extensions.getDefaultAlarmTitle
+import com.revaltronics.commons.extensions.getDefaultAlarmSound
+import com.revaltronics.commons.extensions.getDefaultAlarmTitle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.goodwy.commons.helpers.BaseConfig
-import com.goodwy.autophone.extensions.getPhoneAccountHandleModel
-import com.goodwy.autophone.extensions.putPhoneAccountHandle
-import com.goodwy.autophone.models.CallerNote
-import com.goodwy.autophone.models.RecentCall
-import com.goodwy.autophone.models.SpeedDial
+import com.revaltronics.commons.helpers.BaseConfig
+import com.revaltronics.autophone.extensions.getPhoneAccountHandleModel
+import com.revaltronics.autophone.extensions.putPhoneAccountHandle
+import com.revaltronics.autophone.models.CallerNote
+import com.revaltronics.autophone.models.RecentCall
+import com.revaltronics.autophone.models.SpeedDial
 
 class Config(context: Context) : BaseConfig(context) {
     companion object {
@@ -202,9 +202,9 @@ class Config(context: Context) : BaseConfig(context) {
     var quickAnswers: ArrayList<String>
         get(): ArrayList<String> {
             val defaultList = arrayListOf(
-                ContextCompat.getString(context, com.goodwy.autophone.R.string.message_call_later),
-                ContextCompat.getString(context, com.goodwy.autophone.R.string.message_on_my_way),
-                ContextCompat.getString(context, com.goodwy.autophone.R.string.message_cant_talk_right_now)
+                ContextCompat.getString(context, com.revaltronics.autophone.R.string.message_call_later),
+                ContextCompat.getString(context, com.revaltronics.autophone.R.string.message_on_my_way),
+                ContextCompat.getString(context, com.revaltronics.autophone.R.string.message_cant_talk_right_now)
             )
             return ArrayList(prefs.getString(QUICK_ANSWERS, null)?.lines()?.map { it } ?: defaultList)
         }

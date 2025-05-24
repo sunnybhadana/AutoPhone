@@ -1,4 +1,4 @@
-package com.goodwy.autophone.adapters
+package com.revaltronics.autophone.adapters
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -7,19 +7,19 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
-import com.goodwy.commons.adapters.MyRecyclerViewListAdapter
-import com.goodwy.commons.dialogs.ConfirmationDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.databinding.ItemCallHistoryBinding
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.RecentsHelper
-import com.goodwy.autophone.interfaces.RefreshItemsListener
-import com.goodwy.autophone.models.CallLogItem
-import com.goodwy.autophone.models.RecentCall
+import com.revaltronics.commons.adapters.MyRecyclerViewListAdapter
+import com.revaltronics.commons.dialogs.ConfirmationDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.databinding.ItemCallHistoryBinding
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.RecentsHelper
+import com.revaltronics.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.autophone.models.CallLogItem
+import com.revaltronics.autophone.models.RecentCall
 
 class CallHistoryAdapter(
     activity: SimpleActivity,

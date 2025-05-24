@@ -1,14 +1,14 @@
-package com.goodwy.autophone.services
+package com.revaltronics.autophone.services
 
 import android.telecom.CallAudioState
 import android.telecom.Call
 import android.telecom.InCallService
-import com.goodwy.autophone.activities.CallActivity
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.isOutgoing
-import com.goodwy.autophone.extensions.powerManager
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.models.Events
+import com.revaltronics.autophone.activities.CallActivity
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.isOutgoing
+import com.revaltronics.autophone.extensions.powerManager
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.models.Events
 import org.greenrobot.eventbus.EventBus
 
 class CallService : InCallService() {

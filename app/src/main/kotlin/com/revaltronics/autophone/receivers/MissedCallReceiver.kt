@@ -1,4 +1,4 @@
-package com.goodwy.autophone.receivers
+package com.revaltronics.autophone.receivers
 
 import android.annotation.SuppressLint
 import android.app.Notification
@@ -12,18 +12,18 @@ import android.os.Build
 import android.telecom.TelecomManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.CURRENT_PHONE_NUMBER
-import com.goodwy.commons.helpers.SimpleContactsHelper
-import com.goodwy.commons.helpers.ensureBackgroundThread
-import com.goodwy.commons.helpers.isOreoPlus
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.NotificationActivity
-import com.goodwy.autophone.activities.SplashActivity
-import com.goodwy.autophone.extensions.clearMissedCalls
-import com.goodwy.autophone.extensions.getNotificationBitmap
-import com.goodwy.autophone.extensions.updateUnreadCountBadge
-import com.goodwy.autophone.helpers.*
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.CURRENT_PHONE_NUMBER
+import com.revaltronics.commons.helpers.SimpleContactsHelper
+import com.revaltronics.commons.helpers.ensureBackgroundThread
+import com.revaltronics.commons.helpers.isOreoPlus
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.NotificationActivity
+import com.revaltronics.autophone.activities.SplashActivity
+import com.revaltronics.autophone.extensions.clearMissedCalls
+import com.revaltronics.autophone.extensions.getNotificationBitmap
+import com.revaltronics.autophone.extensions.updateUnreadCountBadge
+import com.revaltronics.autophone.helpers.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 class MissedCallReceiver : BroadcastReceiver() {

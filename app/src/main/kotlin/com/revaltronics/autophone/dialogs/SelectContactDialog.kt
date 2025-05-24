@@ -1,19 +1,19 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import android.content.res.Configuration
 import android.graphics.Color
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.getProperText
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.views.MySearchMenu
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.ContactsAdapter
-import com.goodwy.autophone.databinding.DialogSelectContactBinding
-import com.goodwy.autophone.extensions.setupWithContacts
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.getProperText
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.views.MySearchMenu
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.ContactsAdapter
+import com.revaltronics.autophone.databinding.DialogSelectContactBinding
+import com.revaltronics.autophone.extensions.setupWithContacts
 
 class SelectContactDialog(val activity: SimpleActivity, val contacts: List<Contact>, val callback: (selectedContact: Contact) -> Unit) {
     private val binding by activity.viewBinding(DialogSelectContactBinding::inflate)

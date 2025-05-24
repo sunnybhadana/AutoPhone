@@ -1,28 +1,28 @@
-package com.goodwy.autophone.fragments
+package com.revaltronics.autophone.fragments
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import com.goodwy.commons.adapters.MyRecyclerViewAdapter
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.views.MyGridLayoutManager
-import com.goodwy.commons.views.MyLinearLayoutManager
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.activities.MainActivity
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.ContactsAdapter
-import com.goodwy.autophone.databinding.FragmentFavoritesBinding
-import com.goodwy.autophone.databinding.FragmentLettersLayoutBinding
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.setupWithContacts
-import com.goodwy.autophone.extensions.startContactDetailsIntent
-import com.goodwy.autophone.helpers.Converters
-import com.goodwy.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.commons.adapters.MyRecyclerViewAdapter
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.views.MyGridLayoutManager
+import com.revaltronics.commons.views.MyLinearLayoutManager
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.MainActivity
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.ContactsAdapter
+import com.revaltronics.autophone.databinding.FragmentFavoritesBinding
+import com.revaltronics.autophone.databinding.FragmentLettersLayoutBinding
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.setupWithContacts
+import com.revaltronics.autophone.extensions.startContactDetailsIntent
+import com.revaltronics.autophone.helpers.Converters
+import com.revaltronics.autophone.interfaces.RefreshItemsListener
 
 class FavoritesFragment(context: Context, attributeSet: AttributeSet) : MyViewPagerFragment<MyViewPagerFragment.LettersInnerBinding>(context, attributeSet),
     RefreshItemsListener {
@@ -136,12 +136,12 @@ class FavoritesFragment(context: Context, attributeSet: AttributeSet) : MyViewPa
                     if (context.config.showCallConfirmation) {
                         CallConfirmationDialog(activity as SimpleActivity, (it as Contact).getNameToDisplay()) {
                             activity?.apply {
-                                initiateCall(it) { launchCallIntent(it, key = BuildConfig.RIGHT_APP_KEY) }
+                                initiateCall(it) { launchCallIntent(it, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) }
                             }
                         }
                     } else {
                         activity?.apply {
-                            initiateCall(it as Contact) { launchCallIntent(it, key = BuildConfig.RIGHT_APP_KEY) }
+                            initiateCall(it as Contact) { launchCallIntent(it, key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY) }
                         }
                     }
                 },

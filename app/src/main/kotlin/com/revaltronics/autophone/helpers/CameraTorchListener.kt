@@ -1,4 +1,4 @@
-package com.goodwy.autophone.helpers
+package com.revaltronics.autophone.helpers
 
 interface CameraTorchListener {
     fun onTorchEnabled(isEnabled:Boolean)

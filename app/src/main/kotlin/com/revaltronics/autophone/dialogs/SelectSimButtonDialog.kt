@@ -1,13 +1,13 @@
-package com.goodwy.autophone.dialogs
+package com.revaltronics.autophone.dialogs
 
 import android.telecom.PhoneAccountHandle
 import androidx.appcompat.app.AlertDialog
-import com.goodwy.commons.activities.BaseSimpleActivity
-import com.goodwy.commons.extensions.*
-import com.goodwy.autophone.R
-import com.goodwy.autophone.databinding.DialogSelectSimButtonBinding
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.extensions.getAvailableSIMCardLabels
+import com.revaltronics.commons.activities.BaseSimpleActivity
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.databinding.DialogSelectSimButtonBinding
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.extensions.getAvailableSIMCardLabels
 
 class SelectSimButtonDialog(
     val activity: BaseSimpleActivity,

@@ -1,4 +1,4 @@
-package com.goodwy.autophone.activities
+package com.revaltronics.autophone.activities
 
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
@@ -13,29 +13,29 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
-import com.goodwy.commons.dialogs.CallConfirmationDialog
-import com.goodwy.commons.dialogs.ConfirmationAdvancedDialog
-import com.goodwy.commons.dialogs.ConfirmationDialog
-import com.goodwy.commons.dialogs.RadioGroupDialog
-import com.goodwy.commons.extensions.*
-import com.goodwy.commons.helpers.*
-import com.goodwy.commons.models.RadioItem
-import com.goodwy.commons.models.contacts.Contact
-import com.goodwy.commons.models.contacts.ContactSource
-import com.goodwy.commons.models.contacts.Event
-import com.goodwy.commons.models.contacts.SocialAction
-import com.goodwy.autophone.BuildConfig
-import com.goodwy.autophone.R
-import com.goodwy.autophone.adapters.CallHistoryAdapter
-import com.goodwy.autophone.databinding.ActivityCallHistoryBinding
-import com.goodwy.autophone.databinding.ItemViewEmailBinding
-import com.goodwy.autophone.databinding.ItemViewEventBinding
-import com.goodwy.autophone.databinding.ItemViewMessengersActionsBinding
-import com.goodwy.autophone.dialogs.ChangeTextDialog
-import com.goodwy.autophone.dialogs.ChooseSocialDialog
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.helpers.*
-import com.goodwy.autophone.models.RecentCall
+import com.revaltronics.commons.dialogs.CallConfirmationDialog
+import com.revaltronics.commons.dialogs.ConfirmationAdvancedDialog
+import com.revaltronics.commons.dialogs.ConfirmationDialog
+import com.revaltronics.commons.dialogs.RadioGroupDialog
+import com.revaltronics.commons.extensions.*
+import com.revaltronics.commons.helpers.*
+import com.revaltronics.commons.models.RadioItem
+import com.revaltronics.commons.models.contacts.Contact
+import com.revaltronics.commons.models.contacts.ContactSource
+import com.revaltronics.commons.models.contacts.Event
+import com.revaltronics.commons.models.contacts.SocialAction
+import com.revaltronics.autophone.BuildConfig
+import com.revaltronics.autophone.R
+import com.revaltronics.autophone.adapters.CallHistoryAdapter
+import com.revaltronics.autophone.databinding.ActivityCallHistoryBinding
+import com.revaltronics.autophone.databinding.ItemViewEmailBinding
+import com.revaltronics.autophone.databinding.ItemViewEventBinding
+import com.revaltronics.autophone.databinding.ItemViewMessengersActionsBinding
+import com.revaltronics.autophone.dialogs.ChangeTextDialog
+import com.revaltronics.autophone.dialogs.ChooseSocialDialog
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.models.RecentCall
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 import androidx.core.graphics.drawable.toDrawable
@@ -209,7 +209,7 @@ class CallHistoryActivity : SimpleActivity() {
                 copyToClipboard(callHistoryNumber.text.toString())
                 true
             }
-            callHistoryNumber.text = formatterUnicodeWrap(phoneNumber)
+            callHistoryNumber.text = com.revaltronics.commons.extensions.formatterUnicodeWrap(phoneNumber)
             callHistoryNumber.setTextColor(properPrimaryColor)
 
             if (baseConfig.backgroundColor == white) {
@@ -1167,7 +1167,7 @@ class CallHistoryActivity : SimpleActivity() {
                 SpannableString(name)
             }
             binding.topDetails.callHistoryName.apply {
-                text = formatterUnicodeWrap(nameToShow.toString())
+                text = com.revaltronics.commons.extensions.formatterUnicodeWrap(nameToShow.toString())
                 setTextColor(getProperTextColor())
                 setOnLongClickListener {
                     copyToClipboard(nameToShow.toString())
@@ -1176,7 +1176,7 @@ class CallHistoryActivity : SimpleActivity() {
             }
 
             binding.topDetails.callHistoryCompany.apply {
-                val company = formatterUnicodeWrap(call.company)
+                val company = com.revaltronics.commons.extensions.formatterUnicodeWrap(call.company)
                 beVisibleIf(company != "" && !call.isABusinessCall())
                 text = company
                 setTextColor(getProperTextColor())
@@ -1187,7 +1187,7 @@ class CallHistoryActivity : SimpleActivity() {
             }
 
             binding.topDetails.callHistoryJobPosition.apply {
-                val jobPosition = formatterUnicodeWrap(call.jobPosition)
+                val jobPosition = com.revaltronics.commons.extensions.formatterUnicodeWrap(call.jobPosition)
                 beVisibleIf(jobPosition != "" && !call.isABusinessCall())
                 text = jobPosition
                 setTextColor(getProperTextColor())
@@ -1293,10 +1293,10 @@ class CallHistoryActivity : SimpleActivity() {
         val phoneNumber = call.phoneNumber
         if (config.showCallConfirmation) {
             CallConfirmationDialog(this as SimpleActivity, call.name) {
-                launchCallIntent("$prefix$phoneNumber", key = BuildConfig.RIGHT_APP_KEY)
+                launchCallIntent("$prefix$phoneNumber", key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
             }
         } else {
-            launchCallIntent("$prefix$phoneNumber", key = BuildConfig.RIGHT_APP_KEY)
+            launchCallIntent("$prefix$phoneNumber", key = com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
         }
     }
 

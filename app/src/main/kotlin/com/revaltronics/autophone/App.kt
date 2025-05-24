@@ -1,4 +1,4 @@
-package com.goodwy.autophone
+package com.revaltronics.autophone
 
 import android.app.NotificationManager
 import android.content.Context
@@ -9,15 +9,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.goodwy.commons.RightApp
-import com.goodwy.commons.extensions.isRuStoreInstalled
-import com.goodwy.commons.extensions.showErrorToast
-import com.goodwy.commons.helpers.rustore.RuStoreModule
-import com.goodwy.autophone.extensions.*
-import com.goodwy.autophone.models.TimerEvent
-import com.goodwy.autophone.models.TimerState
-import com.goodwy.autophone.services.TimerStopService
-import com.goodwy.autophone.services.startTimerService
+import com.revaltronics.commons.RightApp
+import com.revaltronics.commons.extensions.isRuStoreInstalled
+import com.revaltronics.commons.extensions.showErrorToast
+import com.revaltronics.commons.helpers.rustore.RuStoreModule
+import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.models.TimerEvent
+import com.revaltronics.autophone.models.TimerState
+import com.revaltronics.autophone.services.TimerStopService
+import com.revaltronics.autophone.services.startTimerService
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode

@@ -1,25 +1,25 @@
-package com.goodwy.autophone.fragments
+package com.revaltronics.autophone.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
-import com.goodwy.commons.adapters.MyRecyclerViewAdapter
-import com.goodwy.commons.adapters.MyRecyclerViewListAdapter
-import com.goodwy.commons.extensions.getProperPrimaryColor
-import com.goodwy.commons.extensions.getProperTextColor
-import com.goodwy.commons.extensions.getTextSize
-import com.goodwy.commons.helpers.SORT_BY_FIRST_NAME
-import com.goodwy.commons.helpers.SORT_BY_SURNAME
-import com.goodwy.commons.views.MyRecyclerView
-import com.goodwy.autophone.activities.MainActivity
-import com.goodwy.autophone.activities.SimpleActivity
-import com.goodwy.autophone.adapters.ContactsAdapter
-import com.goodwy.autophone.adapters.RecentCallsAdapter
-import com.goodwy.autophone.databinding.FragmentLettersLayoutBinding
-import com.goodwy.autophone.databinding.FragmentRecentsBinding
-import com.goodwy.autophone.extensions.config
-import com.goodwy.autophone.helpers.Config
+import com.revaltronics.commons.adapters.MyRecyclerViewAdapter
+import com.revaltronics.commons.adapters.MyRecyclerViewListAdapter
+import com.revaltronics.commons.extensions.getProperPrimaryColor
+import com.revaltronics.commons.extensions.getProperTextColor
+import com.revaltronics.commons.extensions.getTextSize
+import com.revaltronics.commons.helpers.SORT_BY_FIRST_NAME
+import com.revaltronics.commons.helpers.SORT_BY_SURNAME
+import com.revaltronics.commons.views.MyRecyclerView
+import com.revaltronics.autophone.activities.MainActivity
+import com.revaltronics.autophone.activities.SimpleActivity
+import com.revaltronics.autophone.adapters.ContactsAdapter
+import com.revaltronics.autophone.adapters.RecentCallsAdapter
+import com.revaltronics.autophone.databinding.FragmentLettersLayoutBinding
+import com.revaltronics.autophone.databinding.FragmentRecentsBinding
+import com.revaltronics.autophone.extensions.config
+import com.revaltronics.autophone.helpers.Config
 
 abstract class MyViewPagerFragment<BINDING : MyViewPagerFragment.InnerBinding>(context: Context, attributeSet: AttributeSet) :
     RelativeLayout(context, attributeSet) {
