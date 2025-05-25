@@ -16,6 +16,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -84,7 +85,7 @@ class MainActivity : SimpleActivity() {
         updateNavigationBarColor = false
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appLaunched(com.revaltronics.autophone.BuildConfig.APPLICATION_ID)
+        appLaunched(BuildConfig.APPLICATION_ID)
         setupOptionsMenu()
         refreshMenuItems()
         storeStateVariables()
@@ -313,6 +314,7 @@ class MainActivity : SimpleActivity() {
             findItem(R.id.sort).isVisible = currentFragment != getRecentsFragment
             findItem(R.id.filter).isVisible = currentFragment != getRecentsFragment
             findItem(R.id.create_new_contact).isVisible = currentFragment == getContactsFragment()
+            findItem(R.id.create_new_automation).isVisible = currentFragment == getAutomationFragment()
             findItem(R.id.change_view_type).isVisible = currentFragment == getFavoritesFragment
             findItem(R.id.column_count).isVisible = currentFragment == getFavoritesFragment && config.viewType == VIEW_TYPE_GRID
             findItem(R.id.show_blocked_numbers).isVisible = currentFragment == getRecentsFragment
@@ -344,6 +346,7 @@ class MainActivity : SimpleActivity() {
                     R.id.show_blocked_numbers -> showBlockedNumbers()
                     R.id.clear_call_history -> clearCallHistory()
                     R.id.create_new_contact -> launchCreateNewContactIntent()
+                    R.id.create_new_automation -> launchAutomationActivity()
                     R.id.sort -> showSortingDialog(showCustomSorting = getCurrentFragment() is FavoritesFragment)
                     R.id.filter -> showFilterDialog()
                     R.id.settings -> launchSettings()
@@ -357,6 +360,11 @@ class MainActivity : SimpleActivity() {
         }
     }
 
+    private fun launchAutomationActivity () {
+        // start activity
+        val intent = Intent(this, AutomationActivity::class.java)
+        startActivity(intent)
+    }
     private fun changeColumnCount() {
         val items = ArrayList<RadioItem>()
         for (i in 1..CONTACTS_GRID_MAX_COLUMNS_COUNT) {
@@ -922,7 +930,7 @@ class MainActivity : SimpleActivity() {
         getContactsFragment()?.refreshItems()
         getFavoritesFragment()?.refreshItems()
         getRecentsFragment()?.refreshItems()
-//        getAutomationFragment()?.refreshItems()
+        getAutomationFragment()?.refreshItems()
     }
 
     private fun getAllFragments(): ArrayList<MyViewPagerFragment<*>?> {

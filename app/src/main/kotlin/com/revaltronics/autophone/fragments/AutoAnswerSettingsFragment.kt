@@ -7,13 +7,11 @@ import android.widget.ImageView
 import android.widget.ScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.revaltronics.autophone.R
 import com.revaltronics.autophone.databinding.FragmentAutoAnswerSettingsBinding
 import com.revaltronics.autophone.interfaces.RefreshItemsListener
 import com.revaltronics.commons.extensions.beGone
 import com.revaltronics.commons.extensions.beVisible
-import com.revaltronics.commons.extensions.getColorStateList
 import com.revaltronics.commons.extensions.getProperBackgroundColor
 import com.revaltronics.commons.extensions.getProperPrimaryColor
 import com.revaltronics.commons.extensions.getProperTextColor
@@ -40,19 +38,15 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         val textColor = context.getProperTextColor()
         val backgroundColor = context.getProperBackgroundColor()
         val primaryColor = context.getProperPrimaryColor()
-        
         // Set background color
         setBackgroundColor(backgroundColor)
         
         // Setup UI elements
-        val header = findViewById<MyTextView>(R.id.auto_answer_header)
         val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
-        val addButton = findViewById<FloatingActionButton>(R.id.auto_answer_add_button)
         val rulesList = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
         val editorView = findViewById<ScrollView>(R.id.auto_answer_editor)
         
         // Set text colors
-        header?.setTextColor(textColor)
         emptyText?.setTextColor(textColor)
         
         // Set up RecyclerView (empty for now)
@@ -60,11 +54,7 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         // For demo purposes, show empty state
         emptyText?.beVisible()
         rulesList?.beGone()
-        
-        // Set up FAB click listener
-        addButton?.setOnClickListener {
-            showEditor(true)
-        }
+
         
         // Setup editor buttons
         val cancelButton = findViewById<MaterialButton>(R.id.auto_answer_cancel)
@@ -109,17 +99,11 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         setBackgroundColor(context.getProperBackgroundColor())
         
         // Update text colors
-        val header = findViewById<MyTextView>(R.id.auto_answer_header)
         val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
         val editorTitle = findViewById<MyTextView>(R.id.auto_answer_editor_title)
-        
-        header?.setTextColor(textColor)
+
         emptyText?.setTextColor(textColor)
         editorTitle?.setTextColor(textColor)
-        
-        // Update button colors (FAB)
-        val addButton = findViewById<FloatingActionButton>(R.id.auto_answer_add_button)
-        addButton?.backgroundTintList = properPrimaryColor.getColorStateList()
     }
 
     override fun onSearchClosed() {

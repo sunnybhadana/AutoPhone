@@ -27,6 +27,7 @@ import com.revaltronics.autophone.dialogs.SelectSIMDialog
 import com.revaltronics.autophone.dialogs.SelectSimButtonDialog
 import com.revaltronics.autophone.helpers.SIM_DIALOG_STYLE_LIST
 import com.google.android.material.snackbar.Snackbar
+import com.revaltronics.autophone.activities.AutomationActivity
 
 fun SimpleActivity.startCallIntent(recipient: String) {
     if (isDefaultDialer()) {
@@ -55,12 +56,11 @@ fun SimpleActivity.launchCreateNewContactIntent() {
         launchActivityIntent(this)
     }
 }
-
 fun BaseSimpleActivity.callContactWithSim(recipient: String, useMainSIM: Boolean) {
     handlePermission(PERMISSION_READ_PHONE_STATE) {
         val wantedSimIndex = if (useMainSIM) 0 else 1
         val handle = getAvailableSIMCardLabels().sortedBy { it.id }.getOrNull(wantedSimIndex)?.handle
-        launchCallIntent(recipient, handle, com.revaltronics.autophone.BuildConfig.RIGHT_APP_KEY)
+        launchCallIntent(recipient, handle, BuildConfig.RIGHT_APP_KEY)
     }
 }
 

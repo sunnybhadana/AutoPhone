@@ -12,51 +12,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Header -->
-        <com.revaltronics.commons.views.MyTextView
-            android:id="@+id/auto_answer_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Auto Answer Settings"
-            android:textSize="@dimen/bigger_text_size"
-            android:textStyle="bold"
-            android:padding="@dimen/activity_margin"
-            android:gravity="center" />
-
         <!-- Empty state text -->
         <com.revaltronics.commons.views.MyTextView
             android:id="@+id/auto_answer_empty_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/auto_answer_header"
             android:layout_centerHorizontal="true"
             android:alpha="0.8"
             android:gravity="center"
             android:paddingStart="@dimen/activity_margin"
             android:paddingTop="@dimen/activity_margin"
             android:paddingEnd="@dimen/activity_margin"
-            android:text="No automated calls configured"
+            android:text="@string/no_auto_answer_rules"
             android:textSize="@dimen/bigger_text_size"
             android:textStyle="italic"
             android:visibility="gone" />
-
-        <!-- Empty state add button -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/auto_answer_add_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/activity_margin"
-            android:contentDescription="Add new auto answer rule"
-            android:src="@drawable/ic_plus_vector" />
 
         <!-- Automation rules list -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/auto_answer_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/auto_answer_header"
             android:clipToPadding="false"
             android:layoutAnimation="@anim/layout_animation"
             android:paddingBottom="64dp"
