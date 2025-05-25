@@ -244,6 +244,7 @@
         <activity android:name=".activities.AutomationActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|uiMode"
+            android:parentActivityName=".activities.MainActivity"
             android:screenOrientation="nosensor" />
 
         <activity

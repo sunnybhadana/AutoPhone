@@ -1,5 +1,6 @@
 package com.revaltronics.autophone.services
 
+import android.os.Handler
 import android.telecom.CallAudioState
 import android.telecom.Call
 import android.telecom.InCallService
@@ -30,39 +31,62 @@ class CallService : InCallService() {
         CallManager.onCallAdded(call)
         CallManager.inCallService = this
         call.registerCallback(callListener)
+        val incomingNumber = call.details.handle?.schemeSpecificPart
+        // Replace with your desired number(s)
+        val targetNumbers = listOf("+911234567890", "1234567890")
+        if (!call.isOutgoing() && incomingNumber in targetNumbers) {
+            // Auto-answer
+            call.answer(0)
 
-        //val isScreenLocked = (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).isDeviceLocked
-        when {
-            !powerManager.isInteractive /*|| isScreenLocked*/ -> {
-                try {
-                    startActivity(CallActivity.getStartIntent(this))
-                    callNotificationManager.setupNotification(true)
-                } catch (e: Exception) {
-                    // seems like startActivity can throw AndroidRuntimeException and ActivityNotFoundException, not yet sure when and why, lets show a notification
-                    callNotificationManager.setupNotification()
+            // Send DTMF after answering, then hang up
+            Handler(mainLooper).postDelayed({
+                call.playDtmfTone('3')
+                Handler(mainLooper).postDelayed({
+                    call.stopDtmfTone()
+                    call.playDtmfTone('4')
+                    Handler(mainLooper).postDelayed({
+                        call.stopDtmfTone()
+                        call.disconnect()
+                    }, 1000) // Delay before hanging up
+                }, 1000) // Delay between DTMF tones
+            }, 2000) // Delay after answering before sending DTMF
+        } else {
+            //val isScreenLocked = (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).isDeviceLocked
+            when {
+                !powerManager.isInteractive /*|| isScreenLocked*/ -> {
+                    try {
+                        startActivity(CallActivity.getStartIntent(this))
+                        callNotificationManager.setupNotification(true)
+                    } catch (e: Exception) {
+                        // seems like startActivity can throw AndroidRuntimeException and ActivityNotFoundException, not yet sure when and why, lets show a notification
+                        callNotificationManager.setupNotification()
+                    }
                 }
-            }
-            call.isOutgoing() -> {
-                try {
-                    startActivity(CallActivity.getStartIntent(this, needSelectSIM = call.details.accountHandle == null))
-                    callNotificationManager.setupNotification(true)
-                } catch (e: Exception) {
-                    // seems like startActivity can throw AndroidRuntimeException and ActivityNotFoundException, not yet sure when and why, lets show a notification
-                    callNotificationManager.setupNotification()
+
+                call.isOutgoing() -> {
+                    try {
+                        startActivity(CallActivity.getStartIntent(this, needSelectSIM = call.details.accountHandle == null))
+                        callNotificationManager.setupNotification(true)
+                    } catch (e: Exception) {
+                        // seems like startActivity can throw AndroidRuntimeException and ActivityNotFoundException, not yet sure when and why, lets show a notification
+                        callNotificationManager.setupNotification()
+                    }
                 }
-            }
-            config.showIncomingCallsFullScreen /*&& getPhoneSize() < 2*/ -> {
-                try {
-                    startActivity(CallActivity.getStartIntent(this))
-                    callNotificationManager.setupNotification(true)
-                } catch (e: Exception) {
-                    // seems like startActivity can throw AndroidRuntimeException and ActivityNotFoundException, not yet sure when and why, lets show a notification
-                    callNotificationManager.setupNotification()
+
+                config.showIncomingCallsFullScreen /*&& getPhoneSize() < 2*/ -> {
+                    try {
+                        startActivity(CallActivity.getStartIntent(this))
+                        callNotificationManager.setupNotification(true)
+                    } catch (e: Exception) {
+                        // seems like startActivity can throw AndroidRuntimeException and ActivityNotFoundException, not yet sure when and why, lets show a notification
+                        callNotificationManager.setupNotification()
+                    }
                 }
+
+                else -> callNotificationManager.setupNotification()
             }
-            else -> callNotificationManager.setupNotification()
+            if (!call.isOutgoing() && !powerManager.isInteractive && config.flashForAlerts) MyCameraImpl.newInstance(this).toggleSOS()
         }
-        if (!call.isOutgoing() && !powerManager.isInteractive && config.flashForAlerts) MyCameraImpl.newInstance(this).toggleSOS()
     }
 
     override fun onCallRemoved(call: Call) {

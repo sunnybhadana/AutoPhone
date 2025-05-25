@@ -4,49 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" 
+    android:id="@+id/main_layout"
+    android:background="?attr/colorSurface"
     tools:context=".activities.AutomationActivity">
 
-<!--    <com.google.android.material.appbar.AppBarLayout-->
-<!--        android:id="@+id/appBarLayout"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@android:color/white"-->
-<!--        app:elevation="4dp">-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurface"
+        app:elevation="4dp">
 
-<!--        <com.google.android.material.appbar.MaterialToolbar-->
-<!--            android:id="@+id/toolbar"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            app:title="Configure Call Automation"-->
-<!--            app:titleTextColor="?android:attr/textColorPrimary"-->
-<!--            app:navigationIcon="@android:drawable/ic_menu_close_clear_cancel" -->
-<!--            app:navigationIconTint="?android:attr/textColorPrimary"-->
-<!--            app:menu="@menu/automation_toolbar_menu" /> -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Automation"
+            app:titleTextColor="?attr/colorOnSurface"
+            app:navigationIcon="@drawable/paylib_native_ic_close_light"
+            app:navigationIconTint="?attr/colorOnSurface" />
 
-<!--    </com.google.android.material.appbar.AppBarLayout>-->
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:padding="16dp">
+        android:clipToPadding="false"
+        android:paddingBottom="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:id="@+id/main_holder"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp">
 
-            <!-- Phone Number Section -->
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Contact Number"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"/>
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/text_contact"-->
+<!--                android:text="Contact Number"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textFontWeight="@integer/default_font_size"-->
+<!--                android:textAppearance="?attr/textAppearanceHeadline6"-->
+<!--                android:textColor="?attr/colorOnSurfaceVariant"-->
+<!--                android:layout_marginBottom="8dp"/>-->
 
             <LinearLayout
                 android:id="@+id/layoutPhoneNumberInput"
@@ -54,59 +60,57 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="24dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/textInputLayoutPhoneNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_weight="0.8"
                     android:hint="Phone Number"
-                    app:hintTextColor="?android:attr/textColorHint"
                     android:layout_marginEnd="8dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextPhoneNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="?android:attr/textColorPrimary"
                         android:inputType="phone" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonPickContact"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_menu_contacts" 
-                    app:iconTint="?attr/colorOnPrimary"
-                    android:backgroundTint="?attr/colorPrimary"
-                    android:tooltipText="Pick from Contacts"/>
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:textAlignment="center"
+                    app:iconGravity="textStart"
+                    app:iconSize="@dimen/medium_icon_size"
+                    app:icon="@drawable/ic_menu_contacts" app:iconTint="?attr/colorPrimary"
+                    android:tooltipText="Pick from Contacts"
+                    android:contentDescription="Pick contact from address book"/>
             </LinearLayout>
 
-            <!-- Automation Settings Section -->
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Automation Settings"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"/>
+<!--            <com.google.android.material.textview.MaterialTextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Automation Settings"-->
+<!--                android:id="@+id/text_settings"-->
+<!--                android:textAppearance="?attr/textAppearanceHeadline6"-->
+<!--                android:textColor="?attr/colorOnSurfaceVariant"-->
+<!--                android:layout_marginBottom="8dp"/>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutPickupDelay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:hint="Delay before auto-pickup (seconds)"
-                app:hintTextColor="?android:attr/textColorHint">
+                android:hint="Delay before auto-pickup (seconds)">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPickupDelay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="?android:attr/textColorPrimary"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,20 +118,18 @@
                 android:id="@+id/switchDisconnectCall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorPrimary"
                 android:text="Disconnect call after all steps completed"
-                android:layout_marginBottom="16dp" />
+                android:paddingVertical="8dp"
+                android:layout_marginBottom="24dp" />
 
-            <!-- DTMF Sequence Section -->
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/textViewDtmfTitle"
+                android:id="@+id/text_dtmf"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DTMF Sequence"
-                android:textAppearance="?attr/textAppearanceSubtitle1"
-                android:textColor="?android:attr/textColorPrimary"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="4dp"/>
+                android:textAppearance="?attr/textAppearanceCaption"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:layout_marginBottom="8dp"/>
 
             <LinearLayout
                 android:id="@+id/linearLayoutDtmf"
@@ -135,25 +137,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Example DTMF Entry 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="DTMF Key 1"
-                        app:hintTextColor="?android:attr/textColorHint"
+                        android:hint="DTMF Key"
                         android:layout_marginEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextDtmfKey1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="?android:attr/textColorPrimary"
                             android:inputType="textCapCharacters"
                             android:maxLength="1"/>
                     </com.google.android.material.textfield.TextInputLayout>
@@ -162,119 +161,43 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        app:hintTextColor="?android:attr/textColorHint"
-                        android:hint="Delay After (s)">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextDtmfDelay1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:inputType="number"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
-                <!-- Example DTMF Entry 2 -->
-                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="DTMF Key 2"
-                        app:hintTextColor="?android:attr/textColorHint"
+                        android:hint="Delay After (s)"
                         android:layout_marginEnd="8dp">
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextDtmfKey2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:inputType="textCapCharacters"
-                            android:maxLength="1"/>
+                            android:inputType="numberDecimal"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
+                    <ImageButton
+                        android:id="@+id/buttonRemoveDtmfStep"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:hintTextColor="?android:attr/textColorHint"
-                        android:hint="Delay After (s)">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextDtmfDelay2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:inputType="number"/>
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:src="@drawable/ic_delete_outline" android:background="?attr/selectableItemBackgroundBorderless"
+                        app:tint="?attr/colorError"
+                        android:contentDescription="Remove DTMF step" />
                 </LinearLayout>
-
-                <!-- Example DTMF Entry 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="16dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="DTMF Key 3"
-                        app:hintTextColor="?android:attr/textColorHint"
-                        android:layout_marginEnd="8dp">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextDtmfKey3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:inputType="textCapCharacters"
-                            android:maxLength="1"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        app:hintTextColor="?android:attr/textColorHint"
-                        android:hint="Delay After (s)">
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/editTextDtmfDelay3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColor="?android:attr/textColorPrimary"
-                            android:inputType="number"/>
-                    </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonAddDtmfStep"
-                    style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="+ Add DTMF Step"
-                    app:icon="@android:drawable/ic_input_add"
-                    android:textColor="?attr/colorPrimary"
-                    app:iconTint="?attr/colorPrimary"
-                    android:layout_gravity="start"
-                    android:backgroundTint="@android:color/transparent"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:layout_marginBottom="24dp"/>
             </LinearLayout>
 
-            <!-- Save Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonAddDtmfStep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add DTMF Step"
+                android:layout_gravity="start"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"/>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/buttonSaveAutomation"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save Automation Rule"
                 android:paddingTop="12dp"
                 android:paddingBottom="12dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
