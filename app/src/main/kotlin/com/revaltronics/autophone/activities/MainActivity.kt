@@ -47,11 +47,13 @@ import com.revaltronics.autophone.databinding.ActivityMainBinding
 import com.revaltronics.autophone.dialogs.ChangeSortingDialog
 import com.revaltronics.autophone.dialogs.FilterContactSourcesDialog
 import com.revaltronics.autophone.extensions.*
+import com.revaltronics.autophone.fragments.AutoAnswerSettingsFragment
 import com.revaltronics.autophone.fragments.ContactsFragment
 import com.revaltronics.autophone.fragments.FavoritesFragment
 import com.revaltronics.autophone.fragments.MyViewPagerFragment
 import com.revaltronics.autophone.fragments.RecentsFragment
 import com.revaltronics.autophone.helpers.*
+import com.revaltronics.autophone.helpers.TAB_AUTOMATION
 import com.revaltronics.autophone.models.Events
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -596,6 +598,10 @@ class MainActivity : SimpleActivity() {
         if (showTabs and TAB_CONTACTS != 0) {
             icons.add(R.drawable.ic_person_rounded_scaled)
         }
+        
+        if (showTabs and TAB_AUTOMATION != 0) {
+            icons.add(R.drawable.ic_settings_cog_vector)
+        }
 
         return icons
     }
@@ -614,6 +620,10 @@ class MainActivity : SimpleActivity() {
 
         if (showTabs and TAB_CONTACTS != 0) {
             icons.add(R.drawable.ic_person_rounded)
+        }
+        
+        if (showTabs and TAB_AUTOMATION != 0) {
+            icons.add(R.drawable.ic_settings_cog_vector)
         }
 
         return icons
@@ -856,7 +866,8 @@ class MainActivity : SimpleActivity() {
         val stringId = when (position) {
             0 -> R.string.favorites_tab
             1 -> R.string.recents
-            else -> R.string.contacts_tab
+            2 -> R.string.contacts_tab
+            else -> R.string.automation_tab
         }
 
         return resources.getString(stringId)
@@ -866,7 +877,8 @@ class MainActivity : SimpleActivity() {
         val drawableId = when (position) {
             0 -> R.drawable.ic_star_vector
             1 -> R.drawable.ic_clock_filled_vector
-            else -> R.drawable.ic_person_rounded
+            2 -> R.drawable.ic_person_rounded
+            else -> R.drawable.ic_settings_cog_vector
         }
         return resources.getColoredDrawableWithColor(this@MainActivity, drawableId, getProperTextColor())!!
     }
@@ -875,7 +887,8 @@ class MainActivity : SimpleActivity() {
         val stringId = when (position) {
             0 -> R.string.favorites_tab
             1 -> R.string.call_history_tab
-            else -> R.string.contacts_tab
+            2 -> R.string.contacts_tab
+            else -> R.string.automation_tab
         }
 
         return resources.getString(stringId)
@@ -909,6 +922,7 @@ class MainActivity : SimpleActivity() {
         getContactsFragment()?.refreshItems()
         getFavoritesFragment()?.refreshItems()
         getRecentsFragment()?.refreshItems()
+//        getAutomationFragment()?.refreshItems()
     }
 
     private fun getAllFragments(): ArrayList<MyViewPagerFragment<*>?> {
@@ -926,9 +940,15 @@ class MainActivity : SimpleActivity() {
         if (showTabs and TAB_CONTACTS > 0) {
             fragments.add(getContactsFragment())
         }
+        
+        if (showTabs and TAB_AUTOMATION > 0) {
+            fragments.add(getAutomationFragment())
+        }
 
         return fragments
     }
+    
+    private fun getAutomationFragment(): AutoAnswerSettingsFragment? = findViewById(R.id.auto_answer_settings_fragment)
 
     private fun getCurrentFragment(): MyViewPagerFragment<*>? = getAllFragments().getOrNull(binding.viewPager.currentItem)
 
@@ -945,6 +965,13 @@ class MainActivity : SimpleActivity() {
             TAB_LAST_USED -> if (config.lastUsedViewPagerPage < mainTabsHolder.tabCount) config.lastUsedViewPagerPage else 0
             TAB_FAVORITES -> 0
             TAB_CALL_HISTORY -> if (showTabsMask and TAB_FAVORITES > 0) 1 else 0
+            TAB_AUTOMATION -> {
+                var tabIndex = 0
+                if (showTabsMask and TAB_FAVORITES > 0) tabIndex++
+                if (showTabsMask and TAB_CALL_HISTORY > 0) tabIndex++
+                if (showTabsMask and TAB_CONTACTS > 0) tabIndex++
+                tabIndex
+            }
             else -> {
                 if (showTabsMask and TAB_CONTACTS > 0) {
                     if (showTabsMask and TAB_FAVORITES > 0) {

@@ -37,6 +37,14 @@
             android:paddingTop="@dimen/activity_margin"
             android:paddingBottom="@dimen/activity_margin"
             android:text="@string/contacts_tab"/>
+            
+        <com.revaltronics.commons.views.MyAppCompatCheckbox
+            android:id="@+id/manage_visible_tabs_automation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/activity_margin"
+            android:paddingBottom="@dimen/activity_margin"
+            android:text="@string/automation_tab"/>
 
     </LinearLayout>
 </ScrollView>

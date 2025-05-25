@@ -6,6 +6,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.revaltronics.commons.helpers.TAB_CALL_HISTORY
 import com.revaltronics.commons.helpers.TAB_CONTACTS
 import com.revaltronics.commons.helpers.TAB_FAVORITES
+import com.revaltronics.autophone.helpers.TAB_AUTOMATION
 import com.revaltronics.autophone.R
 import com.revaltronics.autophone.activities.SimpleActivity
 import com.revaltronics.autophone.extensions.config
@@ -47,6 +48,10 @@ class ViewPagerAdapter(val activity: SimpleActivity) : PagerAdapter() {
 
         if (showTabs and TAB_CONTACTS > 0) {
             fragments.add(R.layout.fragment_contacts)
+        }
+        
+        if (showTabs and TAB_AUTOMATION > 0) {
+            fragments.add(R.layout.fragment_auto_answer_settings)
         }
 
         return if (position < fragments.size) fragments[position] else fragments.last()

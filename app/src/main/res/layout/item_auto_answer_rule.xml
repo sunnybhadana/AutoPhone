@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Contact name/number -->
+        <com.revaltronics.commons.views.MyTextView
+            android:id="@+id/auto_answer_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/auto_answer_item_toggle"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:text="Contact Name" />
+
+        <com.revaltronics.commons.views.MyTextView
+            android:id="@+id/auto_answer_item_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/auto_answer_item_name"
+            android:layout_toStartOf="@id/auto_answer_item_toggle"
+            android:alpha="0.7"
+            android:text="+1 234 567 8901" />
+
+        <!-- Rule details -->
+        <LinearLayout
+            android:id="@+id/auto_answer_item_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/auto_answer_item_number"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@id/auto_answer_item_toggle"
+            android:orientation="vertical">
+
+            <com.revaltronics.commons.views.MyTextView
+                android:id="@+id/auto_answer_item_delay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_clock_filled_vector"
+                android:drawablePadding="8dp"
+                android:text="Answer after: 3 seconds" />
+
+            <com.revaltronics.commons.views.MyTextView
+                android:id="@+id/auto_answer_item_dtmf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/button_dialpad"
+                android:drawablePadding="8dp"
+                android:text="DTMF: 1→2→3" />
+
+            <com.revaltronics.commons.views.MyTextView
+                android:id="@+id/auto_answer_item_hangup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_phone_down_vector"
+                android:drawablePadding="8dp"
+                android:text="End call: Yes" />
+        </LinearLayout>
+
+        <!-- Edit button -->
+        <ImageView
+            android:id="@+id/auto_answer_item_edit"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/auto_answer_item_details"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Edit rule"
+            android:padding="8dp"
+            android:src="@drawable/ic_edit_vector" />
+
+        <!-- Delete button -->
+        <ImageView
+            android:id="@+id/auto_answer_item_delete"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_below="@id/auto_answer_item_details"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toEndOf="@id/auto_answer_item_edit"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Delete rule"
+            android:padding="8dp"
+            android:src="@drawable/ic_delete_outline" />
+
+        <!-- Toggle switch -->
+        <com.revaltronics.commons.views.MyMaterialSwitch
+            android:id="@+id/auto_answer_item_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:checked="true" />
+<!--        <com.revaltronics.commons.views.MySwitchCompat-->
+<!--            android:id="@+id/auto_answer_item_toggle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:checked="true" />-->
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

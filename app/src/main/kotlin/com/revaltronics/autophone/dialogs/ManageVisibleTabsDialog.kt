@@ -7,6 +7,7 @@ import com.revaltronics.commons.extensions.viewBinding
 import com.revaltronics.commons.helpers.TAB_CALL_HISTORY
 import com.revaltronics.commons.helpers.TAB_CONTACTS
 import com.revaltronics.commons.helpers.TAB_FAVORITES
+import com.revaltronics.autophone.helpers.TAB_AUTOMATION
 import com.revaltronics.commons.views.MyAppCompatCheckbox
 import com.revaltronics.autophone.R
 import com.revaltronics.autophone.databinding.DialogManageVisibleTabsBinding
@@ -22,6 +23,7 @@ class ManageVisibleTabsDialog(val activity: BaseSimpleActivity) {
             put(TAB_FAVORITES, R.id.manage_visible_tabs_favorites)
             put(TAB_CALL_HISTORY, R.id.manage_visible_tabs_call_history)
             put(TAB_CONTACTS, R.id.manage_visible_tabs_contacts)
+            put(TAB_AUTOMATION, R.id.manage_visible_tabs_automation)
         }
 
         val showTabs = activity.config.showTabs

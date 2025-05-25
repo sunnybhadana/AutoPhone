@@ -4,6 +4,9 @@ import com.revaltronics.commons.helpers.TAB_CALL_HISTORY
 import com.revaltronics.commons.helpers.TAB_CONTACTS
 import com.revaltronics.commons.helpers.TAB_FAVORITES
 
+// Define TAB_AUTOMATION with a unique value (assuming TAB constants are bit flags)
+const val TAB_AUTOMATION = 8  // Assuming TAB_FAVORITES=1, TAB_CALL_HISTORY=2, TAB_CONTACTS=4
+
 // shared prefs
 const val SPEED_DIAL = "speed_dial"
 const val REMEMBER_SIM_PREFIX = "remember_sim_"
@@ -59,9 +62,9 @@ const val CALLER_NOTES = "caller_notes"
 const val BACK_PRESSED_END_CALL = "back_pressed_end_call"
 const val CALL_BLOCK_BUTTON = "call_block_button"
 
-const val ALL_TABS_MASK = TAB_CONTACTS or TAB_FAVORITES or TAB_CALL_HISTORY
+const val ALL_TABS_MASK = TAB_CONTACTS or TAB_FAVORITES or TAB_CALL_HISTORY or TAB_AUTOMATION
 
-val tabsList = arrayListOf(TAB_FAVORITES, TAB_CALL_HISTORY, TAB_CONTACTS)
+val tabsList = arrayListOf(TAB_FAVORITES, TAB_CALL_HISTORY, TAB_CONTACTS, TAB_AUTOMATION)
 
 private const val PATH = "com.revaltronics.autophone.action."
 const val ACCEPT_CALL = PATH + "accept_call"
