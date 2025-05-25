@@ -27,17 +27,24 @@ import com.revaltronics.autophone.models.DtmfStep
 import com.revaltronics.autophone.models.SimpleAutomationSetting
 import com.revaltronics.commons.extensions.*
 import kotlinx.coroutines.launch
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.revaltronics.autophone.adapters.AutomationRulesAdapter // Remove if not used
 
 class AutomationActivity : SimpleActivity() {
 
     private val binding by viewBinding(ActivityAutomationBinding::inflate)
     private lateinit var appDatabase: AppDatabase
-    private val currentDtmfViews = mutableListOf<View>() // To keep track of DTMF views
-    private var currentSettingId: Int? = null // To keep track of the current setting being edited
-    private var selectedPhoneNumbers: List<String> = emptyList() // To store numbers from picked contact
+    private val currentDtmfViews = mutableListOf<View>()
+    private var currentSettingId: Int? = null
+    private var selectedPhoneNumbers: List<String> = emptyList()
 
     private lateinit var requestContactPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var pickContactLauncher: ActivityResultLauncher<Intent>
+    // private lateinit var rulesAdapter: AutomationRulesAdapter // No longer needed here
+
+    companion object {
+        const val EXTRA_SETTING_ID = "extra_setting_id"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // ... existing onCreate setup ...
@@ -95,8 +102,6 @@ class AutomationActivity : SimpleActivity() {
             switchDisconnectCall.setTextColor(properTextColor)
         }
 
-        setupContactPickerLaunchers()
-
         binding.buttonPickContact.setOnClickListener {
             pickContact()
         }
@@ -109,9 +114,19 @@ class AutomationActivity : SimpleActivity() {
             addDtmfStepView()
         }
 
-        // Consider adding a button to create a new rule, which would call resetFields()
-        // For now, load the first rule by default or a new one if none exist.
-        loadOrCreateAutomationSetting()
+        // binding.buttonAddNewRule.setOnClickListener { // No longer needed here
+        //     showFormView() // No longer needed here
+        //     resetFieldsAndPrepareForNew()
+        // }
+
+        // Retrieve setting ID from intent
+        val settingIdFromIntent = intent.getIntExtra(EXTRA_SETTING_ID, 0)
+        loadOrCreateAutomationSetting(settingIdFromIntent)
+
+        // The form is always visible in this activity now
+        // showFormView() // No longer needed, layout should be set up for form display by default
+        supportActionBar?.title = if (settingIdFromIntent == 0) "Add New Rule" else "Edit Rule"
+
     }
 
     private fun setupContactPickerLaunchers() {
@@ -315,25 +330,30 @@ class AutomationActivity : SimpleActivity() {
 
             Toast.makeText(this@AutomationActivity, message.trim(), Toast.LENGTH_LONG).show()
 
-            if (settingsSavedCount > 0 || selectedPhoneNumbers.isNotEmpty()) {
-                resetFieldsAndPrepareForNew()
+            if (settingsSavedCount > 0) {
+                setResult(Activity.RESULT_OK) // Set result for the calling fragment/activity
+                finish() // Close activity after successful save
+            } else {
+                // If save failed or no changes, do not finish, allow user to correct.
+                // Consider if RESULT_CANCELED should be set in some failure cases before finishing,
+                // but typically, if the activity isn't finished, no result is sent yet.
             }
         }
     }
 
-    private fun loadOrCreateAutomationSetting(settingId: Int = 0) { // Default to 0 to signify new/last or specific load
+    private fun loadOrCreateAutomationSetting(settingId: Int = 0) {
+        currentSettingId = if (settingId == 0) null else settingId
+        supportActionBar?.title = if (currentSettingId == null) "Add New Rule" else "Edit Rule"
+
         lifecycleScope.launch {
-            // If settingId is 0 or not provided, you might want to load the last edited, or a list.
-            // For now, if ID is 0, it prepares for a new entry. If ID is specific, it loads that.
-            // This part will need refinement when you implement a list/selection UI for multiple rules.
             if (settingId != 0) {
                 val setting = appDatabase.simpleAutomationSettingDao().getSettingById(settingId)
                 if (setting != null) {
                     currentSettingId = setting.id
                     binding.editTextContactName.setText(setting.contactName ?: "")
                     binding.textInputLayoutContactName.visibility = if (setting.contactName.isNullOrEmpty()) View.GONE else View.VISIBLE
-                    binding.editTextPhoneNumber.setText(setting.phoneNumber) // Set single phone number
-                    binding.editTextPhoneNumber.isEnabled = true // Ensure editable when loading a single specific rule
+                    binding.editTextPhoneNumber.setText(setting.phoneNumber)
+                    binding.editTextPhoneNumber.isEnabled = true // When editing, phone number should be editable
                     binding.editTextPickupDelay.setText(setting.pickupDelaySeconds.toString())
                     binding.switchDisconnectCall.isChecked = setting.autoDisconnectCall
 
@@ -347,10 +367,11 @@ class AutomationActivity : SimpleActivity() {
                     Toast.makeText(this@AutomationActivity, "Setting not found, creating new.", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                // No specific ID, prepare for a new one
                 currentSettingId = null
                 resetFieldsAndPrepareForNew()
             }
+            // Ensure form is visible (though it should be by default now)
+            // showFormView() // No longer needed
         }
     }
 
@@ -366,6 +387,7 @@ class AutomationActivity : SimpleActivity() {
         binding.linearLayoutDtmf.removeAllViews()
         currentDtmfViews.clear()
         binding.editTextPhoneNumber.requestFocus()
+        supportActionBar?.title = "Add New Rule"
     }
 
 

@@ -1,126 +1,448 @@
 package com.revaltronics.autophone.fragments
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.graphics.Canvas
 import android.util.AttributeSet
+import android.util.Log 
+import android.util.TypedValue // Added for TypedValue.applyDimension
 import android.view.View
 import android.widget.ImageView
 import android.widget.ScrollView
+import android.widget.Toast
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.revaltronics.autophone.R
+import com.revaltronics.autophone.activities.AutomationActivity
+import com.revaltronics.autophone.adapters.AutomationRulesAdapter
+import com.revaltronics.autophone.databases.AppDatabase
 import com.revaltronics.autophone.databinding.FragmentAutoAnswerSettingsBinding
 import com.revaltronics.autophone.interfaces.RefreshItemsListener
+import com.revaltronics.autophone.models.SimpleAutomationSetting
 import com.revaltronics.commons.extensions.beGone
 import com.revaltronics.commons.extensions.beVisible
 import com.revaltronics.commons.extensions.getProperBackgroundColor
 import com.revaltronics.commons.extensions.getProperPrimaryColor
 import com.revaltronics.commons.extensions.getProperTextColor
+import com.revaltronics.commons.extensions.isVisible
 import com.revaltronics.commons.views.MyRecyclerView
 import com.revaltronics.commons.views.MyTextView
+import kotlinx.coroutines.launch
 
-class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) : 
+class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     MyViewPagerFragment<AutoAnswerSettingsFragment.AutomationInnerBinding>(context, attributeSet),
     RefreshItemsListener {
     private lateinit var binding: FragmentAutoAnswerSettingsBinding
-    
+    private lateinit var appDatabase: AppDatabase
+    private lateinit var rulesAdapter: AutomationRulesAdapter
+    private var automationActivityLauncher: ActivityResultLauncher<Intent>? = null
+    private var launcherRegistered = false
+    val swipeWidth = 70f
+    private var hostingFragment: Fragment? = null
+
+    // Implementation for MyViewPagerFragment
+    override fun myRecyclerView(): MyRecyclerView? {
+        // Assuming R.id.auto_answer_list is a MyRecyclerView or can be safely cast.
+        // If it's a standard RecyclerView, you might need to adjust MyViewPagerFragment
+        // or ensure auto_answer_list is indeed a MyRecyclerView in your layout.
+        return findViewById<MyRecyclerView>(R.id.auto_answer_list)
+    }
+
+    fun setHostingFragment(fragment: Fragment) {
+        Log.d("AutoAnswerSettingsFragment", "setHostingFragment: Called with ${fragment::class.java.simpleName}")
+        this.hostingFragment = fragment
+        // Reset launcherRegistered status if hostingFragment changes, to allow new registration attempt
+        if (launcherRegistered && automationActivityLauncher == null) {
+            // This case implies previous registration might have been for a different context or failed subtly
+            // Or if we want to strictly tie launcher to hostingFragment if provided
+            Log.i("AutoAnswerSettingsFragment", "setHostingFragment: Resetting launcher registration due to new hosting fragment.")
+            launcherRegistered = false
+            automationActivityLauncher = null
+        }
+        tryRegisterLauncher(fragment) // Pass the specific owner
+    }
+
     class AutomationInnerBinding(val binding: FragmentAutoAnswerSettingsBinding) : InnerBinding {
         override val fragmentList = null
         override val recentsList = null
     }
-    
+
     override fun onFinishInflate() {
         super.onFinishInflate()
         binding = FragmentAutoAnswerSettingsBinding.bind(this)
         innerBinding = AutomationInnerBinding(binding)
+        if (!::appDatabase.isInitialized) {
+            appDatabase = AppDatabase.getInstance(context.applicationContext)
+        }
+        Log.d("AutoAnswerSettingsFragment", "onFinishInflate: Called.")
+        tryRegisterLauncher() // Attempt registration
+    }
+
+    private fun tryRegisterLauncher(ownerOverride: LifecycleOwner? = null) {
+        if (launcherRegistered) {
+            Log.d("AutoAnswerSettingsFragment", "tryRegisterLauncher: Launcher already registered.")
+            return
+        }
+
+        val owner = ownerOverride ?: hostingFragment ?: findViewTreeLifecycleOwner()
+
+        if (owner == null) {
+            Log.w("AutoAnswerSettingsFragment", "tryRegisterLauncher: No LifecycleOwner available to register launcher.")
+            return
+        }
+
+        if (owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) {
+            Log.w("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner (${owner::class.java.simpleName}) is already ${owner.lifecycle.currentState}. Cannot register launcher at this state.")
+            return
+        }
+
+        Log.d("AutoAnswerSettingsFragment", "tryRegisterLauncher: Attempting registration with owner ${owner::class.java.simpleName} in state ${owner.lifecycle.currentState}.")
+        try {
+            val activityResultContract = ActivityResultContracts.StartActivityForResult()
+            val callback: (ActivityResult) -> Unit = { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    Log.d("AutoAnswerSettingsFragment", "ActivityResultLauncher: Received RESULT_OK, loading rules.")
+                    loadAutomationRules()
+                } else {
+                    Log.d("AutoAnswerSettingsFragment", "ActivityResultLauncher: Received result code: ${result.resultCode}")
+                }
+            }
+
+            automationActivityLauncher = when (owner) {
+                is ComponentActivity -> owner.registerForActivityResult(activityResultContract, callback)
+                is Fragment -> owner.registerForActivityResult(activityResultContract, callback)
+                else -> {
+                    Log.e("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner is not a ComponentActivity or Fragment. Type: ${owner::class.java.simpleName}")
+                    null
+                }
+            }
+
+            if (automationActivityLauncher != null) {
+                launcherRegistered = true
+                Log.i("AutoAnswerSettingsFragment", "Launcher registered successfully with ${owner::class.java.simpleName}.")
+            } else if (owner is ComponentActivity || owner is Fragment) {
+                // This case should ideally not be hit if owner is of correct type and no exception occurred
+                Log.e("AutoAnswerSettingsFragment", "tryRegisterLauncher: Failed to register launcher with ${owner::class.java.simpleName} despite correct type and state.")
+            }
+        } catch (e: IllegalStateException) {
+            // This catch should ideally not be hit due to the preemptive state check,
+            // but is a safeguard.
+            Log.e("AutoAnswerSettingsFragment", "tryRegisterLauncher: IllegalStateException during registerForActivityResult for owner ${owner::class.java.simpleName} (state: ${owner.lifecycle.currentState}): ${e.message}")
+        }
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (!::appDatabase.isInitialized) {
+            appDatabase = AppDatabase.getInstance(context.applicationContext)
+        }
+        Log.d("AutoAnswerSettingsFragment", "onAttachedToWindow: Called.")
+        tryRegisterLauncher() // Attempt registration
+        loadAutomationRules()
     }
 
     override fun setupFragment() {
         val textColor = context.getProperTextColor()
         val backgroundColor = context.getProperBackgroundColor()
-        val primaryColor = context.getProperPrimaryColor()
-        // Set background color
         setBackgroundColor(backgroundColor)
-        
-        // Setup UI elements
+
         val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
         val rulesList = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
-        val editorView = findViewById<ScrollView>(R.id.auto_answer_editor)
-        
-        // Set text colors
-        emptyText?.setTextColor(textColor)
-        
-        // Set up RecyclerView (empty for now)
-        rulesList?.layoutManager = LinearLayoutManager(context)
-        // For demo purposes, show empty state
-        emptyText?.beVisible()
-        rulesList?.beGone()
+        val fabAddRule = findViewById<FloatingActionButton>(R.id.fab_add_automation_rule)
 
-        
-        // Setup editor buttons
-        val cancelButton = findViewById<MaterialButton>(R.id.auto_answer_cancel)
-        val saveButton = findViewById<MaterialButton>(R.id.auto_answer_save)
-        val addDtmfButton = findViewById<MaterialButton>(R.id.auto_answer_add_dtmf)
-        val pickContactButton = findViewById<ImageView>(R.id.auto_answer_pick_contact)
-        
-        cancelButton?.setOnClickListener {
-            showEditor(false)
+        emptyText?.setTextColor(textColor)
+        setupRecyclerView(rulesList)
+
+        fabAddRule?.setOnClickListener {
+            if (automationActivityLauncher == null && !launcherRegistered) {
+                Log.w("AutoAnswerSettingsFragment", "Launcher not initialized on FAB click, attempting registration again.")
+                tryRegisterLauncher()
+            }
+            automationActivityLauncher?.let { launcher ->
+                val intent = Intent(context, AutomationActivity::class.java)
+                launcher.launch(intent)
+            } ?: Log.e("AutoAnswerSettingsFragment", "Activity launcher still not initialized. Cannot add rule.")
         }
-        
-        saveButton?.setOnClickListener {
-            // This would save the rule - just hiding editor for now
-            showEditor(false)
+
+        emptyText?.beGone()
+        rulesList?.beVisible()
+
+        findViewById<MaterialButton>(R.id.auto_answer_cancel)?.beGone()
+        findViewById<MaterialButton>(R.id.auto_answer_save)?.beGone()
+        findViewById<MaterialButton>(R.id.auto_answer_add_dtmf)?.beGone()
+        findViewById<ImageView>(R.id.auto_answer_pick_contact)?.beGone()
+        findViewById<ScrollView>(R.id.auto_answer_editor)?.beGone()
+    }
+
+    private fun setupRecyclerView(rulesList: androidx.recyclerview.widget.RecyclerView?) {
+        rulesList?.apply {
+            layoutManager = LinearLayoutManager(context)
+            if (!::rulesAdapter.isInitialized) {
+                // Adapter now only takes onRuleClick for editing
+                rulesAdapter = AutomationRulesAdapter(
+                    onRuleClick = { rule ->
+                        Toast.makeText(context, "Clicked on Rule", Toast.LENGTH_SHORT).show()
+                        launchAutomationActivityForRule(rule.id)
+                    }
+                    // Removed onEditClick and onDeleteClick lambdas
+                )
+            }
+            adapter = rulesAdapter
+
+            val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
+                ): Boolean {
+                    return false // We don't want to handle drag & drop
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    if (direction == ItemTouchHelper.LEFT) {
+                        val position = viewHolder.adapterPosition
+                        if (position != RecyclerView.NO_POSITION) {
+                            val rule = rulesAdapter.currentList[position]
+                            showDeleteConfirmationDialog(rule)
+                            // The dialog's negative button listener should call notifyItemChanged
+                            // to reset the swipe appearance if deletion is cancelled.
+                        }
+                    }
+                }
+
+                override fun onChildDraw(
+                    c: Canvas,
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    dX: Float,
+                    dY: Float,
+                    actionState: Int,
+                    isCurrentlyActive: Boolean
+                ) {
+                    val itemView = viewHolder.itemView
+                    val mainContent = itemView.findViewById<View>(R.id.main_content_container)
+                    val actionButtons = itemView.findViewById<View>(R.id.swipe_actions_container)
+                    val actionsWidthPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, swipeWidth, itemView.context.resources.displayMetrics
+                    )
+
+                    // If the item is idle and not being actively interacted with, reset and use default drawing.
+                    if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && !isCurrentlyActive) {
+                        // Ensure views are reset. Animate only if necessary.
+                        if (mainContent.translationX != 0f) {
+                            mainContent.animate().translationX(0f).setDuration(150).start()
+                        }
+                        if (actionButtons.isVisible()) {
+                            actionButtons.animate().translationX(itemView.width.toFloat()).setDuration(150).withEndAction {
+                                // Check if still relevant to hide (e.g., not swiped open again quickly)
+                                if (mainContent.translationX == 0f) { 
+                                    actionButtons.visibility = View.GONE
+                                }
+                            }.start()
+                        } else {
+                            // Ensure it's correctly positioned if already GONE (e.g. after a delete)
+                            actionButtons.translationX = itemView.width.toFloat()
+                        }
+                        // Call super with original dX, dY for idle state to let ItemTouchHelper handle it.
+                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        return
+                    }
+
+                    // Handle active swipe gestures
+                    if (dX > 0) { // Swiping Right - prevent
+                        mainContent.translationX = 0f
+                        actionButtons.translationX = itemView.width.toFloat()
+                        actionButtons.visibility = View.GONE
+                        super.onChildDraw(c, recyclerView, viewHolder, 0f, dY, actionState, isCurrentlyActive)
+                        return
+                    }
+                    
+                    // Swiping Left (dX <= 0)
+                    actionButtons.visibility = View.VISIBLE // Keep visible during swipe
+
+                    val clampedDx = dX.coerceIn(-actionsWidthPx, 0f)
+                    mainContent.translationX = clampedDx
+                    actionButtons.translationX = itemView.width + clampedDx
+
+                    if (!isCurrentlyActive) { // Snap logic when swipe gesture is released
+                        if (clampedDx < -actionsWidthPx / 2) { // Swiped more than half
+                            // Snap open (revealing the delete button)
+                            mainContent.animate().translationX(-actionsWidthPx).setDuration(150).start()
+                            actionButtons.animate().translationX(itemView.width - actionsWidthPx).setDuration(150).start()
+                        } else { // Snap closed
+                            mainContent.animate().translationX(0f).setDuration(150).start()
+                            actionButtons.animate().translationX(itemView.width.toFloat()).setDuration(150).withEndAction {
+                                actionButtons.visibility = View.GONE
+                            }.start()
+                        }
+                    }
+                    // For active left swipe, call super with dX=0 as we are manually handling X-translation.
+                    super.onChildDraw(c, recyclerView, viewHolder, 0f, dY, actionState, isCurrentlyActive)
+                }
+
+                override fun getSwipeThreshold(viewHolder: RecyclerView.ViewHolder): Float {
+                    // Trigger onSwiped if user swipes at least the width of the actions container (70dp)
+                    val actionsWidthPx = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP, swipeWidth, viewHolder.itemView.context.resources.displayMetrics
+                    )
+                    // If itemView width is 0, avoid division by zero, return default.
+                    return if (viewHolder.itemView.width == 0) 0.5f else actionsWidthPx / viewHolder.itemView.width.toFloat()
+                }
+
+                override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+                    return Float.MAX_VALUE // Make it very hard to "fling" away and trigger swipe if not intended
+                }
+
+                override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
+                    return Float.MAX_VALUE // Require a deliberate swipe, not a fast fling
+                }
+            }
+            val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
+            itemTouchHelper.attachToRecyclerView(this)
         }
-        
-        addDtmfButton?.setOnClickListener {
-            // This would add a DTMF key to the sequence
-            // UI-only implementation - no backend functionality
+    }
+
+    private fun launchAutomationActivityForRule(ruleId: Int?) {
+        if (!launcherRegistered) {
+            Log.w("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launcher not registered. Attempting registration now.")
+            tryRegisterLauncher() // General attempt, will use best available owner
         }
-        
-        pickContactButton?.setOnClickListener {
-            // This would show contact picker
-            // UI-only implementation - no backend functionality
+
+        if (launcherRegistered && automationActivityLauncher != null) {
+            Log.d("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launching AutomationActivity for rule ID: $ruleId")
+            val intent = Intent(context, AutomationActivity::class.java).apply {
+                ruleId?.let { putExtra(AutomationActivity.EXTRA_SETTING_ID, it) }
+            }
+            automationActivityLauncher!!.launch(intent)
+        } else {
+            Log.e("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launcher not registered or null after attempt. Cannot start AutomationActivity. (Registered: $launcherRegistered, Launcher: $automationActivityLauncher)")
+            Toast.makeText(context, "Error: Could not prepare to edit rule.", Toast.LENGTH_SHORT).show()
         }
-        
-        // Initially hide the editor
-        showEditor(false)
+    }
+
+    private fun showDeleteConfirmationDialog(rule: SimpleAutomationSetting) {
+        MaterialAlertDialogBuilder(context)
+            .setTitle(R.string.delete_rule_confirmation)
+            .setMessage("Do you want to delete the rule for ${rule.contactName ?: rule.phoneNumber}?")
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                dialog.dismiss()
+                // Important: Notify adapter to redraw the item to hide swipe actions
+                // and reset its state if deletion is cancelled.
+                val position = rulesAdapter.currentList.indexOf(rule)
+                if (position != -1) {
+                    rulesAdapter.notifyItemChanged(position)
+                }
+            }
+            .setPositiveButton(R.string.delete_rule) { dialog, _ ->
+                deleteRule(rule)
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun deleteRule(rule: SimpleAutomationSetting) {
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            appDatabase.simpleAutomationSettingDao().deleteSettingById(rule.id)
+            loadAutomationRules() // Refresh the list
+        }
     }
     
-    private fun showEditor(show: Boolean) {
-        val editorView = findViewById<ScrollView>(R.id.auto_answer_editor)
-        if (show) {
-            editorView?.beVisible()
-        } else {
-            editorView?.beGone()
+    private fun loadAutomationRules() {
+        if (!::appDatabase.isInitialized) { 
+            appDatabase = AppDatabase.getInstance(context.applicationContext)
         }
-    }
 
-    override fun setupColors(textColor: Int, primaryColor: Int, properPrimaryColor: Int) {
-        // Update colors when theme changes
-        setBackgroundColor(context.getProperBackgroundColor())
+        val rulesListView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
+        if (!::rulesAdapter.isInitialized) {
+            if (rulesListView != null) {
+                setupRecyclerView(rulesListView)
+            } else {
+                Log.e("AutoAnswerSettingsFragment", "RecyclerView not found to initialize adapter in loadAutomationRules.")
+                return 
+            }
+        }
         
-        // Update text colors
-        val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
-        val editorTitle = findViewById<MyTextView>(R.id.auto_answer_editor_title)
+        if (!::rulesAdapter.isInitialized) {
+            Log.e("AutoAnswerSettingsFragment", "Adapter could not be initialized before loading rules.")
+            return
+        }
 
-        emptyText?.setTextColor(textColor)
-        editorTitle?.setTextColor(textColor)
-    }
-
-    override fun onSearchClosed() {
-        // Handle search closure if needed
-    }
-
-    override fun onSearchQueryChanged(text: String) {
-        // Handle search query changes if needed
-    }
-
-    override fun myRecyclerView(): MyRecyclerView? {
-        // This fragment doesn't use a RecyclerView, so return null
-        return null
+        // Use findViewTreeLifecycleOwner() to get the LifecycleScope
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            val rules = appDatabase.simpleAutomationSettingDao().getAllSettings()
+            // Ensure rulesAdapter is still the correct type and initialized
+            if (::rulesAdapter.isInitialized && rulesAdapter is AutomationRulesAdapter) {
+                rulesAdapter.submitList(rules.toMutableList()) // submitList is part of ListAdapter
+            } else {
+                Log.e("AutoAnswerSettingsFragment", "rulesAdapter not an instance of AutomationRulesAdapter or not initialized in lifecycleScope.")
+            }
+            
+            val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
+            // Ensure rulesListView is accessible here or re-fetch it if necessary.
+            // It was fetched at the beginning of the loadAutomationRules method.
+            val rulesListView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
+            if (rules.isEmpty()) {
+                emptyText?.beVisible()
+                rulesListView?.beGone()
+            } else {
+                emptyText?.beGone()
+                rulesListView?.beVisible()
+            }
+        }
     }
 
     override fun refreshItems(invalidate: Boolean, callback: (() -> Unit)?) {
-        // No items to refresh in a static UI
+        // It's good practice to ensure the DB is ready before loading.
+        if (!::appDatabase.isInitialized) {
+            appDatabase = AppDatabase.getInstance(context.applicationContext)
+        }
+        loadAutomationRules()
         callback?.invoke()
     }
+
+    override fun onSearchClosed() {
+        // Implement search closed logic if needed, e.g., clear search filters and refresh list.
+        // For now, providing an empty implementation to satisfy the abstract requirement.
+    }
+
+    override fun onSearchQueryChanged(text: String) {
+        // Implement search logic if needed, e.g., filter the list of automation rules.
+        // For now, providing an empty implementation.
+    }
+
+    // override fun onSortChanged() { /* ... */ }
+    
+    override fun setupColors(textColor: Int, primaryColor: Int, properPrimaryColor: Int) {
+        val properBackgroundColor = context.getProperBackgroundColor()
+        // Setup colors for UI elements in this fragment
+        findViewById<MyTextView>(R.id.auto_answer_empty_text)?.setTextColor(textColor)
+        setBackgroundColor(properBackgroundColor) // Set background for the fragment itself
+
+        // Explicitly set background for the RecyclerView as well
+        findViewById<MyRecyclerView>(R.id.auto_answer_list)?.setBackgroundColor(properBackgroundColor)
+
+        // If your rulesAdapter needs color updates, call its methods here
+        if (::rulesAdapter.isInitialized) {
+            rulesAdapter.updateTextColor(textColor) // Update adapter text color
+            // rulesAdapter.updatePrimaryColor(properPrimaryColor) // If you add this to adapter
+            // rulesAdapter.updateBackgroundColor(properBackgroundColor) // If adapter items need specific bg
+        }
+        
+        // You might also want to update the FAB color if it's themed
+        // findViewById<FloatingActionButton>(R.id.fab_add_automation_rule)?.backgroundTintList = ColorStateList.valueOf(properPrimaryColor)
+    }
+
 }

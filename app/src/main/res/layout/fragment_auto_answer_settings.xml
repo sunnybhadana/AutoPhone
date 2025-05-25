@@ -29,14 +29,25 @@
             android:visibility="gone" />
 
         <!-- Automation rules list -->
-        <androidx.recyclerview.widget.RecyclerView
+        <com.revaltronics.commons.views.MyRecyclerView
             android:id="@+id/auto_answer_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="?attr/colorSurface"
             android:clipToPadding="false"
             android:layoutAnimation="@anim/layout_animation"
             android:paddingBottom="64dp"
             android:scrollbars="none" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_automation_rule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_plus_vector"
+            android:contentDescription="Add New Automation Rule" />
 
     </RelativeLayout>
 
