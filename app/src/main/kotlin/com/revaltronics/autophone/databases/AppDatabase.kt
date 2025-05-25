@@ -12,13 +12,17 @@ import com.revaltronics.autophone.helpers.Converters
 import com.revaltronics.autophone.interfaces.TimerDao
 import com.revaltronics.autophone.models.Timer
 import com.revaltronics.autophone.models.TimerState
+import com.revaltronics.autophone.models.SimpleAutomationSetting
+import com.revaltronics.autophone.db.dao.SimpleAutomationSettingDao
+import com.revaltronics.autophone.db.converters.DtmfStepListConverter
 import java.util.concurrent.Executors
 
-@Database(entities = [Timer::class], version = 2)
-@TypeConverters(Converters::class)
+@Database(entities = [Timer::class, SimpleAutomationSetting::class], version = 6)
+@TypeConverters(Converters::class, DtmfStepListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun TimerDao(): TimerDao
+    abstract fun simpleAutomationSettingDao(): SimpleAutomationSettingDao
 
     companion object {
         private var db: AppDatabase? = null
@@ -29,7 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
                     if (db == null) {
                         db = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app.db")
                             .fallbackToDestructiveMigration()
-                            .addMigrations(MIGRATION_1_2)
                             .addCallback(object : Callback() {
                                 override fun onCreate(db: SupportSQLiteDatabase) {
                                     super.onCreate(db)

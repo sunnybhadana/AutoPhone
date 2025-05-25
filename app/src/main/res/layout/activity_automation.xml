@@ -43,16 +43,22 @@
             android:paddingEnd="16dp"
             android:paddingTop="16dp">
 
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/text_contact"-->
-<!--                android:text="Contact Number"-->
-<!--                android:textSize="18sp"-->
-<!--                android:textFontWeight="@integer/default_font_size"-->
-<!--                android:textAppearance="?attr/textAppearanceHeadline6"-->
-<!--                android:textColor="?attr/colorOnSurfaceVariant"-->
-<!--                android:layout_marginBottom="8dp"/>-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutContactName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:visibility="gone"
+                android:hint="Contact Name">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextContactName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:focusable="false"
+                    android:clickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:id="@+id/layoutPhoneNumberInput"
@@ -90,15 +96,6 @@
                     android:tooltipText="Pick from Contacts"
                     android:contentDescription="Pick contact from address book"/>
             </LinearLayout>
-
-<!--            <com.google.android.material.textview.MaterialTextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Automation Settings"-->
-<!--                android:id="@+id/text_settings"-->
-<!--                android:textAppearance="?attr/textAppearanceHeadline6"-->
-<!--                android:textColor="?attr/colorOnSurfaceVariant"-->
-<!--                android:layout_marginBottom="8dp"/>-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutPickupDelay"
