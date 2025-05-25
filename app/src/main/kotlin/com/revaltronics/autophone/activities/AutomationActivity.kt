@@ -1,14 +1,21 @@
 package com.revaltronics.autophone.activities
 
-import android.content.Context
+import android.Manifest
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.sqlite.SQLiteConstraintException
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.CalendarContract.Colors
+import android.provider.ContactsContract
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.revaltronics.autophone.R
@@ -27,6 +34,10 @@ class AutomationActivity : SimpleActivity() {
     private lateinit var appDatabase: AppDatabase
     private val currentDtmfViews = mutableListOf<View>() // To keep track of DTMF views
     private var currentSettingId: Int? = null // To keep track of the current setting being edited
+    private var selectedPhoneNumbers: List<String> = emptyList() // To store numbers from picked contact
+
+    private lateinit var requestContactPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var pickContactLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // ... existing onCreate setup ...
@@ -84,6 +95,12 @@ class AutomationActivity : SimpleActivity() {
             switchDisconnectCall.setTextColor(properTextColor)
         }
 
+        setupContactPickerLaunchers()
+
+        binding.buttonPickContact.setOnClickListener {
+            pickContact()
+        }
+
         binding.buttonSaveAutomation.setOnClickListener {
             saveAutomationSettings()
         }
@@ -97,16 +114,96 @@ class AutomationActivity : SimpleActivity() {
         loadOrCreateAutomationSetting()
     }
 
+    private fun setupContactPickerLaunchers() {
+        requestContactPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                launchContactPicker()
+            } else {
+                Toast.makeText(this, "Contact permission denied. Cannot pick contacts.", Toast.LENGTH_LONG).show()
+            }
+        }
+
+        pickContactLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                result.data?.data?.let { contactUri -> // contactUri is for the contact itself
+                    var contactId: String? = null
+                    var displayName: String? = null
+
+                    // First, get the Contact ID and Display Name
+                    contentResolver.query(contactUri, arrayOf(ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME), null, null, null)?.use { cursor ->
+                        if (cursor.moveToFirst()) {
+                            val idIndex = cursor.getColumnIndex(ContactsContract.Contacts._ID)
+                            val nameIndex = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+                            contactId = cursor.getString(idIndex)
+                            displayName = cursor.getString(nameIndex)
+                        }
+                    }
+
+                    if (contactId != null && displayName != null) {
+                        binding.editTextContactName.setText(displayName)
+                        binding.textInputLayoutContactName.visibility = View.VISIBLE
+
+                        // Now, get all phone numbers for this contactId
+                        val tempPhoneNumbers = mutableListOf<String>()
+                        val phoneProjection = arrayOf(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                        val phoneQueryUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI
+                        val phoneSelection = ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?"
+                        val phoneSelectionArgs = arrayOf(contactId)
+
+                        contentResolver.query(phoneQueryUri, phoneProjection, phoneSelection, phoneSelectionArgs, null)?.use { phoneCursor ->
+                            val numberIndex = phoneCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                            while (phoneCursor.moveToNext()) {
+                                val number = phoneCursor.getString(numberIndex)
+                                tempPhoneNumbers.add(normalizePhoneNumber(number)) // Assuming normalizePhoneNumber exists
+                            }
+                        }
+
+                        if (tempPhoneNumbers.isNotEmpty()) {
+                            selectedPhoneNumbers = tempPhoneNumbers // Store them
+                            binding.editTextPhoneNumber.setText(selectedPhoneNumbers.joinToString(", "))
+                            binding.editTextPhoneNumber.isEnabled = false // Make non-editable
+                        } else {
+                            selectedPhoneNumbers = emptyList()
+                            binding.editTextPhoneNumber.setText("") // Clear if no numbers found
+                            binding.editTextPhoneNumber.isEnabled = true // Make editable
+                            Toast.makeText(this, "No phone numbers found for this contact.", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        // Contact ID or display name not found, reset
+                        selectedPhoneNumbers = emptyList()
+                        binding.editTextContactName.setText("")
+                        binding.textInputLayoutContactName.visibility = View.GONE
+                        binding.editTextPhoneNumber.setText("")
+                        binding.editTextPhoneNumber.isEnabled = true // Make editable
+                        Toast.makeText(this, "Could not retrieve contact details.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun pickContact() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            launchContactPicker()
+        } else {
+            requestContactPermissionLauncher.launch(Manifest.permission.READ_CONTACTS)
+        }
+    }
+
+    private fun launchContactPicker() {
+        // Changed to pick a contact instead of a specific phone number
+        val intent = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI)
+        pickContactLauncher.launch(intent)
+    }
+
     private fun saveAutomationSettings() {
-        val contactName = binding.editTextContactName.text.toString()
-        val phoneNumber = binding.editTextPhoneNumber.text.toString().trim() // Now a single phone number
+        val contactNameToSave = binding.editTextContactName.text.toString().ifBlank { null }
+        // val phoneNumber = binding.editTextPhoneNumber.text.toString().trim() // No longer read directly if selectedPhoneNumbers is used
         val pickupDelayString = binding.editTextPickupDelay.text.toString()
         val autoDisconnect = binding.switchDisconnectCall.isChecked
 
-        if (phoneNumber.isBlank()) {
-            Toast.makeText(this, "Phone number cannot be empty", Toast.LENGTH_SHORT).show()
-            return
-        }
+        // Phone number validation will happen inside the loop for multiple numbers
+        // or before for a single number.
 
         val pickupDelay = pickupDelayString.toIntOrNull() ?: 0
 
@@ -120,27 +217,106 @@ class AutomationActivity : SimpleActivity() {
             }
         }
 
+        val numbersToSave: List<String> = if (selectedPhoneNumbers.isNotEmpty()) {
+            selectedPhoneNumbers
+        } else {
+            val manualNumber = binding.editTextPhoneNumber.text.toString().trim()
+            if (manualNumber.isBlank()) {
+                Toast.makeText(this, "Phone number cannot be empty", Toast.LENGTH_SHORT).show()
+                return
+            }
+            listOf(normalizePhoneNumber(manualNumber))
+        }
+
+        if (numbersToSave.all { it.isBlank() }) {
+            Toast.makeText(this, "No valid phone numbers to save.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
         lifecycleScope.launch {
-            try {
+            var settingsSavedCount = 0
+            var settingsFailedCount = 0
+            val errors = mutableListOf<String>()
+
+            if (selectedPhoneNumbers.isNotEmpty()) {
+                // If contact name is blank but we have selected numbers from a contact,
+                // it implies the contact had no name or failed to retrieve.
+                // User should be prompted or it should be handled.
+                // For now, we use contactNameToSave which could be null.
+                // The SimpleAutomationSetting allows nullable contactName.
+
+                selectedPhoneNumbers.forEach { number ->
+                    val normalizedNumber = normalizePhoneNumber(number) // Ensure normalization
+                    if (normalizedNumber.isBlank()) {
+                        settingsFailedCount++
+                        errors.add("A selected number was blank.")
+                        return@forEach // Skip blank numbers
+                    }
+                    val settingToSave = SimpleAutomationSetting(
+                        id = 0, // Always new when saving multiple from contact
+                        contactName = contactNameToSave, // This comes from editTextContactName
+                        phoneNumber = normalizedNumber,
+                        pickupDelaySeconds = pickupDelay,
+                        autoDisconnectCall = autoDisconnect,
+                        dtmfSequence = dtmfSequence
+                    )
+                    try {
+                        appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
+                        settingsSavedCount++
+                    } catch (e: SQLiteConstraintException) {
+                        settingsFailedCount++
+                        errors.add("Number $normalizedNumber already configured.")
+                    } catch (e: Exception) {
+                        settingsFailedCount++
+                        errors.add("Error saving $normalizedNumber: ${e.localizedMessage}")
+                    }
+                }
+            } else { // Fallback to manual entry in editTextPhoneNumber
+                val phoneNumberFromInput = normalizePhoneNumber(binding.editTextPhoneNumber.text.toString().trim())
+                if (phoneNumberFromInput.isBlank()) {
+                    Toast.makeText(this@AutomationActivity, "Phone number cannot be empty", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
                 val settingToSave = SimpleAutomationSetting(
                     id = currentSettingId ?: 0,
-                    contactName = contactName.ifBlank { null },
-                    phoneNumber = phoneNumber, // Use the single phone number
+                    contactName = contactNameToSave,
+                    phoneNumber = phoneNumberFromInput,
                     pickupDelaySeconds = pickupDelay,
                     autoDisconnectCall = autoDisconnect,
                     dtmfSequence = dtmfSequence
                 )
-                if (currentSettingId == null || currentSettingId == 0) { // New setting
-                    appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave.copy(id = 0))
-                } else { // Existing setting
-                    appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
+                try {
+                    if (currentSettingId == null || currentSettingId == 0) { // New setting
+                        appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave.copy(id = 0))
+                    } else { // Existing setting
+                        appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
+                    }
+                    settingsSavedCount++
+                } catch (e: SQLiteConstraintException) {
+                    settingsFailedCount++
+                    errors.add("Number $phoneNumberFromInput already configured.")
+                } catch (e: Exception) {
+                    settingsFailedCount++
+                    errors.add("Error saving $phoneNumberFromInput: ${e.localizedMessage}")
                 }
-                Toast.makeText(this@AutomationActivity, "Automation settings saved", Toast.LENGTH_SHORT).show()
-                resetFieldsAndPrepareForNew() // Reset fields after saving
-            } catch (e: SQLiteConstraintException) {
-                Toast.makeText(this@AutomationActivity, "Error: This phone number is already configured.", Toast.LENGTH_LONG).show()
-            } catch (e: Exception) {
-                Toast.makeText(this@AutomationActivity, "Error saving settings: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            }
+
+            // Report results
+            var message = ""
+            if (settingsSavedCount > 0) {
+                message += "$settingsSavedCount setting(s) saved. "
+            }
+            if (settingsFailedCount > 0) {
+                message += "$settingsFailedCount setting(s) failed. (${errors.joinToString("; ")})"
+            }
+            if (message.isBlank()) {
+                message = "No settings were changed."
+            }
+
+            Toast.makeText(this@AutomationActivity, message.trim(), Toast.LENGTH_LONG).show()
+
+            if (settingsSavedCount > 0 || selectedPhoneNumbers.isNotEmpty()) {
+                resetFieldsAndPrepareForNew()
             }
         }
     }
@@ -157,6 +333,7 @@ class AutomationActivity : SimpleActivity() {
                     binding.editTextContactName.setText(setting.contactName ?: "")
                     binding.textInputLayoutContactName.visibility = if (setting.contactName.isNullOrEmpty()) View.GONE else View.VISIBLE
                     binding.editTextPhoneNumber.setText(setting.phoneNumber) // Set single phone number
+                    binding.editTextPhoneNumber.isEnabled = true // Ensure editable when loading a single specific rule
                     binding.editTextPickupDelay.setText(setting.pickupDelaySeconds.toString())
                     binding.switchDisconnectCall.isChecked = setting.autoDisconnectCall
 
@@ -179,9 +356,11 @@ class AutomationActivity : SimpleActivity() {
 
     private fun resetFieldsAndPrepareForNew() {
         currentSettingId = null
+        selectedPhoneNumbers = emptyList() // Clear the selected numbers
         binding.editTextContactName.setText("")
-        binding.textInputLayoutContactName.visibility = View.GONE // Ensure it's hidden
+        binding.textInputLayoutContactName.visibility = View.GONE
         binding.editTextPhoneNumber.setText("")
+        binding.editTextPhoneNumber.isEnabled = true // Make editable for new manual entry
         binding.editTextPickupDelay.setText("0")
         binding.switchDisconnectCall.isChecked = false
         binding.linearLayoutDtmf.removeAllViews()
@@ -241,6 +420,14 @@ class AutomationActivity : SimpleActivity() {
 
         binding.linearLayoutDtmf.addView(itemBinding.root)
         currentDtmfViews.add(itemBinding.root)
+    }
+
+    // It's good practice to have normalizePhoneNumber accessible, e.g. as a private fun or extension
+    // Assuming it's defined elsewhere or like this:
+    private fun normalizePhoneNumber(number: String): String {
+        // Example: Remove all non-numeric characters except leading '+'
+        val digits = number.filter { it.isDigit() }
+        return if (number.startsWith("+")) "+$digits" else digits
     }
 }
 
