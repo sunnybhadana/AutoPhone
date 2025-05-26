@@ -72,5 +72,13 @@
             android:textSize="12sp"
             tools:text="Auto-disconnect: Yes" />
 
+        <TextView
+            android:id="@+id/textViewAutoAnswerLimitsRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textSize="12sp"
+            tools:text="Auto-answer: 2/5 (resets every 60 min)" />
+
     </LinearLayout>
 </FrameLayout>

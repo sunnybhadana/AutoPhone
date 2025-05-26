@@ -17,7 +17,7 @@ import com.revaltronics.autophone.db.dao.SimpleAutomationSettingDao
 import com.revaltronics.autophone.db.converters.DtmfStepListConverter
 import java.util.concurrent.Executors
 
-@Database(entities = [Timer::class, SimpleAutomationSetting::class], version = 6)
+@Database(entities = [Timer::class, SimpleAutomationSetting::class], version = 7)
 @TypeConverters(Converters::class, DtmfStepListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -26,6 +26,21 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         private var db: AppDatabase? = null
+        
+        // Migration from version 6 to 7 - Adding call tracking fields
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Add new columns to the simple_automation_settings table
+                db.execSQL("ALTER TABLE simple_automation_settings ADD COLUMN batch_group_id TEXT NOT NULL DEFAULT ''")
+                db.execSQL("ALTER TABLE simple_automation_settings ADD COLUMN answered_calls_count INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE simple_automation_settings ADD COLUMN max_auto_answers INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE simple_automation_settings ADD COLUMN reset_interval_minutes INTEGER NOT NULL DEFAULT 0")
+                db.execSQL("ALTER TABLE simple_automation_settings ADD COLUMN last_reset_timestamp INTEGER NOT NULL DEFAULT 0")
+                
+                // Create index for batch_group_id
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_simple_automation_settings_batch_group_id ON simple_automation_settings(batch_group_id)")
+            }
+        }
 
         fun getInstance(context: Context): AppDatabase {
             if (db == null) {
@@ -33,6 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
                     if (db == null) {
                         db = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app.db")
                             .fallbackToDestructiveMigration()
+                            .addMigrations(MIGRATION_6_7)
                             .addCallback(object : Callback() {
                                 override fun onCreate(db: SupportSQLiteDatabase) {
                                     super.onCreate(db)

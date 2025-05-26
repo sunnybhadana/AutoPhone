@@ -54,6 +54,15 @@ class AutomationRulesAdapter(
             val autoDisconnectText = if (rule.autoDisconnectCall) itemView.context.getString(R.string.yes) else itemView.context.getString(R.string.no) // Changed rule.autoDisconnect to rule.autoDisconnectCall
             binding.textViewAutoDisconnectRule.text = itemView.context.getString(R.string.auto_disconnect_formatted, autoDisconnectText)
             binding.textViewAutoDisconnectRule.setTextColor(textColor) // Apply textColor
+            
+            // Format and display auto-answer limits
+            val limitsText = when {
+                rule.max_auto_answers <= 0 -> itemView.context.getString(R.string.unlimited)
+                rule.reset_interval_minutes <= 0 -> "${rule.answered_calls_count}/${rule.max_auto_answers} (no reset)"
+                else -> "${rule.answered_calls_count}/${rule.max_auto_answers} (resets every ${rule.reset_interval_minutes} min)"
+            }
+            binding.textViewAutoAnswerLimitsRule.text = itemView.context.getString(R.string.auto_answer_limits_formatted, limitsText)
+            binding.textViewAutoAnswerLimitsRule.setTextColor(textColor) // Apply textColor
         }
     }
 

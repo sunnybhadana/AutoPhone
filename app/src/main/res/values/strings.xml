@@ -119,4 +119,6 @@
     <string name="no_contact_name">Unknown Contact</string>
     <string name="pickup_delay_formatted">Pickup after: %ds</string>
     <string name="auto_disconnect_formatted">Auto-disconnect: %s</string>
+    <string name="auto_answer_limits_formatted">Auto-answer limits: %s</string>
+    <string name="unlimited">Unlimited</string>
 </resources>

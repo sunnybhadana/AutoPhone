@@ -110,15 +110,17 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         }
 
         // Only proceed if the lifecycle is at least in CREATED state
-        // This check is correct and should remain to avoid registering when the lifecycle is too early
         if (!owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.CREATED)) {
             Log.w("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner (${owner::class.java.simpleName}) is in state ${owner.lifecycle.currentState}, which is before CREATED. Cannot register launcher at this state.")
             return
         }
         
-        // IMPORTANT: This was the previous error - we incorrectly checked if the state was STARTED or later,
-        // and then returned, which prevented registration. We should only return if NOT at least CREATED.
-        // The above check is sufficient, DO NOT add another check here that returns when state is STARTED or greater.
+        // CRITICAL: ActivityResultLauncher must be registered before the STARTED state
+        // As per error: "LifecycleOwners must call register before they are STARTED"
+        if (owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) {
+            Log.w("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner (${owner::class.java.simpleName}) is in state ${owner.lifecycle.currentState}, which is STARTED or later. Must register before STARTED state.")
+            return
+        }
 
         Log.d("AutoAnswerSettingsFragment", "tryRegisterLauncher: Attempting registration with owner ${owner::class.java.simpleName} in state ${owner.lifecycle.currentState}.")
         try {
@@ -173,7 +175,8 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             appDatabase = AppDatabase.getInstance(context.applicationContext)
         }
         Log.d("AutoAnswerSettingsFragment", "onAttachedToWindow: Called.")
-        tryRegisterLauncher() // Attempt registration
+        // Don't attempt registration here - it's too late in the lifecycle
+        // The launcher should be registered in setHostingFragment or onFinishInflate
         loadAutomationRules()
     }
 
@@ -344,16 +347,13 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             }
         }
         
-        // Try using the activity result launcher
+        // Check if launcher is registered, but DO NOT attempt registration here
+        // as we may be in RESUMED state already and it's too late to register
         if (!launcherRegistered) {
-            Log.w("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launcher not registered. Attempting registration now.")
-            if (mainActivity != null) {
-                // If we have a direct activity reference, use its lifecycle owner
-                tryRegisterLauncher(mainActivity as? LifecycleOwner)
-            } else {
-                // Otherwise try with whatever is available
-                tryRegisterLauncher()
-            }
+            Log.w("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launcher not registered. Will use fallback launch method.")
+            // Skip registration attempt and go straight to fallback
+            fallbackLaunch(ruleId)
+            return
         }
 
         if (launcherRegistered && automationActivityLauncher != null) {

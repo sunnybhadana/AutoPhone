@@ -87,7 +87,8 @@ class AutomationActivity : SimpleActivity() {
         binding.apply {
             // Ensure these specific MaterialTextViews get the correct color
             arrayOf(
-                textDtmf
+                textDtmf,
+                textAdvancedOptions
             ).forEach {
                 it.setTextColor(properTextColor)
             }
@@ -96,11 +97,15 @@ class AutomationActivity : SimpleActivity() {
             textInputLayoutPhoneNumber.defaultHintTextColor = properTextColor.getColorStateList()
             textInputLayoutPickupDelay.defaultHintTextColor = properTextColor.getColorStateList()
             textInputLayoutContactName.defaultHintTextColor = properTextColor.getColorStateList()
+            textInputLayoutMaxAutoAnswers.defaultHintTextColor = properTextColor.getColorStateList()
+            textInputLayoutResetInterval.defaultHintTextColor = properTextColor.getColorStateList()
             
             // Set text color for all TextInputEditText fields to BLACK for better visibility
             editTextPhoneNumber.setTextColor(Color.BLACK)
             editTextPickupDelay.setTextColor(Color.BLACK)
             editTextContactName.setTextColor(Color.BLACK)
+            editTextMaxAutoAnswers.setTextColor(Color.BLACK)
+            editTextResetInterval.setTextColor(Color.BLACK)
             // If you have dynamically added DTMF TextInputLayouts, they would need similar treatment
 
             // Update SwitchMaterial text color
@@ -225,11 +230,15 @@ class AutomationActivity : SimpleActivity() {
         // val phoneNumber = binding.editTextPhoneNumber.text.toString().trim() // No longer read directly if selectedPhoneNumbers is used
         val pickupDelayString = binding.editTextPickupDelay.text.toString()
         val autoDisconnect = binding.switchDisconnectCall.isChecked
+        val maxAutoAnswersString = binding.editTextMaxAutoAnswers.text.toString()
+        val resetIntervalString = binding.editTextResetInterval.text.toString()
 
         // Phone number validation will happen inside the loop for multiple numbers
         // or before for a single number.
 
         val pickupDelay = pickupDelayString.toIntOrNull() ?: 0
+        val maxAutoAnswers = maxAutoAnswersString.toIntOrNull() ?: 0
+        val resetIntervalMinutes = resetIntervalString.toIntOrNull() ?: 0
 
         val dtmfSequence = mutableListOf<DtmfStep>()
         currentDtmfViews.forEach { view ->
@@ -282,7 +291,10 @@ class AutomationActivity : SimpleActivity() {
                         phoneNumber = normalizedNumber,
                         pickupDelaySeconds = pickupDelay,
                         autoDisconnectCall = autoDisconnect,
-                        dtmfSequence = dtmfSequence
+                        dtmfSequence = dtmfSequence,
+                        batch_group_id = if (selectedPhoneNumbers.size > 1) contactNameToSave ?: "" else "",
+                        max_auto_answers = maxAutoAnswers,
+                        reset_interval_minutes = resetIntervalMinutes
                     )
                     try {
                         appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
@@ -307,7 +319,10 @@ class AutomationActivity : SimpleActivity() {
                     phoneNumber = phoneNumberFromInput,
                     pickupDelaySeconds = pickupDelay,
                     autoDisconnectCall = autoDisconnect,
-                    dtmfSequence = dtmfSequence
+                    dtmfSequence = dtmfSequence,
+                    batch_group_id = "", // Single entry, no batch group
+                    max_auto_answers = maxAutoAnswers,
+                    reset_interval_minutes = resetIntervalMinutes
                 )
                 try {
                     if (currentSettingId == null || currentSettingId == 0) { // New setting
@@ -367,6 +382,10 @@ class AutomationActivity : SimpleActivity() {
                     binding.editTextPhoneNumber.isEnabled = true // When editing, phone number should be editable
                     binding.editTextPickupDelay.setText(setting.pickupDelaySeconds.toString())
                     binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
+                    binding.editTextMaxAutoAnswers.setText(setting.max_auto_answers.toString())
+                    binding.editTextMaxAutoAnswers.setTextColor(Color.BLACK) // Ensure text color is BLACK
+                    binding.editTextResetInterval.setText(setting.reset_interval_minutes.toString())
+                    binding.editTextResetInterval.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.switchDisconnectCall.isChecked = setting.autoDisconnectCall
 
                     binding.linearLayoutDtmf.removeAllViews()
@@ -398,6 +417,10 @@ class AutomationActivity : SimpleActivity() {
         binding.editTextPhoneNumber.isEnabled = true // Make editable for new manual entry
         binding.editTextPickupDelay.setText("0")
         binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
+        binding.editTextMaxAutoAnswers.setText("0")
+        binding.editTextMaxAutoAnswers.setTextColor(Color.BLACK) // Ensure text color is BLACK
+        binding.editTextResetInterval.setText("0")
+        binding.editTextResetInterval.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.switchDisconnectCall.isChecked = false
         binding.linearLayoutDtmf.removeAllViews()
         currentDtmfViews.clear()

@@ -100,8 +100,51 @@
                 android:id="@+id/switchDisconnectCall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="Auto Disconnect Call After DTMF" />
+
+            <TextView
+                android:id="@+id/textAdvancedOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Auto-Answer Limits:"
+                android:textAppearance="?attr/textAppearanceSubtitle1" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutMaxAutoAnswers"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:hint="Max Auto-Answers (0 for unlimited)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextMaxAutoAnswers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textColor="#000000"
+                    android:text="0" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutResetInterval"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="Reset Interval (minutes, 0 for never)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextResetInterval"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textColor="#000000"
+                    android:text="0" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/textDtmf"
