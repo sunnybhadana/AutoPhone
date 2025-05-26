@@ -106,6 +106,7 @@ class AutomationActivity : SimpleActivity() {
             editTextContactName.setTextColor(Color.BLACK)
             editTextMaxAutoAnswers.setTextColor(Color.BLACK)
             editTextResetInterval.setTextColor(Color.BLACK)
+            switchIsActive.setTextColor(Color.BLACK)
             // If you have dynamically added DTMF TextInputLayouts, they would need similar treatment
 
             // Update SwitchMaterial text color
@@ -272,6 +273,11 @@ class AutomationActivity : SimpleActivity() {
             var settingsFailedCount = 0
             val errors = mutableListOf<String>()
 
+            // Generate a batch group ID if we have multiple phone numbers
+            val batchGroupId = if (selectedPhoneNumbers.size > 1) {
+                appDatabase.simpleAutomationSettingDao().getNextBatchGroupId().toString()
+            } else ""
+
             if (selectedPhoneNumbers.isNotEmpty()) {
                 // If contact name is blank but we have selected numbers from a contact,
                 // it implies the contact had no name or failed to retrieve.
@@ -293,7 +299,7 @@ class AutomationActivity : SimpleActivity() {
                         pickupDelaySeconds = pickupDelay,
                         autoDisconnectCall = autoDisconnect,
                         dtmfSequence = dtmfSequence,
-                        batch_group_id = if (selectedPhoneNumbers.size > 1) contactNameToSave ?: "" else "",
+                        batch_group_id = if (selectedPhoneNumbers.size > 1) batchGroupId else "",
                         max_auto_answers = maxAutoAnswers,
                         reset_interval_minutes = resetIntervalMinutes,
                         isActive = isActive

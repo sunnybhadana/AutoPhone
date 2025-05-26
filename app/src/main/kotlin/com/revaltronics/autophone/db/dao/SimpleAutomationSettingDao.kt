@@ -137,4 +137,28 @@ interface SimpleAutomationSettingDao {
         val totalAnswered = settings.sumOf { it.answered_calls_count }
         return totalAnswered < rule.max_auto_answers
     }
+    
+    /**
+     * Get the next available integer batch group ID
+     * @return The next available integer as a string
+     */
+    @Query("SELECT COALESCE(MAX(CAST(batch_group_id AS INTEGER)), 0) + 1 FROM simple_automation_settings WHERE batch_group_id != '' AND CAST(batch_group_id AS INTEGER) = batch_group_id")
+    suspend fun getNextBatchGroupId(): Int
+
+    /**
+     * Find rules related to this phone number by batch group
+     * This is useful for finding all numbers from the same contact
+     * @param phoneNumber The phone number to check
+     * @return A list of related rules that share the same batch group
+     */
+    @Transaction
+    suspend fun findRelatedRulesByBatchGroup(phoneNumber: String): List<SimpleAutomationSetting> {
+        val rule = getSettingByPhoneNumber(phoneNumber) ?: return emptyList()
+        
+        // If the rule doesn't have a batch group, just return the rule itself
+        if (rule.batch_group_id.isEmpty()) return listOf(rule)
+        
+        // Return all rules that share the same batch group
+        return getSettingsByBatchGroup(rule.batch_group_id)
+    }
 }

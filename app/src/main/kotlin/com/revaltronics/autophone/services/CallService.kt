@@ -67,6 +67,21 @@ class CallService : InCallService() {
                     }
                 }
                 
+                // Check if this number belongs to a batch group - useful for contacts
+                // with multiple numbers like helpdesks, support centers, etc.
+                if (rule == null) {
+                    // Try checking if any number in batch groups matches our formats
+                    val allSettings = appDatabase.simpleAutomationSettingDao().getAllBatchedSettings()
+                    for (setting in allSettings) {
+                        // Compare this setting's number with our incoming number in various formats
+                        if (numberFormatMatches(setting.phoneNumber, normalizedNumber)) {
+                            Log.d(TAG, "Found match through batch group comparison: ${setting.phoneNumber} matches $normalizedNumber")
+                            rule = setting
+                            break
+                        }
+                    }
+                }
+                
                 rule
             } catch (e: Exception) {
                 Log.e(TAG, "Error finding automation rule: ${e.message}", e)
@@ -274,8 +289,6 @@ class CallService : InCallService() {
                 val updatedRule = appDatabase.simpleAutomationSettingDao().getSettingById(rule.id)
                 
                 if (updatedRule != null) {
-                    // Update the individual rule counter
-                    val newCount = updatedRule.answered_calls_count + 1
                     val currentTime = System.currentTimeMillis()
                     
                     // Initialize timestamp if it's not set or keep the existing one
@@ -287,16 +300,46 @@ class CallService : InCallService() {
                         updatedRule.last_reset_timestamp
                     }
                     
-                    // Update the rule with incremented count
-                    val ruleToUpdate = updatedRule.copy(
-                        answered_calls_count = newCount,
-                        last_reset_timestamp = timestamp
-                    )
+                    // Check if this rule belongs to a batch group
+                    if (updatedRule.batch_group_id.isNotEmpty()) {
+                        // Get all rules in this batch group
+                        val batchRules = appDatabase.simpleAutomationSettingDao().getSettingsByBatchGroup(updatedRule.batch_group_id)
+                        
+                        // Update all rules in the batch group with the same counter
+                        for (batchRule in batchRules) {
+                            val newCount = batchRule.answered_calls_count + 1
+                            val ruleToUpdate = batchRule.copy(
+                                answered_calls_count = newCount,
+                                last_reset_timestamp = timestamp
+                            )
+                            appDatabase.simpleAutomationSettingDao().updateSetting(ruleToUpdate)
+                            
+                            Log.d(TAG, "Updated counter for batch member ${batchRule.phoneNumber} in group ${batchRule.batch_group_id}: " +
+                                "count now ${newCount}")
+                        }
+                    } else {
+                        // Update just this individual rule counter
+                        val newCount = updatedRule.answered_calls_count + 1
+                        val ruleToUpdate = updatedRule.copy(
+                            answered_calls_count = newCount,
+                            last_reset_timestamp = timestamp
+                        )
+                        
+                        appDatabase.simpleAutomationSettingDao().updateSetting(ruleToUpdate)
+                    }
                     
-                    appDatabase.simpleAutomationSettingDao().updateSetting(ruleToUpdate)
+                    // Get the final count based on whether it's a batch group or individual rule
+                    val finalCount = if (updatedRule.batch_group_id.isNotEmpty()) {
+                        // For batch rules, get the sum of all counts in the group
+                        val batchRules = appDatabase.simpleAutomationSettingDao().getSettingsByBatchGroup(updatedRule.batch_group_id)
+                        batchRules.sumOf { it.answered_calls_count }
+                    } else {
+                        // For individual rules, use the just-updated count
+                        updatedRule.answered_calls_count + 1
+                    }
                     
                     val limitInfo = if (updatedRule.max_auto_answers > 0) {
-                        "${newCount}/${updatedRule.max_auto_answers}"
+                        "$finalCount/${updatedRule.max_auto_answers}"
                     } else {
                         "unlimited"
                     }
@@ -621,6 +664,37 @@ class CallService : InCallService() {
                 false
             }
         }
+    }
+
+    /**
+     * Helper function to compare phone numbers in different formats
+     * @param storedNumber The number stored in database
+     * @param incomingNumber The incoming call number
+     * @return True if the numbers match in any format, false otherwise
+     */
+    private fun numberFormatMatches(storedNumber: String, incomingNumber: String): Boolean {
+        // Direct match
+        if (storedNumber == incomingNumber) return true
+        
+        // Check if one has country code and the other doesn't
+        if (incomingNumber.startsWith("+") && incomingNumber.length > 10) {
+            val withoutCountryCode = incomingNumber.substring(3)
+            if (storedNumber == withoutCountryCode) return true
+        }
+        
+        if (storedNumber.startsWith("+") && storedNumber.length > 10) {
+            val withoutCountryCode = storedNumber.substring(3)
+            if (withoutCountryCode == incomingNumber) return true
+        }
+        
+        // Check last 10 digits
+        if (incomingNumber.length >= 10 && storedNumber.length >= 10) {
+            val incomingLast10 = incomingNumber.substring(incomingNumber.length - 10)
+            val storedLast10 = storedNumber.substring(storedNumber.length - 10)
+            if (incomingLast10 == storedLast10) return true
+        }
+        
+        return false
     }
 
     override fun onCallAdded(call: Call) {
