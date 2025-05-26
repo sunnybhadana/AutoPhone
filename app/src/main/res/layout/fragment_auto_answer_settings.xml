@@ -28,16 +28,23 @@
             android:textStyle="italic"
             android:visibility="gone" />
 
-        <!-- Automation rules list -->
-        <com.revaltronics.commons.views.MyRecyclerView
-            android:id="@+id/auto_answer_list"
+        <!-- SwipeRefreshLayout for pull-to-refresh -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/auto_answer_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?attr/colorSurface"
-            android:clipToPadding="false"
-            android:layoutAnimation="@anim/layout_animation"
-            android:paddingBottom="64dp"
-            android:scrollbars="none" />
+            android:layout_height="match_parent">
+
+            <!-- Automation rules list -->
+            <com.revaltronics.commons.views.MyRecyclerView
+                android:id="@+id/auto_answer_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
+                android:clipToPadding="false"
+                android:layoutAnimation="@anim/layout_animation"
+                android:paddingBottom="64dp"
+                android:scrollbars="none" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 

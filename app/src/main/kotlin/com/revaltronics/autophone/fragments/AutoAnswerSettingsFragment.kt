@@ -22,9 +22,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.revaltronics.autophone.R
 import com.revaltronics.autophone.activities.AutomationActivity
 import com.revaltronics.autophone.adapters.AutomationRulesAdapter
@@ -187,9 +187,11 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
 
         val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
         val rulesList = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)
 
         emptyText?.setTextColor(textColor)
         setupRecyclerView(rulesList)
+        setupSwipeRefresh(swipeRefreshLayout)
 
         emptyText?.beGone()
         rulesList?.beVisible()
@@ -478,6 +480,10 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             
             // Update empty view visibility based on filtered results
             updateEmptyViewVisibility(displayedRules.isEmpty())
+            
+            // Always ensure the SwipeRefreshLayout is not showing the refresh indicator
+            // after data has been loaded
+            findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)?.isRefreshing = false
         }
     }
     
@@ -485,6 +491,7 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     private fun updateEmptyViewVisibility(isEmpty: Boolean) {
         val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
         val rulesListView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)
         
         if (isEmpty) {
             // If we have a search query, show a "no results found" message
@@ -494,10 +501,10 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 emptyText?.text = context.getString(R.string.no_auto_answer_rules)
             }
             emptyText?.beVisible()
-            rulesListView?.beGone()
+            swipeRefreshLayout?.beGone()
         } else {
             emptyText?.beGone()
-            rulesListView?.beVisible()
+            swipeRefreshLayout?.beVisible()
         }
     }
 
@@ -506,7 +513,17 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         if (!::appDatabase.isInitialized) {
             appDatabase = AppDatabase.getInstance(context.applicationContext)
         }
+        
+        // If the SwipeRefreshLayout isn't already showing the refresh indicator,
+        // and this is triggered by an explicit refresh request, show it manually
+        if (invalidate) {
+            findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)?.isRefreshing = true
+        }
+        
         loadAutomationRules()
+        
+        // Make sure to hide the refresh indicator after data is loaded
+        findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)?.isRefreshing = false
         callback?.invoke()
     }
     
@@ -568,12 +585,31 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
 
         // Explicitly set background for the RecyclerView as well
         findViewById<MyRecyclerView>(R.id.auto_answer_list)?.setBackgroundColor(properBackgroundColor)
+        
+        // Set color scheme for the SwipeRefreshLayout
+        findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)?.setColorSchemeColors(properPrimaryColor)
 
         // If your rulesAdapter needs color updates, call its methods here
         if (::rulesAdapter.isInitialized) {
             rulesAdapter.updateTextColor(textColor) // Update adapter text color
             // rulesAdapter.updatePrimaryColor(properPrimaryColor) // If you add this to adapter
             // rulesAdapter.updateBackgroundColor(properBackgroundColor) // If adapter items need specific bg
+        }
+    }
+
+    private fun setupSwipeRefresh(swipeRefreshLayout: SwipeRefreshLayout?) {
+        swipeRefreshLayout?.apply {
+            // Set colors for the refresh indicator
+            val primaryColor = context.getProperPrimaryColor()
+            setColorSchemeColors(primaryColor)
+            
+            // Set listener to trigger refresh action
+            setOnRefreshListener {
+                refreshItems(invalidate = true) {
+                    // Hide refresh indicator when data loading is complete
+                    this.isRefreshing = false
+                }
+            }
         }
     }
 
