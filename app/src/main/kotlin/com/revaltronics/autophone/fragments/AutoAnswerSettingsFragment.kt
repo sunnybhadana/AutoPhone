@@ -184,21 +184,9 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
 
         val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
         val rulesList = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
-        val fabAddRule = findViewById<FloatingActionButton>(R.id.fab_add_automation_rule)
 
         emptyText?.setTextColor(textColor)
         setupRecyclerView(rulesList)
-
-        fabAddRule?.setOnClickListener {
-            if (automationActivityLauncher == null && !launcherRegistered) {
-                Log.w("AutoAnswerSettingsFragment", "Launcher not initialized on FAB click, attempting registration again.")
-                tryRegisterLauncher()
-            }
-            automationActivityLauncher?.let { launcher ->
-                val intent = Intent(context, AutomationActivity::class.java)
-                launcher.launch(intent)
-            } ?: Log.e("AutoAnswerSettingsFragment", "Activity launcher still not initialized. Cannot add rule.")
-        }
 
         emptyText?.beGone()
         rulesList?.beVisible()
@@ -217,7 +205,6 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 // Adapter now only takes onRuleClick for editing
                 rulesAdapter = AutomationRulesAdapter(
                     onRuleClick = { rule ->
-                        Toast.makeText(context, "Clicked on Rule", Toast.LENGTH_SHORT).show()
                         launchAutomationActivityForRule(rule.id)
                     }
                     // Removed onEditClick and onDeleteClick lambdas
@@ -588,9 +575,6 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             // rulesAdapter.updatePrimaryColor(properPrimaryColor) // If you add this to adapter
             // rulesAdapter.updateBackgroundColor(properBackgroundColor) // If adapter items need specific bg
         }
-        
-        // You might also want to update the FAB color if it's themed
-        // findViewById<FloatingActionButton>(R.id.fab_add_automation_rule)?.backgroundTintList = ColorStateList.valueOf(properPrimaryColor)
     }
 
 }
