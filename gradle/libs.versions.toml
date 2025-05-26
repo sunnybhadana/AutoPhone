@@ -1,6 +1,6 @@
 [versions]
 #jetbrains
-autophoneCommons = "v1.0.0"
+autophoneCommons = "v1.0.1"
 kotlin = "1.9.25"
 kotlinxSerializationJson = "1.6.3"
 #KSP

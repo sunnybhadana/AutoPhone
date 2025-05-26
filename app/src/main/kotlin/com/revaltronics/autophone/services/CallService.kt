@@ -334,9 +334,36 @@ class CallService : InCallService() {
             Log.d(TAG, "Auto-answering call from ${rule.phoneNumber} after ${rule.pickupDelaySeconds}s delay")
             call.answer(VideoProfile.STATE_AUDIO_ONLY)
             
-            // If there are DTMF steps, execute them sequentially
+            // If there are DTMF steps, wait for call to be active before sending tones
             if (rule.dtmfSequence.isNotEmpty()) {
-                executeDtmfSequence(call, rule.dtmfSequence, 0, rule.autoDisconnectCall)
+                // Register a callback to wait for the call to become active
+                call.registerCallback(object : Call.Callback() {
+                    override fun onStateChanged(call: Call, state: Int) {
+                        if (state == Call.STATE_ACTIVE) {
+                            // The call is now active, wait an additional safety delay and then send DTMF tones
+                            Log.d(TAG, "Call is now active, waiting 4 seconds before starting DTMF sequence")
+                            Handler(mainLooper).postDelayed({
+                                // Log the full sequence timing for clarity
+                                var cumulativeTime = 0f
+                                rule.dtmfSequence.forEachIndexed { i, step ->
+                                    // For all steps (including the first), add its delay to the cumulative time
+                                    // The timing of each step should account for all previous delays
+                                    if (i > 0) {
+                                        cumulativeTime += rule.dtmfSequence[i-1].delayAfterSeconds
+                                    }
+                                    Log.d(TAG, "DTMF sequence plan: Key '${step.key}' will be sent at ${cumulativeTime + 4}s after call is active")
+                                }
+                                
+                                // Start the DTMF sequence with proper delays
+                                // We'll handle the first tone's delay in the executeDtmfSequence function
+                                executeDtmfSequence(call, rule.dtmfSequence, 0, rule.autoDisconnectCall)
+                                
+                                // Unregister this callback since we no longer need it
+                                call.unregisterCallback(this)
+                            }, 4000) // Wait additional 4 seconds after call becomes active
+                        }
+                    }
+                })
             } else if (rule.autoDisconnectCall) {
                 // If no DTMF but auto-disconnect is set, hang up after a short delay
                 Handler(mainLooper).postDelayed({
@@ -365,30 +392,56 @@ class CallService : InCallService() {
         }
         
         val step = sequence[index]
-        Log.d(TAG, "Playing DTMF tone: ${step.key}, delay after: ${step.delayAfterSeconds}s")
         
-        // Play the DTMF tone
-        if (step.key.isNotEmpty()) {
-            call.playDtmfTone(step.key[0]) // Take the first character of the key
+        // For each step, we need to wait the delay time before playing the tone
+        // For the first tone (index 0), we need to wait its own delay
+        val initialDelayMs = if (index == 0 && step.delayAfterSeconds > 0) {
+            // For the first tone, delay by its own delayAfterSeconds value first
+            Log.d(TAG, "Waiting ${step.delayAfterSeconds}s before first DTMF tone '${step.key}'")
+            (step.delayAfterSeconds * 1000).toLong()
+        } else {
+            // For subsequent tones, the delay is handled at the end of the previous tone's processing
+            0L
+        }
+        
+        Handler(mainLooper).postDelayed({
+            Log.d(TAG, "Playing DTMF tone ${index + 1}/${sequence.size}: '${step.key}', delay after: ${step.delayAfterSeconds}s")
             
-            // Stop the tone after a short duration
-            Handler(mainLooper).postDelayed({
-                call.stopDtmfTone()
+            // Play the DTMF tone
+            if (step.key.isNotEmpty()) {
+                // Log before playing the tone
+                Log.d(TAG, "Sending DTMF tone '${step.key[0]}' now")
                 
-                // Schedule the next step after the specified delay
+                call.playDtmfTone(step.key[0]) // Take the first character of the key
+                
+                // Stop the tone after a short duration
+                Handler(mainLooper).postDelayed({
+                    call.stopDtmfTone()
+                    Log.d(TAG, "Stopped DTMF tone '${step.key[0]}'")
+                    
+                    // Schedule the next step after the specified delay
+                    val delayMs = (step.delayAfterSeconds * 1000).toLong()
+                    if (index < sequence.size - 1) {
+                        Log.d(TAG, "Waiting ${step.delayAfterSeconds}s before next DTMF tone")
+                    } else {
+                        Log.d(TAG, "This was the last DTMF tone in the sequence")
+                    }
+                    
+                    Handler(mainLooper).postDelayed({
+                        executeDtmfSequence(call, sequence, index + 1, disconnectAfter)
+                    }, delayMs)
+                    
+                }, 500) // Play each tone for 500ms (increased from 300ms for better reliability)
+            } else {
+                // If key is empty, skip to next step
                 val delayMs = (step.delayAfterSeconds * 1000).toLong()
+                Log.d(TAG, "Empty key, waiting ${step.delayAfterSeconds}s before next DTMF tone")
+                
                 Handler(mainLooper).postDelayed({
                     executeDtmfSequence(call, sequence, index + 1, disconnectAfter)
                 }, delayMs)
-                
-            }, 300) // Play each tone for 300ms
-        } else {
-            // If key is empty, skip to next step
-            val delayMs = (step.delayAfterSeconds * 1000).toLong()
-            Handler(mainLooper).postDelayed({
-                executeDtmfSequence(call, sequence, index + 1, disconnectAfter)
-            }, delayMs)
-        }
+            }
+        }, initialDelayMs)
     }
     
     /**
