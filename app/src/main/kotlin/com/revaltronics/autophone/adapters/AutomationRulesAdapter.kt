@@ -45,9 +45,8 @@ class AutomationRulesAdapter(
 
     inner class RuleViewHolder(val binding: ItemAutomationRuleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(rule: SimpleAutomationSetting, textColor: Int) { // Receive textColor
-            // Apply alpha to make inactive rules appear faded
-            val alpha = if (rule.isActive) 1.0f else 0.5f
-            binding.mainContentContainer.alpha = alpha
+            // Remove the alpha change, keeping the UI consistent regardless of active state
+            binding.mainContentContainer.alpha = 1.0f
             
             binding.textViewContactNameRule.text = rule.contactName ?: itemView.context.getString(R.string.no_contact_name)
             binding.textViewContactNameRule.setTextColor(textColor) // Apply textColor
@@ -76,7 +75,16 @@ class AutomationRulesAdapter(
                 itemView.context.getString(R.string.status_active) 
             else 
                 itemView.context.getString(R.string.status_inactive)
-            val statusColor = if (rule.isActive) Color.parseColor("#4CAF50") else Color.RED // Green for active, red for inactive
+            
+            // Use standard material colors: green for active, red for inactive
+            val statusColor = if (rule.isActive) 
+                Color.parseColor("#43A047")  // Material Green 600 - slightly darker for better readability
+            else 
+                Color.parseColor("#E53935")  // Material Red 600 - slightly darker for better readability
+                
+            // Make text bold for better visibility
+            binding.textViewRuleStatus.setTypeface(binding.textViewRuleStatus.typeface, android.graphics.Typeface.BOLD)
+                
             binding.textViewRuleStatus.text = statusText
             binding.textViewRuleStatus.setTextColor(statusColor)
         }
