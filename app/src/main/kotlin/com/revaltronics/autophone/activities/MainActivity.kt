@@ -661,6 +661,21 @@ class MainActivity : SimpleActivity() {
             }
         })
 
+        // Ensure the automation fragment can register its activity launchers
+        val automationFragment = getAutomationFragment() 
+        // Use the properly defined method that accepts null
+        if (automationFragment != null) {
+            // We can use supportFragmentManager to get the real Fragment instance as the host
+            supportFragmentManager.findFragmentByTag("automation_fragment")?.let { fragment ->
+                Log.d("MainActivity", "initFragments: Setting host fragment from supportFragmentManager")
+                automationFragment.setHostingFragment(fragment)
+            } ?: run {
+                // If we can't find a fragment, use null to allow automatic lifecycle owner lookup
+                Log.d("MainActivity", "initFragments: No host fragment found, using null")
+                automationFragment.setHostingFragment(null)
+            }
+        }
+
         // selecting the proper tab sometimes glitches, add an extra selector to make sure we have it right
         if (config.bottomNavigationBar) {
             binding.mainTabsHolder.onGlobalLayout {
@@ -956,7 +971,21 @@ class MainActivity : SimpleActivity() {
         return fragments
     }
     
-    private fun getAutomationFragment(): AutoAnswerSettingsFragment? = findViewById(R.id.auto_answer_settings_fragment)
+    private fun getAutomationFragment(): AutoAnswerSettingsFragment? {
+        val fragment = findViewById<AutoAnswerSettingsFragment>(R.id.auto_answer_settings_fragment)
+        // Set up the fragment with the necessary context
+        if (fragment != null) {
+            // Don't access protected property 'activity'
+            // Just ensure lifecycle owner is available
+            if (fragment.isAttachedToWindow) {
+                Log.d("MainActivity", "getAutomationFragment: Fragment is attached to window")
+                // Let the fragment find its own lifecycle owner
+            } else {
+                Log.d("MainActivity", "getAutomationFragment: Fragment not yet attached to window")
+            }
+        }
+        return fragment
+    }
 
     private fun getCurrentFragment(): MyViewPagerFragment<*>? = getAllFragments().getOrNull(binding.viewPager.currentItem)
 

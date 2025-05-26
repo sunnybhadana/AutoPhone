@@ -61,18 +61,23 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         return findViewById<MyRecyclerView>(R.id.auto_answer_list)
     }
 
-    fun setHostingFragment(fragment: Fragment) {
-        Log.d("AutoAnswerSettingsFragment", "setHostingFragment: Called with ${fragment::class.java.simpleName}")
-        this.hostingFragment = fragment
-        // Reset launcherRegistered status if hostingFragment changes, to allow new registration attempt
-        if (launcherRegistered && automationActivityLauncher == null) {
-            // This case implies previous registration might have been for a different context or failed subtly
-            // Or if we want to strictly tie launcher to hostingFragment if provided
-            Log.i("AutoAnswerSettingsFragment", "setHostingFragment: Resetting launcher registration due to new hosting fragment.")
-            launcherRegistered = false
-            automationActivityLauncher = null
+    fun setHostingFragment(fragment: Fragment?) {
+        if (fragment != null) {
+            Log.d("AutoAnswerSettingsFragment", "setHostingFragment: Called with ${fragment::class.java.simpleName}")
+            this.hostingFragment = fragment
+            // Reset launcherRegistered status if hostingFragment changes, to allow new registration attempt
+            if (launcherRegistered && automationActivityLauncher == null) {
+                // This case implies previous registration might have been for a different context or failed subtly
+                // Or if we want to strictly tie launcher to hostingFragment if provided
+                Log.i("AutoAnswerSettingsFragment", "setHostingFragment: Resetting launcher registration due to new hosting fragment.")
+                launcherRegistered = false
+                automationActivityLauncher = null
+            }
+            tryRegisterLauncher(fragment) // Pass the specific owner
+        } else {
+            Log.d("AutoAnswerSettingsFragment", "setHostingFragment: Called with null, will try to find lifecycle owner automatically")
+            tryRegisterLauncher() // Use default lifecycle owner lookup
         }
-        tryRegisterLauncher(fragment) // Pass the specific owner
     }
 
     class AutomationInnerBinding(val binding: FragmentAutoAnswerSettingsBinding) : InnerBinding {
@@ -104,10 +109,16 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             return
         }
 
-        if (owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.STARTED)) {
-            Log.w("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner (${owner::class.java.simpleName}) is already ${owner.lifecycle.currentState}. Cannot register launcher at this state.")
+        // Only proceed if the lifecycle is at least in CREATED state
+        // This check is correct and should remain to avoid registering when the lifecycle is too early
+        if (!owner.lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.CREATED)) {
+            Log.w("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner (${owner::class.java.simpleName}) is in state ${owner.lifecycle.currentState}, which is before CREATED. Cannot register launcher at this state.")
             return
         }
+        
+        // IMPORTANT: This was the previous error - we incorrectly checked if the state was STARTED or later,
+        // and then returned, which prevented registration. We should only return if NOT at least CREATED.
+        // The above check is sufficient, DO NOT add another check here that returns when state is STARTED or greater.
 
         Log.d("AutoAnswerSettingsFragment", "tryRegisterLauncher: Attempting registration with owner ${owner::class.java.simpleName} in state ${owner.lifecycle.currentState}.")
         try {
@@ -121,13 +132,25 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 }
             }
 
-            automationActivityLauncher = when (owner) {
-                is ComponentActivity -> owner.registerForActivityResult(activityResultContract, callback)
-                is Fragment -> owner.registerForActivityResult(activityResultContract, callback)
-                else -> {
-                    Log.e("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner is not a ComponentActivity or Fragment. Type: ${owner::class.java.simpleName}")
-                    null
+            try {
+                Log.d("AutoAnswerSettingsFragment", "Registering launcher with owner: ${owner::class.java.simpleName}, state: ${owner.lifecycle.currentState}")
+                automationActivityLauncher = when (owner) {
+                    is ComponentActivity -> {
+                        Log.d("AutoAnswerSettingsFragment", "Owner is ComponentActivity, registering with activity")
+                        owner.registerForActivityResult(activityResultContract, callback)
+                    }
+                    is Fragment -> {
+                        Log.d("AutoAnswerSettingsFragment", "Owner is Fragment, registering with fragment")
+                        owner.registerForActivityResult(activityResultContract, callback)
+                    }
+                    else -> {
+                        Log.e("AutoAnswerSettingsFragment", "tryRegisterLauncher: LifecycleOwner is not a ComponentActivity or Fragment. Type: ${owner::class.java.simpleName}")
+                        null
+                    }
                 }
+            } catch (e: Exception) {
+                Log.e("AutoAnswerSettingsFragment", "Error registering activity launcher: ${e.message}", e)
+                automationActivityLauncher = null
             }
 
             if (automationActivityLauncher != null) {
@@ -316,9 +339,34 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun launchAutomationActivityForRule(ruleId: Int?) {
+        // Try to use MainActivity if available
+        val mainActivity = activity as? Activity
+        
+        if (mainActivity != null) {
+            // We have direct access to an activity, we can launch directly
+            Log.d("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Using direct activity launch")
+            val intent = Intent(context, AutomationActivity::class.java).apply {
+                ruleId?.let { putExtra(AutomationActivity.EXTRA_SETTING_ID, it) }
+            }
+            try {
+                mainActivity.startActivity(intent)
+                return
+            } catch (e: Exception) {
+                Log.e("AutoAnswerSettingsFragment", "Failed to launch activity directly: ${e.message}", e)
+                // Fall back to launcher approach
+            }
+        }
+        
+        // Try using the activity result launcher
         if (!launcherRegistered) {
             Log.w("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launcher not registered. Attempting registration now.")
-            tryRegisterLauncher() // General attempt, will use best available owner
+            if (mainActivity != null) {
+                // If we have a direct activity reference, use its lifecycle owner
+                tryRegisterLauncher(mainActivity as? LifecycleOwner)
+            } else {
+                // Otherwise try with whatever is available
+                tryRegisterLauncher()
+            }
         }
 
         if (launcherRegistered && automationActivityLauncher != null) {
@@ -326,9 +374,29 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             val intent = Intent(context, AutomationActivity::class.java).apply {
                 ruleId?.let { putExtra(AutomationActivity.EXTRA_SETTING_ID, it) }
             }
-            automationActivityLauncher!!.launch(intent)
+            try {
+                automationActivityLauncher!!.launch(intent)
+            } catch (e: Exception) {
+                Log.e("AutoAnswerSettingsFragment", "Failed to launch with registered launcher: ${e.message}", e)
+                fallbackLaunch(ruleId)
+            }
         } else {
             Log.e("AutoAnswerSettingsFragment", "launchAutomationActivityForRule: Launcher not registered or null after attempt. Cannot start AutomationActivity. (Registered: $launcherRegistered, Launcher: $automationActivityLauncher)")
+            fallbackLaunch(ruleId)
+        }
+    }
+    
+    private fun fallbackLaunch(ruleId: Int?) {
+        // Last resort - try context.startActivity
+        try {
+            Log.d("AutoAnswerSettingsFragment", "Attempting fallback launch with context.startActivity")
+            val intent = Intent(context, AutomationActivity::class.java).apply {
+                ruleId?.let { putExtra(AutomationActivity.EXTRA_SETTING_ID, it) }
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // Required for launching from non-Activity context
+            }
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            Log.e("AutoAnswerSettingsFragment", "All launch attempts failed: ${e.message}", e)
             Toast.makeText(context, "Error: Could not prepare to edit rule.", Toast.LENGTH_SHORT).show()
         }
     }

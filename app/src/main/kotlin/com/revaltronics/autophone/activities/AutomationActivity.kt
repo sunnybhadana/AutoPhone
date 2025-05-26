@@ -96,6 +96,11 @@ class AutomationActivity : SimpleActivity() {
             textInputLayoutPhoneNumber.defaultHintTextColor = properTextColor.getColorStateList()
             textInputLayoutPickupDelay.defaultHintTextColor = properTextColor.getColorStateList()
             textInputLayoutContactName.defaultHintTextColor = properTextColor.getColorStateList()
+            
+            // Set text color for all TextInputEditText fields to BLACK for better visibility
+            editTextPhoneNumber.setTextColor(Color.BLACK)
+            editTextPickupDelay.setTextColor(Color.BLACK)
+            editTextContactName.setTextColor(Color.BLACK)
             // If you have dynamically added DTMF TextInputLayouts, they would need similar treatment
 
             // Update SwitchMaterial text color
@@ -119,6 +124,9 @@ class AutomationActivity : SimpleActivity() {
         //     resetFieldsAndPrepareForNew()
         // }
 
+        // Setup contact pickers
+        setupContactPickerLaunchers()
+        
         // Retrieve setting ID from intent
         val settingIdFromIntent = intent.getIntExtra(EXTRA_SETTING_ID, 0)
         loadOrCreateAutomationSetting(settingIdFromIntent)
@@ -351,10 +359,13 @@ class AutomationActivity : SimpleActivity() {
                 if (setting != null) {
                     currentSettingId = setting.id
                     binding.editTextContactName.setText(setting.contactName ?: "")
+                    binding.editTextContactName.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.textInputLayoutContactName.visibility = if (setting.contactName.isNullOrEmpty()) View.GONE else View.VISIBLE
                     binding.editTextPhoneNumber.setText(setting.phoneNumber)
+                    binding.editTextPhoneNumber.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.editTextPhoneNumber.isEnabled = true // When editing, phone number should be editable
                     binding.editTextPickupDelay.setText(setting.pickupDelaySeconds.toString())
+                    binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.switchDisconnectCall.isChecked = setting.autoDisconnectCall
 
                     binding.linearLayoutDtmf.removeAllViews()
@@ -379,10 +390,13 @@ class AutomationActivity : SimpleActivity() {
         currentSettingId = null
         selectedPhoneNumbers = emptyList() // Clear the selected numbers
         binding.editTextContactName.setText("")
+        binding.editTextContactName.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.textInputLayoutContactName.visibility = View.GONE
         binding.editTextPhoneNumber.setText("")
+        binding.editTextPhoneNumber.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.editTextPhoneNumber.isEnabled = true // Make editable for new manual entry
         binding.editTextPickupDelay.setText("0")
+        binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.switchDisconnectCall.isChecked = false
         binding.linearLayoutDtmf.removeAllViews()
         currentDtmfViews.clear()
@@ -429,8 +443,10 @@ class AutomationActivity : SimpleActivity() {
 
         // Apply text color to new views
         val properTextColor = getProperTextColor()
-        itemBinding.editTextDtmfKey.setTextColor(properTextColor)
-        itemBinding.editTextDtmfDelay.setTextColor(properTextColor)
+        // Set text color to BLACK for better visibility against light backgrounds
+        itemBinding.editTextDtmfKey.setTextColor(Color.BLACK)
+        itemBinding.editTextDtmfDelay.setTextColor(Color.BLACK)
+        // Keep hint colors consistent with the theme
         itemBinding.textInputLayoutDtmfKey.defaultHintTextColor = properTextColor.getColorStateList()
         itemBinding.textInputLayoutDtmfDelay.defaultHintTextColor = properTextColor.getColorStateList()
 
