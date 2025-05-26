@@ -424,7 +424,24 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     private fun deleteRule(rule: SimpleAutomationSetting) {
         findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
             appDatabase.simpleAutomationSettingDao().deleteSettingById(rule.id)
-            loadAutomationRules() // Refresh the list
+            
+            // Remove the deleted rule from our stored list
+            allAutomationRules = allAutomationRules.filter { it.id != rule.id }
+            
+            // If we have a search query active, apply the filter directly without reloading from database
+            if (currentSearchQuery.isNotEmpty()) {
+                val filteredRules = allAutomationRules.filter { searchRule ->
+                    searchRule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
+                    (searchRule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
+                    searchRule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
+                }
+                rulesAdapter.submitList(filteredRules.toMutableList())
+                updateEmptyViewVisibility(filteredRules.isEmpty())
+            } else {
+                // No active search, just show all remaining rules
+                rulesAdapter.submitList(allAutomationRules.toMutableList())
+                updateEmptyViewVisibility(allAutomationRules.isEmpty())
+            }
         }
     }
     
@@ -451,24 +468,49 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         // Use findViewTreeLifecycleOwner() to get the LifecycleScope
         findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
             val rules = appDatabase.simpleAutomationSettingDao().getAllSettings()
+            // Store all rules for search filtering
+            allAutomationRules = rules
+            
+            // If we have a search query, apply it
+            val displayedRules = if (currentSearchQuery.isNotEmpty()) {
+                rules.filter { rule ->
+                    rule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
+                    (rule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
+                    rule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
+                }
+            } else {
+                rules
+            }
+            
             // Ensure rulesAdapter is still the correct type and initialized
             if (::rulesAdapter.isInitialized && rulesAdapter is AutomationRulesAdapter) {
-                rulesAdapter.submitList(rules.toMutableList()) // submitList is part of ListAdapter
+                rulesAdapter.submitList(displayedRules.toMutableList()) // submitList is part of ListAdapter
             } else {
                 Log.e("AutoAnswerSettingsFragment", "rulesAdapter not an instance of AutomationRulesAdapter or not initialized in lifecycleScope.")
             }
             
-            val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
-            // Ensure rulesListView is accessible here or re-fetch it if necessary.
-            // It was fetched at the beginning of the loadAutomationRules method.
-            val rulesListView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
-            if (rules.isEmpty()) {
-                emptyText?.beVisible()
-                rulesListView?.beGone()
+            // Update empty view visibility based on filtered results
+            updateEmptyViewVisibility(displayedRules.isEmpty())
+        }
+    }
+    
+    // Helper method to update empty view visibility
+    private fun updateEmptyViewVisibility(isEmpty: Boolean) {
+        val emptyText = findViewById<MyTextView>(R.id.auto_answer_empty_text)
+        val rulesListView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.auto_answer_list)
+        
+        if (isEmpty) {
+            // If we have a search query, show a "no results found" message
+            if (currentSearchQuery.isNotEmpty()) {
+                emptyText?.text = "No rules found matching \"$currentSearchQuery\""
             } else {
-                emptyText?.beGone()
-                rulesListView?.beVisible()
+                emptyText?.text = context.getString(R.string.no_auto_answer_rules)
             }
+            emptyText?.beVisible()
+            rulesListView?.beGone()
+        } else {
+            emptyText?.beGone()
+            rulesListView?.beVisible()
         }
     }
 
@@ -480,15 +522,53 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         loadAutomationRules()
         callback?.invoke()
     }
+    
+    // Keep a reference to all rules to make search easier
+    private var allAutomationRules: List<SimpleAutomationSetting> = emptyList()
+    private var currentSearchQuery: String = ""
 
     override fun onSearchClosed() {
-        // Implement search closed logic if needed, e.g., clear search filters and refresh list.
-        // For now, providing an empty implementation to satisfy the abstract requirement.
+        // When search is closed, reset the search query and display all rules
+        currentSearchQuery = ""
+        if (::rulesAdapter.isInitialized) {
+            rulesAdapter.submitList(allAutomationRules.toMutableList())
+            updateEmptyViewVisibility(allAutomationRules.isEmpty())
+        } else {
+            loadAutomationRules()
+        }
     }
 
     override fun onSearchQueryChanged(text: String) {
-        // Implement search logic if needed, e.g., filter the list of automation rules.
-        // For now, providing an empty implementation.
+        // Store the current search query
+        currentSearchQuery = text.trim()
+        
+        if (!::rulesAdapter.isInitialized || allAutomationRules.isEmpty()) {
+            // If adapter isn't initialized or we have no rules, there's nothing to filter
+            return
+        }
+        
+        // If search query is empty, show all rules
+        if (currentSearchQuery.isEmpty()) {
+            rulesAdapter.submitList(allAutomationRules.toMutableList())
+            updateEmptyViewVisibility(allAutomationRules.isEmpty())
+            return
+        }
+        
+        // Filter rules based on search query
+        val filteredRules = allAutomationRules.filter { rule ->
+            // Search in phone number
+            rule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
+            // Search in contact name if it exists
+            (rule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
+            // Search in DTMF keys
+            rule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
+        }
+        
+        // Update the adapter with filtered rules
+        rulesAdapter.submitList(filteredRules.toMutableList())
+        
+        // Update empty view visibility based on filtered results
+        updateEmptyViewVisibility(filteredRules.isEmpty())
     }
 
     // override fun onSortChanged() { /* ... */ }

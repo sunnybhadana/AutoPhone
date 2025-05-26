@@ -105,6 +105,7 @@ class AutomationActivity : SimpleActivity() {
 
             // Update SwitchMaterial text color
             switchDisconnectCall.setTextColor(properTextColor)
+            buttonSaveAutomation.setTextColor(Color.WHITE)
         }
 
         binding.buttonPickContact.setOnClickListener {
