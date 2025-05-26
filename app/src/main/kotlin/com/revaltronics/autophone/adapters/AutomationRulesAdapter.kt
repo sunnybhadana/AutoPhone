@@ -12,8 +12,8 @@ import com.revaltronics.autophone.databinding.ItemAutomationRuleBinding
 import com.revaltronics.autophone.models.SimpleAutomationSetting
 
 class AutomationRulesAdapter(
-    private val onRuleClick: (SimpleAutomationSetting) -> Unit
-    // Removed onEditClick and onDeleteClick parameters
+    private val onRuleClick: (SimpleAutomationSetting) -> Unit,
+    private val onRuleLongClick: (SimpleAutomationSetting) -> Boolean = { false } // Added for toggling active state
 ) : ListAdapter<SimpleAutomationSetting, AutomationRulesAdapter.RuleViewHolder>(RuleDiffCallback()) {
 
     private var textColor: Int = Color.BLACK // Default color
@@ -28,6 +28,9 @@ class AutomationRulesAdapter(
         holder.bind(rule, textColor)
         // Main content click triggers the onRuleClick (for editing via AutomationActivity)
         holder.binding.mainContentContainer.setOnClickListener { onRuleClick(rule) }
+        
+        // Long press to toggle active state
+        holder.binding.mainContentContainer.setOnLongClickListener { onRuleLongClick(rule) }
 
         // Removed setOnClickListeners for buttonEditRule and buttonDeleteRule
         // as swipe action will now directly trigger delete confirmation
@@ -42,6 +45,10 @@ class AutomationRulesAdapter(
 
     inner class RuleViewHolder(val binding: ItemAutomationRuleBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(rule: SimpleAutomationSetting, textColor: Int) { // Receive textColor
+            // Apply alpha to make inactive rules appear faded
+            val alpha = if (rule.isActive) 1.0f else 0.5f
+            binding.mainContentContainer.alpha = alpha
+            
             binding.textViewContactNameRule.text = rule.contactName ?: itemView.context.getString(R.string.no_contact_name)
             binding.textViewContactNameRule.setTextColor(textColor) // Apply textColor
 
@@ -63,6 +70,15 @@ class AutomationRulesAdapter(
             }
             binding.textViewAutoAnswerLimitsRule.text = itemView.context.getString(R.string.auto_answer_limits_formatted, limitsText)
             binding.textViewAutoAnswerLimitsRule.setTextColor(textColor) // Apply textColor
+            
+            // Display active/inactive status
+            val statusText = if (rule.isActive) 
+                itemView.context.getString(R.string.status_active) 
+            else 
+                itemView.context.getString(R.string.status_inactive)
+            val statusColor = if (rule.isActive) Color.parseColor("#4CAF50") else Color.RED // Green for active, red for inactive
+            binding.textViewRuleStatus.text = statusText
+            binding.textViewRuleStatus.setTextColor(statusColor)
         }
     }
 

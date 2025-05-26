@@ -17,7 +17,7 @@ import com.revaltronics.autophone.db.dao.SimpleAutomationSettingDao
 import com.revaltronics.autophone.db.converters.DtmfStepListConverter
 import java.util.concurrent.Executors
 
-@Database(entities = [Timer::class, SimpleAutomationSetting::class], version = 7)
+@Database(entities = [Timer::class, SimpleAutomationSetting::class], version = 8)
 @TypeConverters(Converters::class, DtmfStepListConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -41,6 +41,14 @@ abstract class AppDatabase : RoomDatabase() {
                 db.execSQL("CREATE INDEX IF NOT EXISTS index_simple_automation_settings_batch_group_id ON simple_automation_settings(batch_group_id)")
             }
         }
+        
+        // Migration from version 7 to 8 - Adding isActive flag for rules
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Add isActive column with default value true to maintain backward compatibility
+                db.execSQL("ALTER TABLE simple_automation_settings ADD COLUMN isActive INTEGER NOT NULL DEFAULT 1")
+            }
+        }
 
         fun getInstance(context: Context): AppDatabase {
             if (db == null) {
@@ -48,7 +56,7 @@ abstract class AppDatabase : RoomDatabase() {
                     if (db == null) {
                         db = Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, "app.db")
                             .fallbackToDestructiveMigration()
-                            .addMigrations(MIGRATION_6_7)
+                            .addMigrations(MIGRATION_6_7, MIGRATION_7_8)
                             .addCallback(object : Callback() {
                                 override fun onCreate(db: SupportSQLiteDatabase) {
                                     super.onCreate(db)

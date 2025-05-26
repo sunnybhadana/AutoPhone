@@ -79,6 +79,15 @@
             android:textAppearance="?attr/textAppearanceCaption"
             android:textSize="12sp"
             tools:text="Auto-answer: 2/5 (resets every 60 min)" />
+            
+        <TextView
+            android:id="@+id/textViewRuleStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Status: Active" />
 
     </LinearLayout>
 </FrameLayout>

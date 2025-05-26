@@ -109,6 +109,11 @@
     <string name="answer_after">Answer after: %d seconds</string>
     <string name="dtmf_sequence">DTMF: %s</string>
     <string name="end_call_automation">End call: %s</string>
+    <string name="rule_is_active">Rule Is Active</string>
+    <string name="rule_activated">Rule activated</string>
+    <string name="rule_deactivated">Rule deactivated</string>
+    <string name="status_active">Status: Active</string>
+    <string name="status_inactive">Status: Inactive</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="save">Save</string>

@@ -114,9 +114,17 @@ class CallService : InCallService() {
                     "limit: ${rule.answered_calls_count}/${rule.max_auto_answers}" else "no limit"
                 val resetInfo = if (rule.reset_interval_minutes > 0)
                     "resets every: ${rule.reset_interval_minutes} min" else "never resets"
+                val activeStatus = if (rule.isActive) "active" else "inactive"
                 
-                Log.d(TAG, "Found automation rule for $phoneNumber: pickup delay ${rule.pickupDelaySeconds}s, " +
+                Log.d(TAG, "Found automation rule for $phoneNumber: status: $activeStatus, pickup delay ${rule.pickupDelaySeconds}s, " +
                       "DTMF steps: ${rule.dtmfSequence.size}, $batchInfo, $limitInfo, $resetInfo")
+                
+                // First check if the rule is active, then check batch limits
+                if (!rule.isActive) {
+                    Log.d(TAG, "Rule for $phoneNumber is inactive. Handling call normally.")
+                    handleRegularCall(call)
+                    return@launch
+                }
                 
                 // Check if we should auto-answer based on batch limits
                 val shouldAutoAnswer = shouldAutoAnswerCall(rule)

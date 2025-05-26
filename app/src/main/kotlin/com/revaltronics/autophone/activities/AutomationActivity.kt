@@ -230,6 +230,7 @@ class AutomationActivity : SimpleActivity() {
         // val phoneNumber = binding.editTextPhoneNumber.text.toString().trim() // No longer read directly if selectedPhoneNumbers is used
         val pickupDelayString = binding.editTextPickupDelay.text.toString()
         val autoDisconnect = binding.switchDisconnectCall.isChecked
+        val isActive = binding.switchIsActive.isChecked
         val maxAutoAnswersString = binding.editTextMaxAutoAnswers.text.toString()
         val resetIntervalString = binding.editTextResetInterval.text.toString()
 
@@ -294,7 +295,8 @@ class AutomationActivity : SimpleActivity() {
                         dtmfSequence = dtmfSequence,
                         batch_group_id = if (selectedPhoneNumbers.size > 1) contactNameToSave ?: "" else "",
                         max_auto_answers = maxAutoAnswers,
-                        reset_interval_minutes = resetIntervalMinutes
+                        reset_interval_minutes = resetIntervalMinutes,
+                        isActive = isActive
                     )
                     try {
                         appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
@@ -322,7 +324,8 @@ class AutomationActivity : SimpleActivity() {
                     dtmfSequence = dtmfSequence,
                     batch_group_id = "", // Single entry, no batch group
                     max_auto_answers = maxAutoAnswers,
-                    reset_interval_minutes = resetIntervalMinutes
+                    reset_interval_minutes = resetIntervalMinutes,
+                    isActive = isActive
                 )
                 try {
                     if (currentSettingId == null || currentSettingId == 0) { // New setting
@@ -387,6 +390,7 @@ class AutomationActivity : SimpleActivity() {
                     binding.editTextResetInterval.setText(setting.reset_interval_minutes.toString())
                     binding.editTextResetInterval.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.switchDisconnectCall.isChecked = setting.autoDisconnectCall
+                    binding.switchIsActive.isChecked = setting.isActive
 
                     binding.linearLayoutDtmf.removeAllViews()
                     currentDtmfViews.clear()
@@ -419,6 +423,7 @@ class AutomationActivity : SimpleActivity() {
         binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.editTextMaxAutoAnswers.setText("0")
         binding.editTextMaxAutoAnswers.setTextColor(Color.BLACK) // Ensure text color is BLACK
+        binding.switchIsActive.isChecked = true // Default to active for new rules
         binding.editTextResetInterval.setText("0")
         binding.editTextResetInterval.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.switchDisconnectCall.isChecked = false

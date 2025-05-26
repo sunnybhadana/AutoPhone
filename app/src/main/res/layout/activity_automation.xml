@@ -103,6 +103,14 @@
                 android:layout_marginBottom="8dp"
                 android:text="Auto Disconnect Call After DTMF" />
 
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switchIsActive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@string/rule_is_active"
+                android:checked="true" />
+
             <TextView
                 android:id="@+id/textAdvancedOptions"
                 android:layout_width="wrap_content"

@@ -28,5 +28,8 @@ data class SimpleAutomationSetting(
     val answered_calls_count: Int = 0, // Number of calls auto-answered in the current interval
     val max_auto_answers: Int = 0, // 0 means unlimited auto-answers
     val reset_interval_minutes: Int = 0, // 0 means no time-based reset
-    val last_reset_timestamp: Long = 0 // When the counter was last reset (milliseconds since epoch)
+    val last_reset_timestamp: Long = 0, // When the counter was last reset (milliseconds since epoch)
+    
+    // Field to control whether the rule is active or not
+    val isActive: Boolean = true // Default to active for backward compatibility
 )

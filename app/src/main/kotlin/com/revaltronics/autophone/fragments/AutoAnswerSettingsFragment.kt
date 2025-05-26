@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +42,7 @@ import com.revaltronics.commons.extensions.getProperTextColor
 import com.revaltronics.commons.extensions.isVisible
 import com.revaltronics.commons.views.MyRecyclerView
 import com.revaltronics.commons.views.MyTextView
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
 
 class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     MyViewPagerFragment<AutoAnswerSettingsFragment.AutomationInnerBinding>(context, attributeSet),
@@ -211,8 +213,12 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 rulesAdapter = AutomationRulesAdapter(
                     onRuleClick = { rule ->
                         launchAutomationActivityForRule(rule.id)
+                    },
+                    onRuleLongClick = { rule ->
+                        // Toggle active state on long press
+                        toggleRuleActiveState(rule)
+                        true // Consume the long press event
                     }
-                    // Removed onEditClick and onDeleteClick lambdas
                 )
             }
             adapter = rulesAdapter
@@ -609,6 +615,39 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                     // Hide refresh indicator when data loading is complete
                     this.isRefreshing = false
                 }
+            }
+        }
+    }
+
+    /**
+     * Toggle the active state of a rule and update the database
+     * @param rule The rule to toggle
+     */
+    private fun toggleRuleActiveState(rule: SimpleAutomationSetting) {
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            try {
+                // Create a copy of the rule with the active state toggled
+                val updatedRule = rule.copy(isActive = !rule.isActive)
+                
+                // Update the rule in the database
+                withContext(Dispatchers.IO) {
+                    appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(updatedRule)
+                }
+                
+                // Show a toast message
+                val statusMessageId = if (updatedRule.isActive) {
+                    R.string.rule_activated
+                } else {
+                    R.string.rule_deactivated
+                }
+                val phoneNumber = rule.phoneNumber
+                Toast.makeText(context, context.getString(statusMessageId) + ": $phoneNumber", Toast.LENGTH_SHORT).show()
+                
+                // Refresh the list
+                loadAutomationRules()
+            } catch (e: Exception) {
+                Log.e("AutoAnswerSettingsFragment", "Error toggling rule state: ${e.message}", e)
+                Toast.makeText(context, "Error updating rule: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
