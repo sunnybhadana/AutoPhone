@@ -311,8 +311,8 @@ class MainActivity : SimpleActivity() {
         binding.mainMenu.getToolbar().menu.apply {
             findItem(R.id.search).isVisible = !config.bottomNavigationBar
             findItem(R.id.clear_call_history).isVisible = currentFragment == getRecentsFragment
-            findItem(R.id.sort).isVisible = currentFragment != getRecentsFragment
-            findItem(R.id.filter).isVisible = currentFragment != getRecentsFragment
+            findItem(R.id.sort).isVisible = currentFragment != getRecentsFragment && currentFragment != getAutomationFragment()
+            findItem(R.id.filter).isVisible = currentFragment != getRecentsFragment && currentFragment != getAutomationFragment()
             findItem(R.id.create_new_contact).isVisible = currentFragment == getContactsFragment()
             findItem(R.id.create_new_automation).isVisible = currentFragment == getAutomationFragment()
             findItem(R.id.change_view_type).isVisible = currentFragment == getFavoritesFragment

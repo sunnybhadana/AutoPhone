@@ -322,11 +322,18 @@ class AutomationActivity : SimpleActivity() {
                     Toast.makeText(this@AutomationActivity, "Phone number cannot be empty", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
-                // First, get the existing rule to preserve batch_group_id if it exists
+                // First, get the existing rule to preserve batch_group_id and counters
                 var batchGroupIdToUse = ""
+                var answeredCallsCount = 0
+                var lastResetTimestamp = 0L
+                
                 if (currentSettingId != null && currentSettingId != 0) {
                     val existingRule = appDatabase.simpleAutomationSettingDao().getSettingById(currentSettingId!!)
-                    batchGroupIdToUse = existingRule?.batch_group_id ?: ""
+                    if (existingRule != null) {
+                        batchGroupIdToUse = existingRule.batch_group_id
+                        answeredCallsCount = existingRule.answered_calls_count  // Preserve call count
+                        lastResetTimestamp = existingRule.last_reset_timestamp  // Preserve reset timestamp
+                    }
                 }
                 
                 val settingToSave = SimpleAutomationSetting(
@@ -339,6 +346,8 @@ class AutomationActivity : SimpleActivity() {
                     batch_group_id = batchGroupIdToUse, // Preserve batch group ID if it exists
                     max_auto_answers = maxAutoAnswers,
                     reset_interval_minutes = resetIntervalMinutes,
+                    answered_calls_count = answeredCallsCount, // Preserve call count
+                    last_reset_timestamp = lastResetTimestamp, // Preserve reset timestamp
                     isActive = isActive
                 )
                 try {
@@ -346,6 +355,7 @@ class AutomationActivity : SimpleActivity() {
                         appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave.copy(id = 0))
                     } else { // Existing setting
                         // We already have the existing rule's batch_group_id in batchGroupIdToUse
+                        // We also preserved answered_calls_count and last_reset_timestamp in settingToSave
                         
                         // Save the updated rule
                         appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
@@ -355,7 +365,18 @@ class AutomationActivity : SimpleActivity() {
                             // Get the freshly saved rule to ensure all fields are up-to-date
                             val updatedRule = appDatabase.simpleAutomationSettingDao().getSettingById(currentSettingId!!)
                             if (updatedRule != null) {
-                                appDatabase.simpleAutomationSettingDao().syncBatchGroupConfiguration(updatedRule)
+                                // Make sure the synced rule has the proper batch_group_id, call count and reset timestamp
+                                val ruleWithPreservedValues = updatedRule.copy(
+                                    batch_group_id = batchGroupIdToUse,
+                                    answered_calls_count = answeredCallsCount,
+                                    last_reset_timestamp = lastResetTimestamp
+                                )
+                                
+                                // Update with preserved values before syncing to batch members
+                                appDatabase.simpleAutomationSettingDao().updateSetting(ruleWithPreservedValues)
+                                
+                                // Now sync configuration to other batch members
+                                appDatabase.simpleAutomationSettingDao().syncBatchGroupConfiguration(ruleWithPreservedValues)
                                 
                                 // Add information about batch sync to the message
                                 val batchRules = appDatabase.simpleAutomationSettingDao()

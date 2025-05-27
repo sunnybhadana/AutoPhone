@@ -221,18 +221,28 @@ interface SimpleAutomationSettingDao {
         // First, get all settings
         val allSettings = getAllSettings()
         
-        // Process settings that belong to batch groups
-        allSettings.forEach { setting ->
-            if (setting.batch_group_id.isNotEmpty() && !processedBatchGroups.contains(setting.batch_group_id)) {
-                // This is the first rule we're seeing from this batch group
-                processedBatchGroups.add(setting.batch_group_id)
-                // Add as a representative for this batch group
-                result.add(setting)
-            } else if (setting.batch_group_id.isEmpty()) {
-                // Stand-alone rule (not in a batch group)
-                result.add(setting)
+        // Group settings by batch group ID
+        val batchGroups = allSettings
+            .filter { it.batch_group_id.isNotEmpty() }
+            .groupBy { it.batch_group_id }
+            
+        // Find the best representative for each batch group and add it
+        batchGroups.forEach { (batchId, settings) ->
+            if (!processedBatchGroups.contains(batchId)) {
+                processedBatchGroups.add(batchId)
+                
+                // Choose the best representative - prefer rules with contact names
+                val representative = settings.firstOrNull { it.contactName != null && it.contactName.isNotEmpty() }
+                    ?: settings.firstOrNull() // Fall back to any rule in the batch
+                    
+                representative?.let { result.add(it) }
             }
         }
+        
+        // Add all non-batch (standalone) rules
+        allSettings
+            .filter { it.batch_group_id.isEmpty() }
+            .forEach { result.add(it) }
         
         return result
     }

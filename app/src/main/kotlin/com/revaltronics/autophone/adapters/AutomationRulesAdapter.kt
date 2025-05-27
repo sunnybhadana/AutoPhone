@@ -62,7 +62,7 @@ class AutomationRulesAdapter(
             // Display contact name with batch count if applicable
             val contactName = rule.contactName ?: itemView.context.getString(R.string.no_contact_name)
             val displayName = if (rule.batch_group_id.isNotEmpty() && batchSize > 1) {
-                "$contactName (+ ${batchSize - 1} others)"
+                itemView.context.getString(R.string.batch_contact_format, contactName, batchSize - 1)
             } else {
                 contactName
             }
@@ -70,9 +70,9 @@ class AutomationRulesAdapter(
             binding.textViewContactNameRule.text = displayName
             binding.textViewContactNameRule.setTextColor(textColor) // Apply textColor
 
-            // For batch groups, we might want to indicate this is a group
+            // For batch groups, clearly indicate this is a group by showing the count
             val phoneNumber = if (rule.batch_group_id.isNotEmpty() && batchSize > 1) {
-                "${rule.phoneNumber} (multiple numbers)"
+                itemView.context.getString(R.string.batch_number_format, rule.phoneNumber, batchSize - 1)
             } else {
                 rule.phoneNumber
             }

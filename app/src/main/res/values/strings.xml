@@ -120,6 +120,9 @@
     <string name="cancel">Cancel</string>
     <string name="delete_rule_confirmation">Are you sure you want to delete this automation rule?</string>
     <string name="delete_batch_rule_confirmation">Delete Multiple Rules</string>
+    <string name="delete_all">Delete All</string>
+    <string name="batch_contact_format">%s (+ %d others)</string>
+    <string name="batch_number_format">%s (+ %d other numbers)</string>
     <string name="edit_rule">Edit Rule</string>
     <string name="delete_rule">Delete Rule</string>
     <string name="no_contact_name">Unknown Contact</string>

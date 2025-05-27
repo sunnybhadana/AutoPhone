@@ -414,19 +414,21 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
             // Default message for single rule
             var message = "Do you want to delete the rule for ${rule.contactName ?: rule.phoneNumber}?"
+            var title = context.getString(R.string.delete_rule_confirmation)
             
             // For batch rules, modify the message to indicate multiple deletions
             if (isBatchRule) {
                 val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(rule.batch_group_id)
                 if (batchSize > 1) {
-                    message = "This will delete all ${batchSize} rules for ${rule.contactName ?: "this contact"}. Continue?"
+                    title = context.getString(R.string.delete_batch_rule_confirmation)
+                    message = "This will delete all ${batchSize} rules for ${rule.contactName ?: "this contact"}.\n\nThis action cannot be undone. Continue?"
                 }
             }
             
             // Show the dialog on the main thread
             withContext(Dispatchers.Main) {
                 MaterialAlertDialogBuilder(context)
-                    .setTitle(if (isBatchRule) R.string.delete_batch_rule_confirmation else R.string.delete_rule_confirmation)
+                    .setTitle(title)
                     .setMessage(message)
                     .setNegativeButton(R.string.cancel) { dialog, _ ->
                         dialog.dismiss()
@@ -436,7 +438,7 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                             rulesAdapter.notifyItemChanged(position)
                         }
                     }
-                    .setPositiveButton(R.string.delete_rule) { dialog, _ ->
+                    .setPositiveButton(if (isBatchRule) R.string.delete_all else R.string.delete_rule) { dialog, _ ->
                         deleteRule(rule)
                         dialog.dismiss()
                     }
@@ -520,6 +522,15 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             // Store all rules for search filtering
             allAutomationRules = allRules
             
+            // Get batch info for all batch groups in advance to avoid multiple DB calls
+            val batchSizes = mutableMapOf<String, Int>()
+            val batchGroups = allRules.filter { it.batch_group_id.isNotEmpty() }
+                .groupBy { it.batch_group_id }
+                
+            batchGroups.forEach { (batchId, rules) ->
+                batchSizes[batchId] = rules.size
+            }
+            
             // For display, use batch representatives or individual rules
             val displayRules = if (currentSearchQuery.isNotEmpty()) {
                 // If searching, show all matching rules individually
@@ -535,15 +546,10 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             
             // Set batch sizes for the adapter
             if (rulesAdapter is AutomationRulesAdapter) {
-                // Process each rule that belongs to a batch group
-                displayRules.forEach { rule ->
-                    if (rule.batch_group_id.isNotEmpty()) {
-                        // Get batch size for this group
-                        val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(rule.batch_group_id)
-                        if (batchSize > 1) {
-                            // Set batch size in the adapter
-                            rulesAdapter.setBatchSize(rule.batch_group_id, batchSize)
-                        }
+                // Set all batch sizes at once from our pre-calculated map
+                batchSizes.forEach { (batchId, size) ->
+                    if (size > 1) {
+                        rulesAdapter.setBatchSize(batchId, size)
                     }
                 }
                 
