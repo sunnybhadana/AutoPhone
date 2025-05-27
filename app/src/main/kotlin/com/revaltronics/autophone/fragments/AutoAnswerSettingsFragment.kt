@@ -447,7 +447,7 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(batchGroupId)
                 appDatabase.simpleAutomationSettingDao().deleteBatchGroup(batchGroupId)
                 
-                // Remove all rules with this batch_group_id from our stored list
+                // Update our local copy of all rules (will be refreshed from DB by loadAutomationRules)
                 allAutomationRules = allAutomationRules.filter { it.batch_group_id != batchGroupId }
                 
                 // Show a toast indicating the batch deletion
@@ -462,25 +462,13 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 // For non-batch rules, just delete the single rule
                 appDatabase.simpleAutomationSettingDao().deleteSettingById(rule.id)
                 
-                // Remove the deleted rule from our stored list
+                // Update our local copy of all rules (will be refreshed from DB by loadAutomationRules)
                 allAutomationRules = allAutomationRules.filter { it.id != rule.id }
             }
             
-            // If we have a search query active, apply the filter directly without reloading from database
-            if (currentSearchQuery.isNotEmpty()) {
-                val filteredRules = allAutomationRules.filter { searchRule ->
-                    searchRule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
-                    (searchRule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
-                    searchRule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
-                }
-                rulesAdapter.submitList(filteredRules.toMutableList())
-                updateEmptyViewVisibility(filteredRules.isEmpty())
-            } else {
-                // With no active search, reload using batch representatives
-                val displayRules = appDatabase.simpleAutomationSettingDao().getBatchGroupRepresentatives()
-                rulesAdapter.submitList(displayRules.toMutableList())
-                updateEmptyViewVisibility(displayRules.isEmpty())
-            }
+            // Reload rules from DB and update adapter.
+            // loadAutomationRules will correctly apply search or non-search display logic.
+            loadAutomationRules()
         }
     }
     
@@ -504,54 +492,55 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
             return
         }
 
-        // Use findViewTreeLifecycleOwner() to get the LifecycleScope
         findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-            // Get all rules for complete data reference
-            val allRules = appDatabase.simpleAutomationSettingDao().getAllSettings()
-            // Store all rules for search filtering
-            allAutomationRules = allRules
-            
-            // Get batch info for all batch groups in advance to avoid multiple DB calls
-            val batchSizes = mutableMapOf<String, Int>()
-            val batchGroups = allRules.filter { it.batch_group_id.isNotEmpty() }
+            val allRulesFromDB = appDatabase.simpleAutomationSettingDao().getAllSettings()
+            allAutomationRules = allRulesFromDB // Store for other potential uses and for search logic below
+
+            val batchSizesMap = mutableMapOf<String, Int>()
+            allRulesFromDB.filter { it.batch_group_id.isNotEmpty() }
                 .groupBy { it.batch_group_id }
-                
-            batchGroups.forEach { (batchId, rules) ->
-                batchSizes[batchId] = rules.size
-            }
-            
-            // For display, use batch representatives or individual rules
+                .forEach { (batchId, rulesInGroup) ->
+                    batchSizesMap[batchId] = rulesInGroup.size
+                }
+
             val displayRules = if (currentSearchQuery.isNotEmpty()) {
-                // If searching, show all matching rules individually
-                allRules.filter { rule ->
-                    rule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
-                    (rule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
-                    rule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
+                // If searching, show representatives for batches where any member matches,
+                // and individual non-batch rules that match.
+                val potentialDisplayItems = appDatabase.simpleAutomationSettingDao().getBatchGroupRepresentatives()
+
+                potentialDisplayItems.filter { item ->
+                    if (item.batch_group_id.isEmpty()) {
+                        // It's a non-batch rule, check if it matches directly
+                        item.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
+                        (item.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
+                        item.dtmfSequence.any { dtmf -> dtmf.key.contains(currentSearchQuery, ignoreCase = true) }
+                    } else {
+                        // It's a batch representative. Check if any rule in its original batch (from allRulesFromDB) matches the query.
+                        allRulesFromDB.any { ruleInBatch ->
+                            ruleInBatch.batch_group_id == item.batch_group_id &&
+                            (ruleInBatch.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
+                            (ruleInBatch.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
+                            ruleInBatch.dtmfSequence.any { dtmf -> dtmf.key.contains(currentSearchQuery, ignoreCase = true) })
+                        }
+                    }
                 }
             } else {
-                // Otherwise, show one entry per batch group
+                // Not searching, get batch representatives (which includes non-batch rules)
                 appDatabase.simpleAutomationSettingDao().getBatchGroupRepresentatives()
             }
             
-            // Set batch sizes for the adapter
-            if (rulesAdapter is AutomationRulesAdapter) {
-                // Set all batch sizes at once from our pre-calculated map
-                batchSizes.forEach { (batchId, size) ->
-                    if (size > 1) {
-                        rulesAdapter.setBatchSize(batchId, size)
+            (rulesAdapter as? AutomationRulesAdapter)?.let { adapter ->
+                // Clear previous batch sizes to handle cases where batches might be removed or changed
+                adapter.clearBatchSizes()
+                batchSizesMap.forEach { (batchId, size) ->
+                    if (size > 1) { 
+                        adapter.setBatchSize(batchId, size)
                     }
                 }
-                
-                // Update the list in the adapter
-                rulesAdapter.submitList(displayRules.toMutableList())
-            } else {
-                Log.e("AutoAnswerSettingsFragment", "rulesAdapter not an instance of AutomationRulesAdapter.")
             }
             
-            // Update empty view visibility based on filtered results
+            rulesAdapter.submitList(displayRules.toMutableList())
             updateEmptyViewVisibility(displayRules.isEmpty())
-            
-            // Always ensure the SwipeRefreshLayout is not showing the refresh indicator
             findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)?.isRefreshing = false
         }
     }
@@ -601,47 +590,17 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     private var currentSearchQuery: String = ""
 
     override fun onSearchClosed() {
-        // When search is closed, reset the search query and display all rules
         currentSearchQuery = ""
-        if (::rulesAdapter.isInitialized) {
-            rulesAdapter.submitList(allAutomationRules.toMutableList())
-            updateEmptyViewVisibility(allAutomationRules.isEmpty())
-        } else {
-            loadAutomationRules()
-        }
+        // call loadAutomationRules to correctly apply batching/representative logic.
+        loadAutomationRules()
     }
 
     override fun onSearchQueryChanged(text: String) {
-        // Store the current search query
         currentSearchQuery = text.trim()
-        
-        if (!::rulesAdapter.isInitialized || allAutomationRules.isEmpty()) {
-            // If adapter isn't initialized or we have no rules, there's nothing to filter
-            return
-        }
-        
-        // If search query is empty, show all rules
-        if (currentSearchQuery.isEmpty()) {
-            rulesAdapter.submitList(allAutomationRules.toMutableList())
-            updateEmptyViewVisibility(allAutomationRules.isEmpty())
-            return
-        }
-        
-        // Filter rules based on search query
-        val filteredRules = allAutomationRules.filter { rule ->
-            // Search in phone number
-            rule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
-            // Search in contact name if it exists
-            (rule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
-            // Search in DTMF keys
-            rule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
-        }
-        
-        // Update the adapter with filtered rules
-        rulesAdapter.submitList(filteredRules.toMutableList())
-        
-        // Update empty view visibility based on filtered results
-        updateEmptyViewVisibility(filteredRules.isEmpty())
+        // Always call loadAutomationRules. It will handle adapter initialization,
+        // fetching all rules if needed, and applying the correct filtering (batch or individual)
+        // based on whether currentSearchQuery is empty or not.
+        loadAutomationRules()
     }
 
     // override fun onSortChanged() { /* ... */ }

@@ -240,7 +240,7 @@ class SettingsActivity : SimpleActivity() {
         setupCallsExport()
         setupCallsImport()
 
-        setupTipJar()
+//        setupTipJar()
         setupAbout()
 
         setupOptionsMenu()
@@ -287,7 +287,7 @@ class SettingsActivity : SimpleActivity() {
                 settingsManageBlockedNumbersChevron,
                 settingsManageSpeedDialChevron,
                 settingsChangeDateTimeFormatChevron,
-                settingsTipJarChevron,
+//                settingsTipJarChevron,
                 settingsAboutChevron,
                 settingsDialpadStyleChevron
             ).forEach {
@@ -299,7 +299,7 @@ class SettingsActivity : SimpleActivity() {
     private fun updatePro(isPro: Boolean = checkPro()) {
         binding.apply {
             settingsPurchaseThankYouHolder.beGoneIf(isPro)
-            settingsTipJarHolder.beVisibleIf(isPro)
+//            settingsTipJarHolder.beVisibleIf(isPro)
 
             val stringId =
                 if (isRTLLayout) com.revaltronics.strings.R.string.swipe_right_action
@@ -1507,15 +1507,15 @@ class SettingsActivity : SimpleActivity() {
         }
     }
 
-    private fun setupTipJar() = binding.apply {
-        settingsTipJarHolder.apply {
-            beVisibleIf(checkPro(false))
-            background.applyColorFilter(getBottomNavigationBackgroundColor().lightenColor(4))
-            setOnClickListener {
-                launchPurchase()
-            }
-        }
-    }
+//    private fun setupTipJar() = binding.apply {
+//        settingsTipJarHolder.apply {
+//            beVisibleIf(checkPro(false))
+//            background.applyColorFilter(getBottomNavigationBackgroundColor().lightenColor(4))
+//            setOnClickListener {
+//                launchPurchase()
+//            }
+//        }
+//    }
 
     @SuppressLint("SetTextI18n")
     private fun setupAbout() = binding.apply {

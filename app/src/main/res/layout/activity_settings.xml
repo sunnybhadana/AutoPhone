@@ -1451,29 +1451,29 @@
                         android:visibility="gone"
                         tools:visibility="visible">
 
-                        <RelativeLayout
-                            android:id="@+id/settingsTipJarWrapper"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/smaller_margin"
-                            android:paddingEnd="@dimen/smaller_margin"
-                            android:paddingTop="@dimen/medium_margin"
-                            android:paddingBottom="@dimen/medium_margin"
-                            android:background="@drawable/ripple_all_corners_11dp">
+<!--                        <RelativeLayout-->
+<!--                            android:id="@+id/settingsTipJarWrapper"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:paddingStart="@dimen/smaller_margin"-->
+<!--                            android:paddingEnd="@dimen/smaller_margin"-->
+<!--                            android:paddingTop="@dimen/medium_margin"-->
+<!--                            android:paddingBottom="@dimen/medium_margin"-->
+<!--                            android:background="@drawable/ripple_all_corners_11dp">-->
 
-                            <com.revaltronics.commons.views.MyTextView
-                                android:id="@+id/settingsTipJar"
-                                style="@style/SettingsTextLabelStyle"
-                                android:layout_centerVertical="true"
-                                android:text="@string/tip_jar"/>
+<!--                            <com.revaltronics.commons.views.MyTextView-->
+<!--                                android:id="@+id/settingsTipJar"-->
+<!--                                style="@style/SettingsTextLabelStyle"-->
+<!--                                android:layout_centerVertical="true"-->
+<!--                                android:text="@string/tip_jar"/>-->
 
-                            <ImageView
-                                android:id="@+id/settingsTipJarChevron"
-                                style="@style/SettingsChevronStyle"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@string/tip_jar"/>
-                        </RelativeLayout>
+<!--                            <ImageView-->
+<!--                                android:id="@+id/settingsTipJarChevron"-->
+<!--                                style="@style/SettingsChevronStyle"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_centerVertical="true"-->
+<!--                                android:contentDescription="@string/tip_jar"/>-->
+<!--                        </RelativeLayout>-->
                     </RelativeLayout>
 
                     <RelativeLayout

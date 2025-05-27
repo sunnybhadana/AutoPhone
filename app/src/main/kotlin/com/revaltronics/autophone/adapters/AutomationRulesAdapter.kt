@@ -73,8 +73,26 @@ class AutomationRulesAdapter(
     fun setBatchSize(batchGroupId: String, size: Int) {
         if (batchGroupId.isNotEmpty() && size > 0) {
             batchSizes[batchGroupId] = size
-            notifyDataSetChanged() // Update display to show batch sizes
+            // Consider if notifyDataSetChanged is always needed here or if it can be batched
+            // For now, keeping it to ensure UI updates if called independently.
+            notifyDataSetChanged() 
         }
+    }
+
+    /**
+     * Clears all cached batch sizes.
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    fun clearBatchSizes() {
+        batchSizes.clear()
+        // It's important to notify if the list might be displaying old batch sizes
+        // However, this will be followed by submitList in the typical flow from the fragment,
+        // which will also trigger a refresh.
+        // If this method is called standalone and expected to immediately clear UI elements
+        // showing batch counts, then notifyDataSetChanged() is appropriate.
+        // Given it's called before a submitList, direct notification might be redundant
+        // but safe.
+        // notifyDataSetChanged() // Let's hold off on this notify, as submitList will follow.
     }
 
     @SuppressLint("NotifyDataSetChanged")
