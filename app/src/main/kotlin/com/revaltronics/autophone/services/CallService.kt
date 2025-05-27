@@ -82,6 +82,8 @@ class CallService : InCallService() {
                     }
                 }
                 
+                // Always return the matching rule regardless of isActive status
+                // This way we can properly log and handle inactive rules in the handleAutomatedCallResponse function
                 rule
             } catch (e: Exception) {
                 Log.e(TAG, "Error finding automation rule: ${e.message}", e)
@@ -134,13 +136,14 @@ class CallService : InCallService() {
                 Log.d(TAG, "Found automation rule for $phoneNumber: status: $activeStatus, pickup delay ${rule.pickupDelaySeconds}s, " +
                       "DTMF steps: ${rule.dtmfSequence.size}, $batchInfo, $limitInfo, $resetInfo")
                 
-                // First check if the rule is active, then check batch limits
+                // First check if the rule is active
                 if (!rule.isActive) {
                     Log.d(TAG, "Rule for $phoneNumber is inactive. Handling call normally.")
                     handleRegularCall(call)
                     return@launch
                 }
                 
+                // Only check limits and proceed with automation if the rule is active
                 // Check if we should auto-answer based on batch limits
                 val shouldAutoAnswer = shouldAutoAnswerCall(rule)
                 

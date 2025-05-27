@@ -706,6 +706,14 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 // Update the rule in the database
                 withContext(Dispatchers.IO) {
                     appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(updatedRule)
+                    
+                    // If this rule is part of a batch group, ensure all rules in the batch
+                    // get the same active status
+                    if (rule.batch_group_id.isNotEmpty()) {
+                        // Use the syncBatchGroupConfiguration to ensure isActive status is synced
+                        // to all other rules in the batch
+                        appDatabase.simpleAutomationSettingDao().syncBatchGroupConfiguration(updatedRule)
+                    }
                 }
                 
                 // Show a toast message
@@ -714,8 +722,21 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 } else {
                     R.string.rule_deactivated
                 }
-                val phoneNumber = rule.phoneNumber
-                Toast.makeText(context, context.getString(statusMessageId) + ": $phoneNumber", Toast.LENGTH_SHORT).show()
+                
+                // Enhanced message for batch rules
+                val message = if (rule.batch_group_id.isNotEmpty()) {
+                    val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(rule.batch_group_id)
+                    if (batchSize > 1) {
+                        val statusVerb = if (updatedRule.isActive) "Activated" else "Deactivated"
+                        "$statusVerb all $batchSize rules for ${rule.contactName ?: rule.phoneNumber}"
+                    } else {
+                        context.getString(statusMessageId) + ": ${rule.phoneNumber}"
+                    }
+                } else {
+                    context.getString(statusMessageId) + ": ${rule.phoneNumber}"
+                }
+                
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                 
                 // Refresh the list
                 loadAutomationRules()

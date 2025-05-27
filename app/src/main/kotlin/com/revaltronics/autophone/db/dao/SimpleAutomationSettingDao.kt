@@ -18,6 +18,9 @@ interface SimpleAutomationSettingDao {
 
     @Query("SELECT * FROM simple_automation_settings WHERE phoneNumber = :phoneNumber")
     suspend fun getSettingByPhoneNumber(phoneNumber: String): SimpleAutomationSetting?
+    
+    @Query("SELECT * FROM simple_automation_settings WHERE phoneNumber = :phoneNumber AND isActive = :isActive")
+    suspend fun getSettingByPhoneNumberAndActiveStatus(phoneNumber: String, isActive: Boolean): SimpleAutomationSetting?
 
     @Query("SELECT * FROM simple_automation_settings ORDER BY id DESC")
     suspend fun getAllSettings(): List<SimpleAutomationSetting>
