@@ -22,10 +22,11 @@
             android:id="@+id/button_delete_rule"
             android:layout_width="70dp"
             android:layout_height="match_parent"
-            android:background="?attr/colorError"
-            android:src="@drawable/ic_delete_vector"
-            android:contentDescription="@string/delete_rule"
-            app:tint="?attr/colorOnError" /> <!-- Changed from @color/white to ?attr/colorOnError for consistency -->
+            android:background="@color/red_600"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/ic_delete_outline"
+            android:contentDescription="@string/delete_rule" /> <!-- Changed from @color/white to ?attr/colorOnError for consistency -->
     </LinearLayout>
 
     <!-- Main Content -->

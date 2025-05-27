@@ -1,6 +1,6 @@
 [versions]
 #jetbrains
-autophoneCommons = "v1.0.1"
+autophoneCommons = "v1.0.2"
 kotlin = "1.9.25"
 kotlinxSerializationJson = "1.6.3"
 #KSP
@@ -34,7 +34,7 @@ app-build-kotlinJVMTarget = "17"
 #versioning
 app-version-appId = "com.revaltronics.autophone"
 app-version-versionCode = "620"
-app-version-versionName = "6.2.0"
+app-version-versionName = "1.0.2"
 swiperefreshlayout = "1.1.0"
 [libraries]
 #EventBus

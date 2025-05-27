@@ -387,8 +387,13 @@ class AutomationActivity : SimpleActivity() {
                     binding.editTextContactName.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.textInputLayoutContactName.visibility = if (setting.contactName.isNullOrEmpty()) View.GONE else View.VISIBLE
                     binding.editTextPhoneNumber.setText(setting.phoneNumber)
-                    binding.editTextPhoneNumber.setTextColor(Color.BLACK) // Ensure text color is BLACK
-                    binding.editTextPhoneNumber.isEnabled = true // When editing, phone number should be editable
+                    binding.editTextPhoneNumber.setTextColor(Color.GRAY) // Gray text color for disabled state
+                    binding.editTextPhoneNumber.isEnabled = false // When editing, phone number should NOT be editable
+                    binding.buttonPickContact.isEnabled = false // Disable picking contact when editing an existing rule
+                    binding.buttonPickContact.alpha = 0.8f // Visual indication that it's disabled
+                    
+                    // Add a hint that phone number can't be changed
+                    binding.textInputLayoutPhoneNumber.helperText = "Phone number cannot be changed"
                     binding.editTextPickupDelay.setText(setting.pickupDelaySeconds.toString())
                     binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
                     binding.editTextMaxAutoAnswers.setText(setting.max_auto_answers.toString())
@@ -425,6 +430,9 @@ class AutomationActivity : SimpleActivity() {
         binding.editTextPhoneNumber.setText("")
         binding.editTextPhoneNumber.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.editTextPhoneNumber.isEnabled = true // Make editable for new manual entry
+        binding.buttonPickContact.isEnabled = true // Ensure Pick Contact button is enabled for new rules
+        binding.buttonPickContact.alpha = 1.0f // Reset alpha for new rule
+        binding.textInputLayoutPhoneNumber.helperText = null // Clear helper text
         binding.editTextPickupDelay.setText("0")
         binding.editTextPickupDelay.setTextColor(Color.BLACK) // Ensure text color is BLACK
         binding.editTextMaxAutoAnswers.setText("0")
