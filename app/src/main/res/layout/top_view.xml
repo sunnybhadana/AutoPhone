@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/placeholder_contact" />
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/callHistoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/callHistoryName">
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callHistoryCompany"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
             tools:text="Company"
             tools:visibility="visible" />
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callHistoryJobPosition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

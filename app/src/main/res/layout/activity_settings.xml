@@ -59,13 +59,13 @@
                     android:layout_toEndOf="@+id/purchase_logo"
                     android:layout_centerVertical="true">
 
-                    <com.goodwy.commons.views.MyTextView
+                    <com.revaltronics.commons.views.MyTextView
                         android:id="@+id/settings_purchase_thank_you"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/action_support_project"/>
 
-                    <com.goodwy.commons.views.MyTextView
+                    <com.revaltronics.commons.views.MyTextView
                         android:id="@+id/about_app_version"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                         android:id="@+id/settings_customize_colors_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_customize_colors_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_marginEnd="68dp"
@@ -134,7 +134,7 @@
                         android:id="@+id/settings_open_dialpad_at_launch_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_open_dialpad_at_launch"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/open_dialpad_by_default"
@@ -145,7 +145,7 @@
                         android:id="@+id/settings_material_design_3_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_material_design_3"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/material_design_3"
@@ -156,7 +156,7 @@
                         android:id="@+id/settingsOverflowIconHolder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsOverflowIconLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -181,7 +181,7 @@
                         android:id="@+id/settings_colored_contacts_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_colored_contacts"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/colored_contacts"
@@ -193,7 +193,7 @@
                         style="@style/SettingsHolderStyle"
                         android:paddingEnd="@dimen/medium_margin">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_contact_color_list_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -218,7 +218,7 @@
                         android:id="@+id/settings_color_sim_card_icons_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_color_sim_card_icons"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/color_sim_card_icons"
@@ -230,7 +230,7 @@
                         style="@style/SettingsHolderStyle"
                         android:padding="@dimen/smaller_margin">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSimCardColor1Label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -259,7 +259,7 @@
                         style="@style/SettingsHolderStyle"
                         android:padding="@dimen/smaller_margin">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSimCardColor2Label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -307,7 +307,7 @@
                         android:id="@+id/settingsManageBlockedNumbersHolder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsManageBlockedNumbers"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -337,7 +337,7 @@
                             android:src="@drawable/ic_question"
                             android:contentDescription="@string/block_hidden_calls"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsManageBlockedNumbersCount"
                             style="@style/SettingsTextValueStyle"
                             android:layout_centerVertical="true"
@@ -358,7 +358,7 @@
                         style="@style/SettingsHolderSwitchStyle"
                         android:visibility="gone">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_hide_dialpad_letters"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/hide_dialpad_letters_g"
@@ -370,7 +370,7 @@
                         style="@style/SettingsHolderSwitchStyle"
                         android:visibility="gone">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_hide_dialpad_numbers"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/hide_dialpad_numbers"
@@ -381,7 +381,7 @@
                         android:id="@+id/settingsFormatPhoneNumbersHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsFormatPhoneNumbers"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/format_phone_numbers"
@@ -392,7 +392,7 @@
                         android:id="@+id/settings_font_size_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_font_size_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -400,7 +400,7 @@
                             android:layout_toStartOf="@+id/settings_font_size"
                             android:text="@string/font_size"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_font_size"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -412,7 +412,7 @@
                         android:id="@+id/settings_change_date_time_format_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_change_date_time_format"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -431,7 +431,7 @@
                         android:id="@+id/settings_use_english_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_use_english"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/use_english_language"
@@ -442,7 +442,7 @@
                         android:id="@+id/settings_language_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_language_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -450,7 +450,7 @@
                             android:layout_toStartOf="@+id/settings_language"
                             android:text="@string/language"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_language"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -482,7 +482,7 @@
                         android:id="@+id/settings_default_tab_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_default_tab_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -490,7 +490,7 @@
                             android:layout_toStartOf="@+id/settings_default_tab"
                             android:text="@string/default_tab"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_default_tab"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -502,7 +502,7 @@
                         android:id="@+id/settings_manage_shown_tabs_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_manage_shown_tabs_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -521,7 +521,7 @@
                         android:id="@+id/settings_navigation_bar_style_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_navigation_bar_style_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -529,7 +529,7 @@
                             android:layout_toStartOf="@+id/settings_navigation_bar_style"
                             android:text="@string/tab_navigation"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_navigation_bar_style"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -541,7 +541,7 @@
                         android:id="@+id/settings_use_icon_tabs_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_use_icon_tabs"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/use_icon_tabs"
@@ -552,7 +552,7 @@
                         android:id="@+id/settings_screen_slide_animation_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_screen_slide_animation_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -560,7 +560,7 @@
                             android:layout_toStartOf="@+id/settings_screen_slide_animation"
                             android:text="@string/screen_slide_animation"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_screen_slide_animation"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -572,7 +572,7 @@
                         android:id="@+id/settings_open_search_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_open_search"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/open_search_when_open_contacts"
@@ -583,7 +583,7 @@
                         android:id="@+id/settingsEndSearchHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsEndSearch"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/end_search_when_changing_tab"
@@ -614,7 +614,7 @@
                         android:id="@+id/settingsUseSwipeToActionHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsUseSwipeToActionLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -622,7 +622,7 @@
                             android:layout_toStartOf="@+id/settingsUseSwipeToAction"
                             android:text="@string/use_swipe_gestures" />
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsUseSwipeToActionSummary"
                             style="@style/SettingsTextSummaryStyle"
                             android:layout_alignParentStart="true"
@@ -631,7 +631,7 @@
                             android:clickable="false"
                             android:text="@string/use_swipe_gestures_summary"/>
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsUseSwipeToAction"
                             style="@style/SettingsSwitchStyle"
                             android:layout_width="wrap_content"
@@ -645,7 +645,7 @@
                         android:id="@+id/settingsSwipeVibrationHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsSwipeVibration"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/vibrate_g"
@@ -656,7 +656,7 @@
                         android:id="@+id/settingsSwipeRippleHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsSwipeRipple"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/ripple_g"
@@ -667,7 +667,7 @@
                         android:id="@+id/settingsSwipeRightActionHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSwipeRightActionLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -675,7 +675,7 @@
                             android:layout_toStartOf="@+id/settingsSwipeRightAction"
                             android:text="@string/swipe_right_action" />
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSwipeRightAction"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -687,7 +687,7 @@
                         android:id="@+id/settingsSwipeLeftActionHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSwipeLeftActionLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -695,7 +695,7 @@
                             android:layout_toStartOf="@+id/settingsSwipeLeftAction"
                             android:text="@string/swipe_left_action" />
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSwipeLeftAction"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -707,7 +707,7 @@
                         android:id="@+id/settingsSkipDeleteConfirmationHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsSkipDeleteConfirmation"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/skip_delete_confirmation"
@@ -738,7 +738,7 @@
                         android:id="@+id/settings_manage_speed_dial_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_manage_speed_dial"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -757,7 +757,7 @@
                         android:id="@+id/settings_dialpad_style_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_dialpad_style_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -776,7 +776,7 @@
                         android:id="@+id/settingsShowRecentCallsOnDialpadHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsShowRecentCallsOnDialpadLabel"
                             style="@style/SettingsSwitchStyle"
                             android:layout_alignParentStart="true"
@@ -806,7 +806,7 @@
                             android:textStyle="bold"
                             android:includeFontPadding="false"/>
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsShowRecentCallsOnDialpad"
                             style="@style/SettingsSwitchStyle"
                             android:layout_width="wrap_content"
@@ -840,7 +840,7 @@
                         android:id="@+id/settingsFlashForAlertsHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsFlashForAlerts"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/flash_for_alerts"
@@ -871,7 +871,7 @@
                         android:id="@+id/settings_background_call_screen_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_background_call_screen_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -879,7 +879,7 @@
                             android:layout_toStartOf="@+id/settings_background_call_screen"
                             android:text="@string/call_screen_background"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_background_call_screen"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -892,7 +892,7 @@
                         style="@style/SettingsHolderSwitchStyle"
                         android:visibility="gone">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_transparent_call_screen"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/transparent_call_screen_g"
@@ -903,7 +903,7 @@
                         android:id="@+id/settings_answer_style_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_answer_style_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -911,7 +911,7 @@
                             android:layout_toStartOf="@+id/settings_answer_style"
                             android:text="@string/answer_style"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_answer_style"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -923,7 +923,7 @@
                         android:id="@+id/settingsCallButtonStyleHolder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsCallButtonStyleLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -931,7 +931,7 @@
                             android:layout_toStartOf="@+id/settingsCallButtonStyle"
                             android:text="@string/call_button_style"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsCallButtonStyle"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -943,7 +943,7 @@
                         android:id="@+id/settings_always_show_fullscreen_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_always_show_fullscreen"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/show_incoming_calls_full_screen"
@@ -954,7 +954,7 @@
                         android:id="@+id/settingsBackPressedEndCallHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsBackPressedEndCall"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/back_pressed_end_call"
@@ -966,7 +966,7 @@
                         style="@style/SettingsHolderStyle"
                         android:padding="@dimen/smaller_margin">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsQuickAnswersLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1021,7 +1021,7 @@
                         android:id="@+id/settings_show_caller_description_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_show_caller_description_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1029,7 +1029,7 @@
                             android:layout_toStartOf="@+id/settings_show_caller_description"
                             android:text="@string/show_caller_description_g"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_show_caller_description"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -1042,7 +1042,7 @@
                         style="@style/SettingsHolderSwitchStyle"
                         android:visibility="gone">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_disable_swipe_to_answer"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/disable_swipe_to_answer"
@@ -1053,7 +1053,7 @@
                         android:id="@+id/settingsSimDialogStyleHolder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSimDialogStyleLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1061,7 +1061,7 @@
                             android:layout_toStartOf="@+id/settingsSimDialogStyle"
                             android:text="@string/sim_card_selection_dialog_style"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsSimDialogStyle"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -1073,7 +1073,7 @@
                         android:id="@+id/settings_disable_proximity_sensor_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_disable_proximity_sensor"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/disable_proximity_sensor"
@@ -1084,7 +1084,7 @@
                         android:id="@+id/settingsCallVibrationHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsCallVibration"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/vibrate_on_button_press"
@@ -1095,7 +1095,7 @@
                         android:id="@+id/settingsCallStartEndVibrationHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsCallStartEndVibration"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/call_start_end_vibration"
@@ -1107,7 +1107,7 @@
                         style="@style/SettingsHolderSwitchStyle"
                         android:visibility="gone">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_dialpad_beeps"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/dialpad_beeps"
@@ -1118,7 +1118,7 @@
                         android:id="@+id/settings_show_call_confirmation_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_show_call_confirmation"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/show_call_confirmation_dialog"
@@ -1129,7 +1129,7 @@
                         android:id="@+id/settingsCallFromSameSimHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsCallFromSameSim"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/call_using_same_sim"
@@ -1140,7 +1140,7 @@
                         android:id="@+id/settingsCallBlockButtonHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsCallBlockButton"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/show_number_blocking_button"
@@ -1171,7 +1171,7 @@
                         android:id="@+id/settingsBlockCallFromAnotherAppHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_show_private_contacts_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1192,7 +1192,7 @@
                             android:src="@drawable/ic_question_round"
                             android:contentDescription="@string/open_dialpad_when_call_from_another_app_summary" />
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsBlockCallFromAnotherApp"
                             style="@style/SettingsSwitchStyle"
                             android:layout_width="wrap_content"
@@ -1226,7 +1226,7 @@
                         android:id="@+id/settings_group_calls_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_group_calls_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1234,7 +1234,7 @@
                             android:layout_toStartOf="@+id/settings_group_calls"
                             android:text="@string/group_calls"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_group_calls"
                             style="@style/SettingsTextValueStyle"
                             android:maxWidth="@dimen/settings_value_width_long"
@@ -1248,7 +1248,7 @@
                         style="@style/SettingsHolderSwitchStyle"
                         android:visibility="gone">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_group_subsequent_calls"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/group_subsequent_calls"
@@ -1259,7 +1259,7 @@
                         android:id="@+id/settingsQueryLimitRecentHolder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsQueryLimitRecentLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1267,7 +1267,7 @@
                             android:layout_toStartOf="@+id/settingsQueryLimitRecent"
                             android:text="@string/number_of_recent_calls_displays"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsQueryLimitRecent"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -1279,7 +1279,7 @@
                         android:id="@+id/settings_show_dividers_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_show_dividers"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/show_dividers"
@@ -1290,7 +1290,7 @@
                         android:id="@+id/settings_show_contact_thumbnails_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_show_contact_thumbnails"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/show_contact_thumbnails_g"
@@ -1301,7 +1301,7 @@
                         android:id="@+id/settingsContactThumbnailsSizeHolder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsContactThumbnailsSizeLabel"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_alignParentStart="true"
@@ -1309,7 +1309,7 @@
                             android:layout_toStartOf="@+id/settingsContactThumbnailsSize"
                             android:text="@string/contact_thumbnails_size"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settingsContactThumbnailsSize"
                             style="@style/SettingsTextValueStyle"
                             android:layout_alignParentEnd="true"
@@ -1321,7 +1321,7 @@
                         android:id="@+id/settings_show_phone_numbers_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_show_phone_numbers"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/show_phone_numbers_g"
@@ -1332,7 +1332,7 @@
                         android:id="@+id/settings_start_name_with_surname_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_start_name_with_surname"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/start_name_with_surname"
@@ -1343,7 +1343,7 @@
                         android:id="@+id/settings_relative_date_holder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settings_relative_date"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/relative_date"
@@ -1354,7 +1354,7 @@
                         android:id="@+id/settingsChangeColourTopBarHolder"
                         style="@style/SettingsHolderSwitchStyle">
 
-                        <com.goodwy.commons.views.MyMaterialSwitch
+                        <com.revaltronics.commons.views.MyMaterialSwitch
                             android:id="@+id/settingsChangeColourTopBar"
                             style="@style/SettingsSwitchStyle"
                             android:text="@string/change_top_bar_colour_when_scrolling"
@@ -1385,7 +1385,7 @@
                         android:id="@+id/settings_export_calls_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_export_calls"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -1404,7 +1404,7 @@
                         android:id="@+id/settings_import_calls_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_import_calls"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -1451,36 +1451,36 @@
                         android:visibility="gone"
                         tools:visibility="visible">
 
-                        <RelativeLayout
-                            android:id="@+id/settingsTipJarWrapper"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/smaller_margin"
-                            android:paddingEnd="@dimen/smaller_margin"
-                            android:paddingTop="@dimen/medium_margin"
-                            android:paddingBottom="@dimen/medium_margin"
-                            android:background="@drawable/ripple_all_corners_11dp">
+<!--                        <RelativeLayout-->
+<!--                            android:id="@+id/settingsTipJarWrapper"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:paddingStart="@dimen/smaller_margin"-->
+<!--                            android:paddingEnd="@dimen/smaller_margin"-->
+<!--                            android:paddingTop="@dimen/medium_margin"-->
+<!--                            android:paddingBottom="@dimen/medium_margin"-->
+<!--                            android:background="@drawable/ripple_all_corners_11dp">-->
 
-                            <com.goodwy.commons.views.MyTextView
-                                android:id="@+id/settingsTipJar"
-                                style="@style/SettingsTextLabelStyle"
-                                android:layout_centerVertical="true"
-                                android:text="@string/tip_jar"/>
+<!--                            <com.revaltronics.commons.views.MyTextView-->
+<!--                                android:id="@+id/settingsTipJar"-->
+<!--                                style="@style/SettingsTextLabelStyle"-->
+<!--                                android:layout_centerVertical="true"-->
+<!--                                android:text="@string/tip_jar"/>-->
 
-                            <ImageView
-                                android:id="@+id/settingsTipJarChevron"
-                                style="@style/SettingsChevronStyle"
-                                android:layout_alignParentEnd="true"
-                                android:layout_centerVertical="true"
-                                android:contentDescription="@string/tip_jar"/>
-                        </RelativeLayout>
+<!--                            <ImageView-->
+<!--                                android:id="@+id/settingsTipJarChevron"-->
+<!--                                style="@style/SettingsChevronStyle"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_centerVertical="true"-->
+<!--                                android:contentDescription="@string/tip_jar"/>-->
+<!--                        </RelativeLayout>-->
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/settings_about_holder"
                         style="@style/SettingsHolderStyle">
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_about_label"
                             style="@style/SettingsTextLabelStyle"
                             android:layout_centerVertical="true"
@@ -1489,7 +1489,7 @@
                             android:layout_marginEnd="@dimen/larger_margin"
                             android:text="@string/about"/>
 
-                        <com.goodwy.commons.views.MyTextView
+                        <com.revaltronics.commons.views.MyTextView
                             android:id="@+id/settings_about_version"
                             style="@style/SettingsTextValueStyle"
                             android:layout_toStartOf="@+id/settingsAboutChevron"

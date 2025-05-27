@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- DTMF Key Input -->
+        <com.revaltronics.commons.views.MyEditText
+            android:id="@+id/dtmf_key_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Key (0-9, *, #)"
+            android:inputType="text"
+            android:maxLength="1" />
+
+        <!-- Delay Input -->
+        <com.revaltronics.commons.views.MyEditText
+            android:id="@+id/dtmf_delay_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:hint="Delay (sec)"
+            android:inputType="numberDecimal" />
+
+        <!-- Remove Button -->
+        <ImageView
+            android:id="@+id/dtmf_remove_button"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Remove DTMF key"
+            android:padding="12dp"
+            android:src="@drawable/ic_minus_vector" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

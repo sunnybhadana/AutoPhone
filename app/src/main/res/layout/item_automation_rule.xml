@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorSurface"> <!-- Changed background to surface for better swipe visibility -->
+
+    <!-- Swipe Actions (Edit and Delete Buttons) - Initially Hidden/Underneath -->
+    <LinearLayout
+        android:id="@+id/swipe_actions_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        android:background="?attr/colorSurface"> <!-- Will be 70dp due to single child -->
+
+        <!-- Edit button removed -->
+
+        <ImageButton
+            android:id="@+id/button_delete_rule"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@color/red_600"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@drawable/ic_delete_outline"
+            android:contentDescription="@string/delete_rule" /> <!-- Changed from @color/white to ?attr/colorOnError for consistency -->
+    </LinearLayout>
+
+    <!-- Main Content -->
+    <LinearLayout
+        android:id="@+id/main_content_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/white"> <!-- Changed from selectableItemBackground to colorSurface -->
+
+        <TextView
+            android:id="@+id/textViewContactNameRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceSubtitle1"
+            android:textSize="16sp"
+            tools:text="Contact Name" />
+
+        <TextView
+            android:id="@+id/textViewPhoneNumberRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textSize="14sp"
+            tools:text="123-456-7890" />
+
+        <TextView
+            android:id="@+id/textViewPickupDelayRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp"
+            tools:text="Pickup after: 5s" />
+
+        <TextView
+            android:id="@+id/textViewAutoDisconnectRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textSize="12sp"
+            tools:text="Auto-disconnect: Yes" />
+
+        <TextView
+            android:id="@+id/textViewAutoAnswerLimitsRule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textSize="12sp"
+            tools:text="Auto-answer: 2/5 (resets every 60 min)" />
+            
+        <TextView
+            android:id="@+id/textViewRuleStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceCaption"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            tools:text="Status: Active" />
+
+    </LinearLayout>
+</FrameLayout>

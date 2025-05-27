@@ -15,7 +15,7 @@
         app:titleTextAppearance="@style/AppTheme.ActionBar.TitleTextStyle"
         tools:background="@color/md_grey_black"/>
 
-    <com.goodwy.commons.views.MyEditText
+    <com.revaltronics.commons.views.MyEditText
         android:id="@+id/dialpadInput"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -39,7 +39,7 @@
         android:layout_alignParentBottom="true"
         android:focusableInTouchMode="true">
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/dialpad_add_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:visibility="visible"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/dialpad_placeholder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
             app:layout_constraintTop_toBottomOf="@+id/dialpad_add_number"
             tools:visibility="visible"/>
 
-        <com.goodwy.commons.views.MyRecyclerView
+        <com.revaltronics.commons.views.MyRecyclerView
             android:id="@+id/dialpad_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -84,18 +84,18 @@
             android:paddingBottom="64dp"
             android:scrollbars="none"
             android:visibility="gone"
-            app:layoutManager="com.goodwy.commons.views.MyLinearLayoutManager"
+            app:layoutManager="com.revaltronics.commons.views.MyLinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dialpad_add_number"/>
 
-        <com.goodwy.commons.views.MyRecyclerView
+        <com.revaltronics.commons.views.MyRecyclerView
             android:id="@+id/dialpadRecentsList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipToPadding="false"
             android:paddingBottom="64dp"
             android:scrollbars="none"
-            app:layoutManager="com.goodwy.commons.views.MyLinearLayoutManager"
+            app:layoutManager="com.revaltronics.commons.views.MyLinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dialpad_add_number"/>
 

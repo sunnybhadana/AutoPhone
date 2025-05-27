@@ -33,7 +33,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_phone_vector"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/on_hold_caller_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="0912 345 678"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/on_hold_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         app:layout_constraintVertical_bias="@dimen/vertical_bias_avatar"
         tools:src="@drawable/placeholder_contact"/>
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/callerNameLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible"/>
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/callerDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -126,7 +126,7 @@
         tools:text="Company (Job Position)"
         tools:visibility="visible"/>
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/callerNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
         app:layout_constraintTop_toBottomOf="@+id/callerDescription"
         tools:text="*0912 345 678"/>
 
-    <com.goodwy.commons.views.MyTextView
+    <com.revaltronics.commons.views.MyTextView
         android:id="@+id/callerNotes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -209,7 +209,7 @@
             tools:text="1"
             tools:visibility="visible"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callStatusLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -275,7 +275,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="@dimen/vertical_bias_button"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_toggle_microphone_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -313,7 +313,7 @@
                 android:src="@drawable/ic_dialpad_vector"/>
         </LinearLayout>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_dialpad_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -342,7 +342,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintVertical_bias="@dimen/vertical_bias_button"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callToggleSpeakerLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -377,7 +377,7 @@
                 android:src="@drawable/ic_add_call_vector"/>
         </LinearLayout>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_add_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -412,7 +412,7 @@
                 android:src="@drawable/ic_call_swap_vector"/>
         </LinearLayout>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_swap_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -447,7 +447,7 @@
                 android:src="@drawable/ic_call_merge_vector"/>
         </LinearLayout>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_merge_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -475,7 +475,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/callToggleSpeaker"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_toggle_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -510,7 +510,7 @@
                 android:src="@drawable/ic_person_rounded_outline"/>
         </LinearLayout>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callAddContactLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -536,7 +536,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="@dimen/vertical_bias_call_end"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callEndLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -551,7 +551,7 @@
             app:layout_constraintStart_toStartOf="@+id/callEnd"
             app:layout_constraintTop_toBottomOf="@+id/callEnd" />
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/dialpadClose"
             android:layout_width="@dimen/call_button_size"
             android:layout_height="@dimen/call_button_size"
@@ -592,7 +592,7 @@
                 android:layout_above="@+id/dialpad_include"
                 android:gravity="center">
 
-                <com.goodwy.commons.views.MyEditText
+                <com.revaltronics.commons.views.MyEditText
                     android:id="@+id/dialpad_input"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -638,7 +638,7 @@
             app:layout_constraintVertical_bias="0.60"
             tools:backgroundTint="@color/dark_grey"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_remind_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -667,7 +667,7 @@
             app:layout_constraintVertical_bias="0.60"
             tools:backgroundTint="@color/dark_grey"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callMessageLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -692,7 +692,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.85"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callDeclineLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -703,7 +703,7 @@
             app:layout_constraintStart_toStartOf="@+id/callDecline"
             app:layout_constraintTop_toBottomOf="@+id/callDecline"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/callAcceptAndDecline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -739,7 +739,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.85"/>
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/call_accept_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

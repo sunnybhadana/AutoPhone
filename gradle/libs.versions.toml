@@ -1,5 +1,6 @@
 [versions]
 #jetbrains
+autophoneCommons = "v1.0.3"
 kotlin = "1.9.25"
 kotlinxSerializationJson = "1.6.3"
 #KSP
@@ -31,11 +32,13 @@ app-build-minimumSDK = "23"
 app-build-javaVersion = "VERSION_17"
 app-build-kotlinJVMTarget = "17"
 #versioning
-app-version-appId = "com.goodwy.dialer"
+app-version-appId = "com.revaltronics.autophone"
 app-version-versionCode = "620"
-app-version-versionName = "6.2.0"
+app-version-versionName = "1.0.2"
+swiperefreshlayout = "1.1.0"
 [libraries]
 #EventBus
+autophone-commons = { module = "com.github.sunnybhadana:autophone-commons", version.ref = "autophoneCommons" }
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 #Kotlin
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -44,8 +47,8 @@ indicator-fast-scroll = { module = "com.github.goodwy:IndicatorFastScroll", vers
 autofit-text-view = { module = "me.grantland:autofittextview", version.ref = "autofitTextView" }
 geocoder = { module = "com.googlecode.libphonenumber:geocoder", version.ref = "geocoderVersion" }
 libphonenumber = { module = "com.googlecode.libphonenumber:libphonenumber", version.ref = "libphonenumberVersion" }
-#Goodwy
 goodwy-commons = { module = "com.github.Goodwy:Goodwy-Commons", version.ref = "right-commons" }
+revaltronics-commons = {module = "com.revaltronics:commons", version.ref = "right-commons"}
 shortcut-badger = { module = "me.leolin:ShortcutBadger", version.ref = "badger" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewModel = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
@@ -55,6 +58,7 @@ behavio-rule = { module = "com.github.Liverm0r:BehavioRule", version.ref = "beha
 rx-animation = { module = "com.mikhaellopez:rxanimation", version.ref = "rxAnimation" }
 rx-java = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxJava3" }
 swipe-action = { module = "com.github.Goodwy:SwipeActionView", version.ref = "swipeToActionLayout" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 [bundles]
 lifecycle = [
     "androidx-lifecycle-runtime",

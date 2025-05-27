@@ -16,7 +16,7 @@
         android:paddingStart="@dimen/contact_padding_left"
         android:paddingEnd="@dimen/contact_padding_left">
 
-        <com.goodwy.commons.views.MyTextView
+        <com.revaltronics.commons.views.MyTextView
             android:id="@+id/contact_event_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

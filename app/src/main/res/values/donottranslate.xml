@@ -1,6 +1,6 @@
 <resources>
-    <string name="package_name">com.goodwy.dialer</string>
-    <string name="app_name_g">Right Dialer</string>
+    <string name="package_name">com.revaltronics.autophone</string>
+    <string name="app_name_g">AutoPhone</string>
 
     <!-- Release notes --><!-- TODO changelog -->
     <string name="release_620">

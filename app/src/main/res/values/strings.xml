@@ -89,4 +89,45 @@
     <string name="faq_2_text">Due to system restrictions, emergency calls can only be made through your system\'s default dialer or phone app. To ensure emergency calls work properly, you need to keep the system app installed and enabled.</string>
     <string name="faq_3_title">Why are some of my contacts missing from the app?</string>
     <string name="faq_3_text">Fossify Phone only displays contacts that have a phone number associated with them. Contacts without a phone number are not shown in the app.</string>
+    
+    <!-- Automation -->
+    <string name="automation_tab">Automation</string>
+    <string name="auto_answer">Auto Answer</string>
+    <string name="auto_answer_settings">Auto Answer Settings</string>
+    <string name="no_auto_answer_rules">No automated calls configured</string>
+    <string name="add_auto_answer_rule">Add Automation Rule</string>
+    <string name="edit_auto_answer_rule">Edit Automation Rule</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="pick_from_contacts">Pick from contacts</string>
+    <string name="answer_delay_seconds">Answer Delay (seconds)</string>
+    <string name="enter_delay_seconds">Enter delay in seconds (e.g. 3)</string>
+    <string name="dtmf_key_sequence">DTMF Key Sequence</string>
+    <string name="add_dtmf_key">Add DTMF Key</string>
+    <string name="dtmf_key_hint">Key (0-9, *, #)</string>
+    <string name="dtmf_delay_hint">Delay (sec)</string>
+    <string name="hangup_after_sequence">Hang up call after sequence completes</string>
+    <string name="answer_after">Answer after: %d seconds</string>
+    <string name="dtmf_sequence">DTMF: %s</string>
+    <string name="end_call_automation">End call: %s</string>
+    <string name="rule_is_active">Rule Is Active</string>
+    <string name="rule_activated">Rule activated</string>
+    <string name="rule_deactivated">Rule deactivated</string>
+    <string name="status_active">Status: Active</string>
+    <string name="status_inactive">Status: Inactive</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_rule_confirmation">Are you sure you want to delete this automation rule?</string>
+    <string name="delete_batch_rule_confirmation">Delete Multiple Rules</string>
+    <string name="delete_all">Delete All</string>
+    <string name="batch_contact_format">%s (+ %d others)</string>
+    <string name="batch_number_format">%s (+ %d other numbers)</string>
+    <string name="edit_rule">Edit Rule</string>
+    <string name="delete_rule">Delete Rule</string>
+    <string name="no_contact_name">Unknown Contact</string>
+    <string name="pickup_delay_formatted">Pickup after: %ds</string>
+    <string name="auto_disconnect_formatted">Auto-disconnect: %s</string>
+    <string name="auto_answer_limits_formatted">Auto-answer limits: %s</string>
+    <string name="unlimited">Unlimited</string>
 </resources>

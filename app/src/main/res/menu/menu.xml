@@ -4,6 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AlwaysShowAction,AppCompatResource">
     <item
+        android:id="@+id/create_new_automation"
+        android:icon="@drawable/ic_plus_vector"
+        android:title="@string/automation_tab"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/create_new_contact"
         android:icon="@drawable/ic_plus_vector"
         android:title="@string/add_number_to_contact"

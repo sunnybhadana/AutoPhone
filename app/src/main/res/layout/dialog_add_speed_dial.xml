@@ -6,7 +6,7 @@
     android:paddingTop="@dimen/normal_margin"
     android:paddingBottom="@dimen/normal_margin">
 
-    <com.goodwy.commons.views.MyTextInputLayout
+    <com.revaltronics.commons.views.MyTextInputLayout
         android:id="@+id/add_speed_dial_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,5 +29,5 @@
             android:maxLength="30"
             android:maxLines="1" />
 
-    </com.goodwy.commons.views.MyTextInputLayout>
+    </com.revaltronics.commons.views.MyTextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

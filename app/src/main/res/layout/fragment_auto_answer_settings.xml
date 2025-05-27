@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.revaltronics.autophone.fragments.AutoAnswerSettingsFragment
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auto_answer_settings_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.AutoAnswerSettingsFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Empty state text -->
+        <com.revaltronics.commons.views.MyTextView
+            android:id="@+id/auto_answer_empty_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:alpha="0.8"
+            android:gravity="center"
+            android:paddingStart="@dimen/activity_margin"
+            android:paddingTop="@dimen/activity_margin"
+            android:paddingEnd="@dimen/activity_margin"
+            android:text="@string/no_auto_answer_rules"
+            android:textSize="@dimen/bigger_text_size"
+            android:textStyle="italic"
+            android:visibility="gone" />
+
+        <!-- SwipeRefreshLayout for pull-to-refresh -->
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/auto_answer_swipe_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Automation rules list -->
+            <com.revaltronics.commons.views.MyRecyclerView
+                android:id="@+id/auto_answer_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorSurface"
+                android:clipToPadding="false"
+                android:layoutAnimation="@anim/layout_animation"
+                android:paddingBottom="64dp"
+                android:scrollbars="none" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+    <!-- Add/Edit Automation Dialog -->
+    <ScrollView
+        android:id="@+id/auto_answer_editor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/colorSurface"
+        android:elevation="8dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_margin">
+
+            <!-- Editor header -->
+            <com.revaltronics.commons.views.MyTextView
+                android:id="@+id/auto_answer_editor_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin"
+                android:text="Add Automation Rule"
+                android:textSize="@dimen/bigger_text_size"
+                android:textStyle="bold" />
+
+            <!-- Contact selection section -->
+            <com.revaltronics.commons.views.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="Phone Number"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.revaltronics.commons.views.MyEditText
+                    android:id="@+id/auto_answer_phone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Enter phone number"
+                    android:inputType="phone"
+                    android:padding="@dimen/activity_margin" />
+
+                <ImageView
+                    android:id="@+id/auto_answer_pick_contact"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Pick from contacts"
+                    android:padding="@dimen/medium_margin"
+                    android:src="@drawable/ic_person_rounded" />
+            </LinearLayout>
+
+            <!-- Delay setting -->
+            <com.revaltronics.commons.views.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="Answer Delay (seconds)"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold" />
+
+            <com.revaltronics.commons.views.MyEditText
+                android:id="@+id/auto_answer_delay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter delay in seconds (e.g. 3)"
+                android:inputType="number"
+                android:padding="@dimen/activity_margin" />
+
+            <!-- DTMF sequence section -->
+            <com.revaltronics.commons.views.MyTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:text="DTMF Key Sequence"
+                android:textSize="@dimen/normal_text_size"
+                android:textStyle="bold" />
+
+            <!-- DTMF sequence list -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/auto_answer_dtmf_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="100dp"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Add DTMF button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/auto_answer_add_dtmf"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add DTMF Key"
+                android:textAllCaps="false" />
+
+            <!-- Hang-up option -->
+            <com.revaltronics.commons.views.MyMaterialSwitch
+                android:id="@+id/auto_answer_hangup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:checked="false"
+                android:padding="@dimen/activity_margin"
+                android:text="Hang up call after sequence completes"
+                android:textSize="@dimen/normal_text_size" />
+
+            <!-- Save and cancel buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_margin"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/auto_answer_cancel"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancel"
+                    android:textAllCaps="false" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/auto_answer_save"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:textAllCaps="false" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</com.revaltronics.autophone.fragments.AutoAnswerSettingsFragment>

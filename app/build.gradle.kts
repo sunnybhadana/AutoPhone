@@ -12,7 +12,7 @@ plugins {
 }
 
 base {
-    archivesName.set("dialer")
+    archivesName.set("AutoPhone")
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -33,7 +33,7 @@ android {
         targetSdk = project.libs.versions.app.build.targetSDK.get().toInt()
         versionName = project.libs.versions.app.version.versionName.get()
         versionCode = project.libs.versions.app.version.versionCode.get().toInt()
-        setProperty("archivesBaseName", "dialer-$versionCode")
+        setProperty("archivesBaseName", "AutoPhone-$versionName")
         buildConfigField("String", "RIGHT_APP_KEY", "\"${properties["RIGHT_APP_KEY"]}\"")
         buildConfigField("String", "PRODUCT_ID_X1", "\"${properties["PRODUCT_ID_X1"]}\"")
         buildConfigField("String", "PRODUCT_ID_X2", "\"${properties["PRODUCT_ID_X2"]}\"")
@@ -107,7 +107,7 @@ android {
         kotlinOptions.jvmTarget = project.libs.versions.app.build.kotlinJVMTarget.get()
     }
 
-    namespace = libs.versions.app.version.appId.get()
+    namespace = "com.revaltronics.autophone"
 
     lint {
         checkReleaseBuilds = false
@@ -137,7 +137,7 @@ dependencies {
     implementation(libs.geocoder)
 
     //Goodwy
-    implementation(libs.goodwy.commons)
+    implementation(libs.autophone.commons)
     implementation(libs.shortcut.badger)
     implementation(libs.behavio.rule)
     implementation(libs.rx.animation)
@@ -145,5 +145,6 @@ dependencies {
     implementation(libs.swipe.action)
     //timer
     implementation(libs.bundles.lifecycle)
+    implementation(libs.androidx.swiperefreshlayout)
     ksp(libs.androidx.room.compiler)
 }
