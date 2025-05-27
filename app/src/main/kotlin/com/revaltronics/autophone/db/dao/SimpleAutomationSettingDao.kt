@@ -161,4 +161,50 @@ interface SimpleAutomationSettingDao {
         // Return all rules that share the same batch group
         return getSettingsByBatchGroup(rule.batch_group_id)
     }
+    
+    /**
+     * Synchronize all configuration settings across a batch group
+     * This ensures that all rules in the same batch group share the same configuration
+     * @param rule The rule containing the configuration to sync to all batch members
+     */
+    @Transaction
+    suspend fun syncBatchGroupConfiguration(rule: SimpleAutomationSetting) {
+        // Only proceed if this rule belongs to a batch group
+        if (rule.batch_group_id.isEmpty()) return
+        
+        // Get all rules in this batch group
+        val batchRules = getSettingsByBatchGroup(rule.batch_group_id)
+        
+        // Skip if there's only one rule (no need to sync)
+        if (batchRules.size <= 1) return
+        
+        // Update each rule in the batch group with the configuration from the source rule
+        batchRules.forEach { batchRule ->
+            // Skip the rule itself
+            if (batchRule.id == rule.id) return@forEach
+            
+            // Create updated rule with synced configuration
+            val updatedRule = batchRule.copy(
+                // Keep these fields as is
+                id = batchRule.id,
+                contactName = batchRule.contactName,
+                phoneNumber = batchRule.phoneNumber,
+                // Ensure batch_group_id is preserved
+                batch_group_id = rule.batch_group_id, // Use the source rule's batch_group_id to ensure consistency
+                answered_calls_count = batchRule.answered_calls_count,
+                last_reset_timestamp = batchRule.last_reset_timestamp,
+                
+                // Sync these configuration fields
+                pickupDelaySeconds = rule.pickupDelaySeconds,
+                autoDisconnectCall = rule.autoDisconnectCall,
+                dtmfSequence = rule.dtmfSequence,
+                max_auto_answers = rule.max_auto_answers,
+                reset_interval_minutes = rule.reset_interval_minutes,
+                isActive = rule.isActive
+            )
+            
+            // Update the rule in the database
+            updateSetting(updatedRule)
+        }
+    }
 }

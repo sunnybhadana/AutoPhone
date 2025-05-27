@@ -272,7 +272,8 @@ class AutomationActivity : SimpleActivity() {
             var settingsSavedCount = 0
             var settingsFailedCount = 0
             val errors = mutableListOf<String>()
-
+            var batchSyncMessage = "" // Track batch sync message separately
+            
             // Generate a batch group ID if we have multiple phone numbers
             val batchGroupId = if (selectedPhoneNumbers.size > 1) {
                 appDatabase.simpleAutomationSettingDao().getNextBatchGroupId().toString()
@@ -321,6 +322,13 @@ class AutomationActivity : SimpleActivity() {
                     Toast.makeText(this@AutomationActivity, "Phone number cannot be empty", Toast.LENGTH_SHORT).show()
                     return@launch
                 }
+                // First, get the existing rule to preserve batch_group_id if it exists
+                var batchGroupIdToUse = ""
+                if (currentSettingId != null && currentSettingId != 0) {
+                    val existingRule = appDatabase.simpleAutomationSettingDao().getSettingById(currentSettingId!!)
+                    batchGroupIdToUse = existingRule?.batch_group_id ?: ""
+                }
+                
                 val settingToSave = SimpleAutomationSetting(
                     id = currentSettingId ?: 0,
                     contactName = contactNameToSave,
@@ -328,7 +336,7 @@ class AutomationActivity : SimpleActivity() {
                     pickupDelaySeconds = pickupDelay,
                     autoDisconnectCall = autoDisconnect,
                     dtmfSequence = dtmfSequence,
-                    batch_group_id = "", // Single entry, no batch group
+                    batch_group_id = batchGroupIdToUse, // Preserve batch group ID if it exists
                     max_auto_answers = maxAutoAnswers,
                     reset_interval_minutes = resetIntervalMinutes,
                     isActive = isActive
@@ -337,7 +345,26 @@ class AutomationActivity : SimpleActivity() {
                     if (currentSettingId == null || currentSettingId == 0) { // New setting
                         appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave.copy(id = 0))
                     } else { // Existing setting
+                        // We already have the existing rule's batch_group_id in batchGroupIdToUse
+                        
+                        // Save the updated rule
                         appDatabase.simpleAutomationSettingDao().insertOrUpdateSetting(settingToSave)
+                        
+                        // If the rule is part of a batch group, sync settings with all other rules in that group
+                        if (batchGroupIdToUse.isNotEmpty()) {
+                            // Get the freshly saved rule to ensure all fields are up-to-date
+                            val updatedRule = appDatabase.simpleAutomationSettingDao().getSettingById(currentSettingId!!)
+                            if (updatedRule != null) {
+                                appDatabase.simpleAutomationSettingDao().syncBatchGroupConfiguration(updatedRule)
+                                
+                                // Add information about batch sync to the message
+                                val batchRules = appDatabase.simpleAutomationSettingDao()
+                                    .getSettingsByBatchGroup(batchGroupIdToUse)
+                                if (batchRules.size > 1) {
+                                    batchSyncMessage = "Updated ${batchRules.size - 1} other contacts in the same batch."
+                                }
+                            }
+                        }
                     }
                     settingsSavedCount++
                 } catch (e: SQLiteConstraintException) {
@@ -356,6 +383,9 @@ class AutomationActivity : SimpleActivity() {
             }
             if (settingsFailedCount > 0) {
                 message += "$settingsFailedCount setting(s) failed. (${errors.joinToString("; ")})"
+            }
+            if (batchSyncMessage.isNotEmpty()) {
+                message += " $batchSyncMessage"
             }
             if (message.isBlank()) {
                 message = "No settings were changed."
