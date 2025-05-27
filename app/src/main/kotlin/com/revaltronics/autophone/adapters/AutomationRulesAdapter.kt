@@ -13,10 +13,12 @@ import com.revaltronics.autophone.models.SimpleAutomationSetting
 
 class AutomationRulesAdapter(
     private val onRuleClick: (SimpleAutomationSetting) -> Unit,
-    private val onRuleLongClick: (SimpleAutomationSetting) -> Boolean = { false } // Added for toggling active state
+    private val onRuleLongClick: (SimpleAutomationSetting) -> Boolean = { false }, // Added for toggling active state
+    private val getBatchSize: suspend (String) -> Int = { 0 } // Function to get batch size
 ) : ListAdapter<SimpleAutomationSetting, AutomationRulesAdapter.RuleViewHolder>(RuleDiffCallback()) {
 
     private var textColor: Int = Color.BLACK // Default color
+    private val batchSizes = mutableMapOf<String, Int>() // Cache for batch sizes
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RuleViewHolder {
         val binding = ItemAutomationRuleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,16 +27,25 @@ class AutomationRulesAdapter(
 
     override fun onBindViewHolder(holder: RuleViewHolder, position: Int) {
         val rule = getItem(position)
-        holder.bind(rule, textColor)
+        holder.bind(rule, textColor, batchSizes[rule.batch_group_id] ?: 0)
+        
         // Main content click triggers the onRuleClick (for editing via AutomationActivity)
         holder.binding.mainContentContainer.setOnClickListener { onRuleClick(rule) }
         
         // Long press to toggle active state
         holder.binding.mainContentContainer.setOnLongClickListener { onRuleLongClick(rule) }
-
-        // Removed setOnClickListeners for buttonEditRule and buttonDeleteRule
-        // as swipe action will now directly trigger delete confirmation
-        // and edit is handled by mainContentContainer click.
+    }
+    
+    /**
+     * Set the batch size for a specific batch group
+     * @param batchGroupId The batch group ID
+     * @param size The size of the batch group
+     */
+    fun setBatchSize(batchGroupId: String, size: Int) {
+        if (batchGroupId.isNotEmpty() && size > 0) {
+            batchSizes[batchGroupId] = size
+            notifyDataSetChanged() // Update display to show batch sizes
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -44,20 +55,34 @@ class AutomationRulesAdapter(
     }
 
     inner class RuleViewHolder(val binding: ItemAutomationRuleBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(rule: SimpleAutomationSetting, textColor: Int) { // Receive textColor
+        fun bind(rule: SimpleAutomationSetting, textColor: Int, batchSize: Int = 0) { // Added batchSize param
             // Remove the alpha change, keeping the UI consistent regardless of active state
             binding.mainContentContainer.alpha = 1.0f
             
-            binding.textViewContactNameRule.text = rule.contactName ?: itemView.context.getString(R.string.no_contact_name)
+            // Display contact name with batch count if applicable
+            val contactName = rule.contactName ?: itemView.context.getString(R.string.no_contact_name)
+            val displayName = if (rule.batch_group_id.isNotEmpty() && batchSize > 1) {
+                "$contactName (+ ${batchSize - 1} others)"
+            } else {
+                contactName
+            }
+            
+            binding.textViewContactNameRule.text = displayName
             binding.textViewContactNameRule.setTextColor(textColor) // Apply textColor
 
-            binding.textViewPhoneNumberRule.text = rule.phoneNumber
+            // For batch groups, we might want to indicate this is a group
+            val phoneNumber = if (rule.batch_group_id.isNotEmpty() && batchSize > 1) {
+                "${rule.phoneNumber} (multiple numbers)"
+            } else {
+                rule.phoneNumber
+            }
+            binding.textViewPhoneNumberRule.text = phoneNumber
             binding.textViewPhoneNumberRule.setTextColor(textColor) // Apply textColor
 
             binding.textViewPickupDelayRule.text = itemView.context.getString(R.string.pickup_delay_formatted, rule.pickupDelaySeconds)
             binding.textViewPickupDelayRule.setTextColor(textColor) // Apply textColor
 
-            val autoDisconnectText = if (rule.autoDisconnectCall) itemView.context.getString(R.string.yes) else itemView.context.getString(R.string.no) // Changed rule.autoDisconnect to rule.autoDisconnectCall
+            val autoDisconnectText = if (rule.autoDisconnectCall) itemView.context.getString(R.string.yes) else itemView.context.getString(R.string.no)
             binding.textViewAutoDisconnectRule.text = itemView.context.getString(R.string.auto_disconnect_formatted, autoDisconnectText)
             binding.textViewAutoDisconnectRule.setTextColor(textColor) // Apply textColor
             
@@ -70,11 +95,18 @@ class AutomationRulesAdapter(
             binding.textViewAutoAnswerLimitsRule.text = itemView.context.getString(R.string.auto_answer_limits_formatted, limitsText)
             binding.textViewAutoAnswerLimitsRule.setTextColor(textColor) // Apply textColor
             
-            // Display active/inactive status
-            val statusText = if (rule.isActive) 
+            // Display active/inactive status and batch info if applicable
+            val baseStatusText = if (rule.isActive) 
                 itemView.context.getString(R.string.status_active) 
             else 
                 itemView.context.getString(R.string.status_inactive)
+                
+            // Add batch info to status if applicable
+            val statusText = if (rule.batch_group_id.isNotEmpty() && batchSize > 1) {
+                "$baseStatusText · Batch group with $batchSize numbers"
+            } else {
+                baseStatusText
+            }
             
             // Use standard material colors: green for active, red for inactive
             val statusColor = if (rule.isActive) 

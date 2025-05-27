@@ -207,4 +207,48 @@ interface SimpleAutomationSettingDao {
             updateSetting(updatedRule)
         }
     }
+    
+    /**
+     * Get all batch group representatives (one rule per batch group)
+     * This is used to display batched rules as a single entry in the UI
+     * @return List of representative rules, one per batch group
+     */
+    @Transaction
+    suspend fun getBatchGroupRepresentatives(): List<SimpleAutomationSetting> {
+        val result = mutableListOf<SimpleAutomationSetting>()
+        val processedBatchGroups = mutableSetOf<String>()
+        
+        // First, get all settings
+        val allSettings = getAllSettings()
+        
+        // Process settings that belong to batch groups
+        allSettings.forEach { setting ->
+            if (setting.batch_group_id.isNotEmpty() && !processedBatchGroups.contains(setting.batch_group_id)) {
+                // This is the first rule we're seeing from this batch group
+                processedBatchGroups.add(setting.batch_group_id)
+                // Add as a representative for this batch group
+                result.add(setting)
+            } else if (setting.batch_group_id.isEmpty()) {
+                // Stand-alone rule (not in a batch group)
+                result.add(setting)
+            }
+        }
+        
+        return result
+    }
+    
+    /**
+     * Get the count of rules in a batch group
+     * @param batchGroupId The batch group ID
+     * @return Number of rules in this batch group
+     */
+    @Query("SELECT COUNT(*) FROM simple_automation_settings WHERE batch_group_id = :batchGroupId")
+    suspend fun getBatchGroupSize(batchGroupId: String): Int
+    
+    /**
+     * Delete all rules in a batch group
+     * @param batchGroupId The batch group ID to delete
+     */
+    @Query("DELETE FROM simple_automation_settings WHERE batch_group_id = :batchGroupId")
+    suspend fun deleteBatchGroup(batchGroupId: String)
 }

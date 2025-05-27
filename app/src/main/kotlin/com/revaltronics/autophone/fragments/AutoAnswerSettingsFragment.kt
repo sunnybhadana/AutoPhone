@@ -20,6 +20,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -209,7 +210,7 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
         rulesList?.apply {
             layoutManager = LinearLayoutManager(context)
             if (!::rulesAdapter.isInitialized) {
-                // Adapter now only takes onRuleClick for editing
+                // Adapter now takes onRuleClick, onRuleLongClick, and a function to get batch size
                 rulesAdapter = AutomationRulesAdapter(
                     onRuleClick = { rule ->
                         launchAutomationActivityForRule(rule.id)
@@ -218,6 +219,16 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                         // Toggle active state on long press
                         toggleRuleActiveState(rule)
                         true // Consume the long press event
+                    },
+                    getBatchSize = { batchGroupId ->
+                        // Provide a function to get batch size asynchronously
+                        runBlocking(Dispatchers.IO) {
+                            if (batchGroupId.isNotEmpty()) {
+                                appDatabase.simpleAutomationSettingDao().getBatchGroupSize(batchGroupId)
+                            } else {
+                                0
+                            }
+                        }
                     }
                 )
             }
@@ -397,31 +408,72 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
     }
 
     private fun showDeleteConfirmationDialog(rule: SimpleAutomationSetting) {
-        MaterialAlertDialogBuilder(context)
-            .setTitle(R.string.delete_rule_confirmation)
-            .setMessage("Do you want to delete the rule for ${rule.contactName ?: rule.phoneNumber}?")
-            .setNegativeButton(R.string.cancel) { dialog, _ ->
-                dialog.dismiss()
-                // Important: Notify adapter to redraw the item to hide swipe actions
-                // and reset its state if deletion is cancelled.
-                val position = rulesAdapter.currentList.indexOf(rule)
-                if (position != -1) {
-                    rulesAdapter.notifyItemChanged(position)
+        val isBatchRule = rule.batch_group_id.isNotEmpty()
+        
+        // Create a coroutine scope to get the batch size if needed
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            // Default message for single rule
+            var message = "Do you want to delete the rule for ${rule.contactName ?: rule.phoneNumber}?"
+            
+            // For batch rules, modify the message to indicate multiple deletions
+            if (isBatchRule) {
+                val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(rule.batch_group_id)
+                if (batchSize > 1) {
+                    message = "This will delete all ${batchSize} rules for ${rule.contactName ?: "this contact"}. Continue?"
                 }
             }
-            .setPositiveButton(R.string.delete_rule) { dialog, _ ->
-                deleteRule(rule)
-                dialog.dismiss()
+            
+            // Show the dialog on the main thread
+            withContext(Dispatchers.Main) {
+                MaterialAlertDialogBuilder(context)
+                    .setTitle(if (isBatchRule) R.string.delete_batch_rule_confirmation else R.string.delete_rule_confirmation)
+                    .setMessage(message)
+                    .setNegativeButton(R.string.cancel) { dialog, _ ->
+                        dialog.dismiss()
+                        // Notify adapter to redraw the item to hide swipe actions
+                        val position = rulesAdapter.currentList.indexOf(rule)
+                        if (position != -1) {
+                            rulesAdapter.notifyItemChanged(position)
+                        }
+                    }
+                    .setPositiveButton(R.string.delete_rule) { dialog, _ ->
+                        deleteRule(rule)
+                        dialog.dismiss()
+                    }
+                    .show()
             }
-            .show()
+        }
     }
 
     private fun deleteRule(rule: SimpleAutomationSetting) {
         findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-            appDatabase.simpleAutomationSettingDao().deleteSettingById(rule.id)
+            // Check if this is a batch rule
+            val isBatchRule = rule.batch_group_id.isNotEmpty()
+            val batchGroupId = rule.batch_group_id
             
-            // Remove the deleted rule from our stored list
-            allAutomationRules = allAutomationRules.filter { it.id != rule.id }
+            if (isBatchRule) {
+                // For batch rules, delete all rules in the batch group
+                val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(batchGroupId)
+                appDatabase.simpleAutomationSettingDao().deleteBatchGroup(batchGroupId)
+                
+                // Remove all rules with this batch_group_id from our stored list
+                allAutomationRules = allAutomationRules.filter { it.batch_group_id != batchGroupId }
+                
+                // Show a toast indicating the batch deletion
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(
+                        context, 
+                        "Deleted batch rule with $batchSize numbers", 
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            } else {
+                // For non-batch rules, just delete the single rule
+                appDatabase.simpleAutomationSettingDao().deleteSettingById(rule.id)
+                
+                // Remove the deleted rule from our stored list
+                allAutomationRules = allAutomationRules.filter { it.id != rule.id }
+            }
             
             // If we have a search query active, apply the filter directly without reloading from database
             if (currentSearchQuery.isNotEmpty()) {
@@ -433,9 +485,10 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                 rulesAdapter.submitList(filteredRules.toMutableList())
                 updateEmptyViewVisibility(filteredRules.isEmpty())
             } else {
-                // No active search, just show all remaining rules
-                rulesAdapter.submitList(allAutomationRules.toMutableList())
-                updateEmptyViewVisibility(allAutomationRules.isEmpty())
+                // With no active search, reload using batch representatives
+                val displayRules = appDatabase.simpleAutomationSettingDao().getBatchGroupRepresentatives()
+                rulesAdapter.submitList(displayRules.toMutableList())
+                updateEmptyViewVisibility(displayRules.isEmpty())
             }
         }
     }
@@ -462,33 +515,48 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
 
         // Use findViewTreeLifecycleOwner() to get the LifecycleScope
         findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-            val rules = appDatabase.simpleAutomationSettingDao().getAllSettings()
+            // Get all rules for complete data reference
+            val allRules = appDatabase.simpleAutomationSettingDao().getAllSettings()
             // Store all rules for search filtering
-            allAutomationRules = rules
+            allAutomationRules = allRules
             
-            // If we have a search query, apply it
-            val displayedRules = if (currentSearchQuery.isNotEmpty()) {
-                rules.filter { rule ->
+            // For display, use batch representatives or individual rules
+            val displayRules = if (currentSearchQuery.isNotEmpty()) {
+                // If searching, show all matching rules individually
+                allRules.filter { rule ->
                     rule.phoneNumber.contains(currentSearchQuery, ignoreCase = true) ||
                     (rule.contactName?.contains(currentSearchQuery, ignoreCase = true) ?: false) ||
                     rule.dtmfSequence.any { it.key.contains(currentSearchQuery, ignoreCase = true) }
                 }
             } else {
-                rules
+                // Otherwise, show one entry per batch group
+                appDatabase.simpleAutomationSettingDao().getBatchGroupRepresentatives()
             }
             
-            // Ensure rulesAdapter is still the correct type and initialized
-            if (::rulesAdapter.isInitialized && rulesAdapter is AutomationRulesAdapter) {
-                rulesAdapter.submitList(displayedRules.toMutableList()) // submitList is part of ListAdapter
+            // Set batch sizes for the adapter
+            if (rulesAdapter is AutomationRulesAdapter) {
+                // Process each rule that belongs to a batch group
+                displayRules.forEach { rule ->
+                    if (rule.batch_group_id.isNotEmpty()) {
+                        // Get batch size for this group
+                        val batchSize = appDatabase.simpleAutomationSettingDao().getBatchGroupSize(rule.batch_group_id)
+                        if (batchSize > 1) {
+                            // Set batch size in the adapter
+                            rulesAdapter.setBatchSize(rule.batch_group_id, batchSize)
+                        }
+                    }
+                }
+                
+                // Update the list in the adapter
+                rulesAdapter.submitList(displayRules.toMutableList())
             } else {
-                Log.e("AutoAnswerSettingsFragment", "rulesAdapter not an instance of AutomationRulesAdapter or not initialized in lifecycleScope.")
+                Log.e("AutoAnswerSettingsFragment", "rulesAdapter not an instance of AutomationRulesAdapter.")
             }
             
             // Update empty view visibility based on filtered results
-            updateEmptyViewVisibility(displayedRules.isEmpty())
+            updateEmptyViewVisibility(displayRules.isEmpty())
             
             // Always ensure the SwipeRefreshLayout is not showing the refresh indicator
-            // after data has been loaded
             findViewById<SwipeRefreshLayout>(R.id.auto_answer_swipe_refresh)?.isRefreshing = false
         }
     }
