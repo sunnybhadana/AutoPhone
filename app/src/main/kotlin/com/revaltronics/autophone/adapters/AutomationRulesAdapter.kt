@@ -3,6 +3,7 @@ package com.revaltronics.autophone.adapters
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -19,21 +20,49 @@ class AutomationRulesAdapter(
 
     private var textColor: Int = Color.BLACK // Default color
     private val batchSizes = mutableMapOf<String, Int>() // Cache for batch sizes
+    private var recyclerView: RecyclerView? = null // Store reference to RecyclerView
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RuleViewHolder {
         val binding = ItemAutomationRuleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RuleViewHolder(binding)
+    }
+    
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        this.recyclerView = recyclerView
+    }
+    
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView)
+        this.recyclerView = null
     }
 
     override fun onBindViewHolder(holder: RuleViewHolder, position: Int) {
         val rule = getItem(position)
         holder.bind(rule, textColor, batchSizes[rule.batch_group_id] ?: 0)
         
+        // Ensure the view is in its reset state (not in swiped position)
+        resetViewHolderSwipeState(holder)
+        
         // Main content click triggers the onRuleClick (for editing via AutomationActivity)
         holder.binding.mainContentContainer.setOnClickListener { onRuleClick(rule) }
         
         // Long press to toggle active state
         holder.binding.mainContentContainer.setOnLongClickListener { onRuleLongClick(rule) }
+    }
+    
+    /**
+     * Reset the swipe state of a view holder
+     * This ensures recycled views aren't stuck in swiped position
+     */
+    private fun resetViewHolderSwipeState(holder: RuleViewHolder) {
+        val mainContent = holder.binding.mainContentContainer
+        val actionButtons = holder.binding.root.findViewById<View>(R.id.swipe_actions_container)
+        
+        // Reset translation to normal state
+        mainContent.translationX = 0f
+        actionButtons.visibility = View.GONE
+        actionButtons.translationX = holder.itemView.width.toFloat()
     }
     
     /**
@@ -119,6 +148,29 @@ class AutomationRulesAdapter(
                 
             binding.textViewRuleStatus.text = statusText
             binding.textViewRuleStatus.setTextColor(statusColor)
+        }
+    }
+
+    override fun submitList(list: List<SimpleAutomationSetting>?) {
+        // Use the super implementation to handle list diff and updates
+        super.submitList(list)
+        
+        // After the list is submitted, reset all visible views in the recycler view
+        resetAllVisibleItems()
+    }
+    
+    /**
+     * Reset the swipe state of all visible items in the RecyclerView
+     * This ensures no views are stuck in swiped position after list updates
+     */
+    private fun resetAllVisibleItems() {
+        recyclerView?.let { rv ->
+            for (i in 0 until rv.childCount) {
+                val child = rv.getChildAt(i)
+                val viewHolder = rv.getChildViewHolder(child) as? RuleViewHolder ?: continue
+                
+                resetViewHolderSwipeState(viewHolder)
+            }
         }
     }
 

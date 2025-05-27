@@ -249,8 +249,10 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                         if (position != RecyclerView.NO_POSITION) {
                             val rule = rulesAdapter.currentList[position]
                             showDeleteConfirmationDialog(rule)
-                            // The dialog's negative button listener should call notifyItemChanged
-                            // to reset the swipe appearance if deletion is cancelled.
+                            
+                            // Immediately reset the item to prevent visual glitch while dialog is showing
+                            // This will ensure the item doesn't appear "stuck" in swiped state
+                            rulesAdapter.notifyItemChanged(position)
                         }
                     }
                 }
@@ -271,25 +273,16 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                         TypedValue.COMPLEX_UNIT_DIP, swipeWidth, itemView.context.resources.displayMetrics
                     )
 
-                    // If the item is idle and not being actively interacted with, reset and use default drawing.
-                    if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && !isCurrentlyActive) {
-                        // Ensure views are reset. Animate only if necessary.
-                        if (mainContent.translationX != 0f) {
-                            mainContent.animate().translationX(0f).setDuration(150).start()
-                        }
-                        if (actionButtons.isVisible()) {
-                            actionButtons.animate().translationX(itemView.width.toFloat()).setDuration(150).withEndAction {
-                                // Check if still relevant to hide (e.g., not swiped open again quickly)
-                                if (mainContent.translationX == 0f) { 
-                                    actionButtons.visibility = View.GONE
-                                }
-                            }.start()
-                        } else {
-                            // Ensure it's correctly positioned if already GONE (e.g. after a delete)
-                            actionButtons.translationX = itemView.width.toFloat()
-                        }
-                        // Call super with original dX, dY for idle state to let ItemTouchHelper handle it.
-                        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                    // Reset the view when the action state changes to idle
+                    // This is crucial for fixing the "stuck" swipe state issue
+                    if (actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
+                        // Forcefully reset view positions when going to idle state
+                        mainContent.translationX = 0f
+                        actionButtons.visibility = View.GONE
+                        actionButtons.translationX = itemView.width.toFloat()
+                        
+                        // Call super with original dX, dY for idle state
+                        super.onChildDraw(c, recyclerView, viewHolder, 0f, dY, actionState, isCurrentlyActive)
                         return
                     }
 
@@ -432,11 +425,7 @@ class AutoAnswerSettingsFragment(context: Context, attributeSet: AttributeSet) :
                     .setMessage(message)
                     .setNegativeButton(R.string.cancel) { dialog, _ ->
                         dialog.dismiss()
-                        // Notify adapter to redraw the item to hide swipe actions
-                        val position = rulesAdapter.currentList.indexOf(rule)
-                        if (position != -1) {
-                            rulesAdapter.notifyItemChanged(position)
-                        }
+                        // No need to call notifyItemChanged here since we already did it in onSwiped
                     }
                     .setPositiveButton(if (isBatchRule) R.string.delete_all else R.string.delete_rule) { dialog, _ ->
                         deleteRule(rule)
