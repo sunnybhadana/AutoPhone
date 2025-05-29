@@ -78,9 +78,10 @@ class DialpadActivity : SimpleActivity() {
         }
         updateNavigationBarColor(getProperBackgroundColor())
 
-        if (checkAppSideloading()) {
-            return
-        }
+        // Commented out sideloading check to fix dialpad setup issue
+        // if (checkAppSideloading()) {
+        //     return
+        // }
 
         if (config.hideDialpadNumbers) {
             binding.dialpadClearWrapper.apply {
