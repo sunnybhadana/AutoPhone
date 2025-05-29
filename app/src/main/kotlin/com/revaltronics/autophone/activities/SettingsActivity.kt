@@ -1601,14 +1601,13 @@ class SettingsActivity : SimpleActivity() {
     }
 
     private fun setupOptionsMenu() {
-        val id = 620 //TODO changelog
-        binding.settingsToolbar.menu.apply {
-            findItem(R.id.whats_new).isVisible = com.revaltronics.autophone.BuildConfig.VERSION_CODE == id
-        }
+//        binding.settingsToolbar.menu.apply {
+//            findItem(R.id.whats_new).isVisible = com.revaltronics.autophone.BuildConfig.VERSION_CODE == id
+//        }
         binding.settingsToolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.whats_new -> {
-                    showWhatsNewDialog(id)
+                    showWhatsNewDialog()
                     true
                 }
                 else -> false
@@ -1616,9 +1615,21 @@ class SettingsActivity : SimpleActivity() {
         }
     }
 
-    private fun showWhatsNewDialog(id: Int) {
+    @SuppressLint("DiscouragedApi")
+    private fun showWhatsNewDialog() {
+        //TODO Change Log
         arrayListOf<Release>().apply {
-            add(Release(id, R.string.release_620)) //TODO changelog
+            val currentAppVersion = BuildConfig.VERSION_NAME
+            // convert to integer
+            val id = currentAppVersion.replace(".", "").toIntOrNull() ?: 0
+            val currentAppVersionFormatted = "release_" + id
+            // get currentAppVersionFormatted resource id
+            val resId = resources.getIdentifier(currentAppVersionFormatted, "string", packageName)
+            if (resId != 0) {
+                add(Release(id, resId))
+            } else {
+                add(Release(id, R.string.release_default)) // Fallback to a default release note
+            }
             WhatsNewDialog(this@SettingsActivity, this)
         }
     }
