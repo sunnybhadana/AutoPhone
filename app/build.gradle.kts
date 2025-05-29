@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.detekt)
+    id("com.google.gms.google-services")
     base
 }
 
@@ -67,7 +68,7 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
+            // applicationIdSuffix = ".debug"  // Removed to match google-services.json
         }
         release {
             isMinifyEnabled = true
@@ -135,8 +136,9 @@ dependencies {
     implementation(libs.eventbus)
     implementation(libs.libphonenumber)
     implementation(libs.geocoder)
-
-    //Goodwy
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    //Revaltronics
     implementation(libs.autophone.commons)
     implementation(libs.shortcut.badger)
     implementation(libs.behavio.rule)

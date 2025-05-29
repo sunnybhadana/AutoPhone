@@ -9,3 +9,4 @@
 keystore.jks
 keystore.properties
 /app/core/*
+/app/google-services.json

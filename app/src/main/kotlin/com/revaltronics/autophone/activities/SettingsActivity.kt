@@ -302,8 +302,8 @@ class SettingsActivity : SimpleActivity() {
 //            settingsTipJarHolder.beVisibleIf(isPro)
 
             val stringId =
-                if (isRTLLayout) com.revaltronics.strings.R.string.swipe_right_action
-                else com.revaltronics.strings.R.string.swipe_left_action
+                if (isRTLLayout) R.string.swipe_right_action
+                else R.string.swipe_left_action
             settingsSwipeLeftActionLabel.text = addLockedLabelIfNeeded(stringId, isPro)
 
             arrayOf(

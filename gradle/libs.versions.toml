@@ -1,10 +1,11 @@
 [versions]
 #jetbrains
-autophoneCommons = "v1.0.5"
-kotlin = "1.9.25"
-kotlinxSerializationJson = "1.6.3"
+autophoneCommons = "v1.0.7"
+firebaseBom = "33.14.0"
+kotlin = "2.1.0"
+kotlinxSerializationJson = "1.7.3"
 #KSP
-ksp = "1.9.25-1.0.20"
+ksp = "2.1.0-1.0.29"
 #Detekt
 detekt = "1.23.3"
 #Eventbus
@@ -34,13 +35,15 @@ app-build-kotlinJVMTarget = "17"
 #versioning
 app-version-appId = "com.revaltronics.autophone"
 app-version-versionCode = "620"
-app-version-versionName = "1.0.2"
+app-version-versionName = "1.0.0"
 swiperefreshlayout = "1.1.0"
 [libraries]
 #EventBus
 autophone-commons = { module = "com.github.sunnybhadana:autophone-commons", version.ref = "autophoneCommons" }
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 #Kotlin
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 #Other
 indicator-fast-scroll = { module = "com.github.goodwy:IndicatorFastScroll", version.ref = "indicatorFastScroll" }
